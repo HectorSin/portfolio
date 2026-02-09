@@ -139,6 +139,7 @@ export default function Hero() {
   const { isDark, toggleTheme, isKorean, toggleLanguage } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSignature, setShowSignature] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -161,16 +162,27 @@ export default function Hero() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowSignature(false);
-      } else {
+      const currentScrollY = window.scrollY;
+
+      // 스크롤이 300px 미만이면 항상 보이기
+      if (currentScrollY < 300) {
         setShowSignature(true);
       }
+      // 위로 스크롤하면 보이기
+      else if (currentScrollY < lastScrollY) {
+        setShowSignature(true);
+      }
+      // 아래로 스크롤하고 300px 넘으면 숨기기
+      else if (currentScrollY > lastScrollY && currentScrollY > 300) {
+        setShowSignature(false);
+      }
+
+      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const menuItems = [
     { label: isKorean ? "홈" : "HOME", href: "#", highlight: true },
@@ -197,7 +209,13 @@ export default function Hero() {
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6">
         <nav className="flex items-center justify-between max-w-screen-2xl mx-auto">
           {/* Menu Button */}
-          <div className="relative">
+          <div
+            className="relative transition-opacity duration-300"
+            style={{
+              opacity: showSignature ? 1 : 0,
+              pointerEvents: showSignature ? "auto" : "none"
+            }}
+          >
             <button
               ref={buttonRef}
               type="button"
