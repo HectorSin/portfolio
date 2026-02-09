@@ -136,7 +136,7 @@ const BlurText: React.FC<BlurTextProps> = ({
 };
 
 export default function Hero() {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark, toggleTheme, isKorean, toggleLanguage } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -159,13 +159,17 @@ export default function Hero() {
   }, [isMenuOpen]);
 
   const menuItems = [
-    { label: "HOME", href: "#", highlight: true },
-    { label: "ABOUT", href: "#about" },
-    { label: "PROJECTS", href: "#projects" },
-    { label: "TECH STACK", href: "#tech-stack" },
-    { label: "EXPERIENCE", href: "#experience" },
-    { label: "CONTACT", href: "#contact" },
+    { label: isKorean ? "홈" : "HOME", href: "#", highlight: true },
+    { label: isKorean ? "소개" : "ABOUT", href: "#about" },
+    { label: isKorean ? "프로젝트" : "PROJECTS", href: "#projects" },
+    { label: isKorean ? "기술 스택" : "TECH STACK", href: "#tech-stack" },
+    { label: isKorean ? "경력" : "EXPERIENCE", href: "#experience" },
+    { label: isKorean ? "연락처" : "CONTACT", href: "#contact" },
   ];
+
+  const tagline = isKorean
+    ? "AI 서비스 엔지니어 | AI 모델을 비즈니스 임팩트로 전환"
+    : "AI Service Engineer | Transforming AI Models into Business Impact";
 
   return (
     <div
@@ -230,22 +234,48 @@ export default function Hero() {
             SJ
           </div>
 
-          {/* Theme Toggle */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity"
-            style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
-            aria-label="Toggle theme"
-          >
-            <div
-              className="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300"
-              style={{
-                backgroundColor: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
-                transform: isDark ? "translateX(2rem)" : "translateX(0)",
-              }}
-            />
-          </button>
+          {/* Toggles */}
+          <div className="flex items-center gap-3">
+            {/* Language Toggle */}
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity flex items-center justify-center text-xs font-bold"
+              style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
+              aria-label="Toggle language"
+            >
+              <span className={`absolute transition-opacity duration-300 ${isKorean ? "opacity-100" : "opacity-30"}`} style={{ left: "0.5rem" }}>
+                한
+              </span>
+              <span className={`absolute transition-opacity duration-300 ${!isKorean ? "opacity-100" : "opacity-30"}`} style={{ right: "0.5rem" }}>
+                EN
+              </span>
+              <div
+                className="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300"
+                style={{
+                  backgroundColor: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
+                  transform: isKorean ? "translateX(0)" : "translateX(2rem)",
+                }}
+              />
+            </button>
+
+            {/* Theme Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
+              aria-label="Toggle theme"
+            >
+              <div
+                className="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300"
+                style={{
+                  backgroundColor: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
+                  transform: isDark ? "translateX(2rem)" : "translateX(0)",
+                }}
+              />
+            </button>
+          </div>
         </nav>
       </header>
 
@@ -292,7 +322,7 @@ export default function Hero() {
         <div className="absolute bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-32 xl:bottom-36 left-1/2 -translate-x-1/2 w-full px-6">
           <div className="flex justify-center">
             <BlurText
-              text="AI Service Engineer | Transforming AI Models into Business Impact"
+              text={tagline}
               delay={150}
               animateBy="words"
               direction="top"

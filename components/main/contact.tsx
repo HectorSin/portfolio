@@ -4,7 +4,7 @@ import React from "react";
 import { useTheme } from "@/contexts/theme-context";
 
 export default function Contact() {
-  const { isDark } = useTheme();
+  const { isDark, isKorean } = useTheme();
 
   return (
     <section
@@ -17,12 +17,14 @@ export default function Contact() {
     >
       <div className="max-w-4xl w-full">
         <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight" style={{ color: "#C3E41D" }}>
-          CONTACT
+          {isKorean ? "연락처" : "CONTACT"}
         </h2>
 
         <div className="space-y-8">
           <p className={`text-2xl leading-relaxed ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
-            I'm always open to discussing new opportunities, collaborations, or innovative AI projects.
+            {isKorean
+              ? "새로운 기회, 협업, 혁신적인 AI 프로젝트에 대한 논의는 언제나 환영입니다."
+              : "I'm always open to discussing new opportunities, collaborations, or innovative AI projects."}
           </p>
 
           {/* Contact Methods */}
