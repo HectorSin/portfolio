@@ -5,18 +5,21 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 interface ThemeContextType {
   isDark: boolean;
   toggleTheme: () => void;
+  isKorean: boolean;
+  toggleLanguage: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
+  const [isKorean, setIsKorean] = useState(true);
 
   useEffect(() => {
     // Initialize theme
-    document.documentElement.classList.add("dark");
-    document.body.style.backgroundColor = "hsl(0 0% 0%)";
-    document.body.style.color = "hsl(0 0% 100%)";
+    document.documentElement.classList.remove("dark");
+    document.body.style.backgroundColor = "hsl(0 0% 98%)";
+    document.body.style.color = "hsl(0 0% 10%)";
   }, []);
 
   useEffect(() => {
@@ -36,8 +39,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setIsDark((prev) => !prev);
   };
 
+  const toggleLanguage = () => {
+    setIsKorean((prev) => !prev);
+  };
+
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDark, toggleTheme, isKorean, toggleLanguage }}>
       {children}
     </ThemeContext.Provider>
   );

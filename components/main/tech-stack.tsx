@@ -46,7 +46,7 @@ const techStack = {
 };
 
 export default function TechStack() {
-  const { isDark } = useTheme();
+  const { isDark, isKorean } = useTheme();
 
   return (
     <section
@@ -59,7 +59,7 @@ export default function TechStack() {
     >
       <div className="max-w-6xl w-full">
         <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight" style={{ color: "#C3E41D" }}>
-          TECH STACK
+          {isKorean ? "기술 스택" : "TECH STACK"}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -92,27 +92,29 @@ export default function TechStack() {
         </div>
 
         <div className={`mt-12 border rounded-lg p-8 ${isDark ? "border-neutral-800" : "border-neutral-300"}`}>
-          <h3 className={`text-2xl font-bold mb-4 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>Core Expertise</h3>
+          <h3 className={`text-2xl font-bold mb-4 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
+            {isKorean ? "핵심 전문 분야" : "Core Expertise"}
+          </h3>
           <ul className={`space-y-3 text-lg ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
             <li className="flex items-start">
               <span className={isDark ? "text-green-400" : "text-green-600"} style={{ marginRight: "0.75rem" }}>▸</span>
-              <span>Multi-LLM orchestration and API integration</span>
+              <span>{isKorean ? "멀티 LLM 오케스트레이션 및 API 통합" : "Multi-LLM orchestration and API integration"}</span>
             </li>
             <li className="flex items-start">
               <span className={isDark ? "text-green-400" : "text-green-600"} style={{ marginRight: "0.75rem" }}>▸</span>
-              <span>Production-ready RAG systems and content generation pipelines</span>
+              <span>{isKorean ? "프로덕션 RAG 시스템 및 콘텐츠 생성 파이프라인" : "Production-ready RAG systems and content generation pipelines"}</span>
             </li>
             <li className="flex items-start">
               <span className={isDark ? "text-green-400" : "text-green-600"} style={{ marginRight: "0.75rem" }}>▸</span>
-              <span>Cloud-native architecture (GCP, AWS)</span>
+              <span>{isKorean ? "클라우드 네이티브 아키텍처 (GCP, AWS)" : "Cloud-native architecture (GCP, AWS)"}</span>
             </li>
             <li className="flex items-start">
               <span className={isDark ? "text-green-400" : "text-green-600"} style={{ marginRight: "0.75rem" }}>▸</span>
-              <span>Token optimization and cost-efficient LLM deployment</span>
+              <span>{isKorean ? "토큰 최적화 및 비용 효율적인 LLM 배포" : "Token optimization and cost-efficient LLM deployment"}</span>
             </li>
             <li className="flex items-start">
               <span className={isDark ? "text-green-400" : "text-green-600"} style={{ marginRight: "0.75rem" }}>▸</span>
-              <span>End-to-end IoT-to-ML pipeline development</span>
+              <span>{isKorean ? "엔드투엔드 IoT-to-ML 파이프라인 개발" : "End-to-end IoT-to-ML pipeline development"}</span>
             </li>
           </ul>
         </div>
