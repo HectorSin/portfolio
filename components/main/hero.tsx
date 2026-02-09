@@ -161,7 +161,7 @@ export default function Hero() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 300) {
         setShowSignature(false);
       } else {
         setShowSignature(true);
@@ -257,7 +257,13 @@ export default function Hero() {
           </div>
 
           {/* Toggles */}
-          <div className="flex items-center gap-3">
+          <div
+            className="flex items-center gap-3 transition-opacity duration-300"
+            style={{
+              opacity: showSignature ? 1 : 0,
+              pointerEvents: showSignature ? "auto" : "none"
+            }}
+          >
             {/* Language Toggle */}
             <button
               type="button"
