@@ -9,6 +9,7 @@
 - **Styling**: Tailwind CSS 4
 - **UI Library**: React 19.2.3
 - **Icons**: lucide-react
+- **Theme**: Theme Context
 
 ## 📦 설치
 
