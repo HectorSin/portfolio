@@ -138,6 +138,7 @@ const BlurText: React.FC<BlurTextProps> = ({
 export default function Hero() {
   const { isDark, toggleTheme, isKorean, toggleLanguage } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showSignature, setShowSignature] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -157,6 +158,19 @@ export default function Hero() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setShowSignature(false);
+      } else {
+        setShowSignature(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const menuItems = [
     { label: isKorean ? "홈" : "HOME", href: "#", highlight: true },
@@ -230,7 +244,15 @@ export default function Hero() {
           </div>
 
           {/* Signature */}
-          <div className="text-4xl" style={{ color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)", fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive" }}>
+          <div
+            className="text-4xl transition-opacity duration-300"
+            style={{
+              color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
+              fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive",
+              opacity: showSignature ? 1 : 0,
+              pointerEvents: showSignature ? "auto" : "none"
+            }}
+          >
             SJ
           </div>
 
