@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTheme } from "@/contexts/theme-context";
+import { companyLinks, activityLinks } from "@/data/links";
 
 const experiences = [
   {
@@ -35,7 +36,7 @@ const experiences = [
         "비정형 데이터(텍스트/음성) 구조화 및 DB 설계/운영"
       ]
     },
-    link: "https://filledyou.com/pages/intro-pulda"
+    link: companyLinks["FilledU"]
   },
   {
     company: "TurbineCrew",
@@ -66,7 +67,7 @@ const experiences = [
         "비즈니스 미팅 주도 및 기술 영업 지원"
       ]
     },
-    link: "https://turbinecrew.co.kr/"
+    link: companyLinks["TurbineCrew"]
   },
   {
     company: "TurbineCrew",
@@ -99,7 +100,7 @@ const experiences = [
         "우수사원상 수상"
       ]
     },
-    link: "https://turbinecrew.co.kr/"
+    link: companyLinks["TurbineCrew"]
   }
 ];
 
@@ -114,7 +115,7 @@ const activities = [
       ko: "백준 온라인 저지 활동"
     },
     icon: "💻",
-    link: "https://github.com/HectorSin/CodingTestPrepare"
+    link: activityLinks["Competitive Programming"]
   },
   {
     title: {
@@ -126,7 +127,7 @@ const activities = [
       ko: "지식 그래프 프레임워크 기여"
     },
     icon: "🏆",
-    link: "https://github.com/HectorSin/cognee"
+    link: activityLinks["Cognee Open Source Contribution"]
   },
   {
     title: {
@@ -138,7 +139,7 @@ const activities = [
       ko: "AI 에이전트, RAG, LLM 트렌드 다루기"
     },
     icon: "✍️",
-    link: "https://www.linkedin.com/in/%EC%9E%AC%ED%98%84-%EC%8B%A0-b26183272/recent-activity/all/"
+    link: activityLinks["LinkedIn Content Creator"]
   },
   {
     title: {
@@ -150,7 +151,7 @@ const activities = [
       ko: "동아리 회원 4명에서 130명으로 성장"
     },
     icon: "🌍",
-    link: "https://www.instagram.com/ajou_friends_club/"
+    link: activityLinks["Cultural Exchange Leadership"]
   }
 ];
 

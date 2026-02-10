@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTheme } from "@/contexts/theme-context";
+import { contactLinks } from "@/data/links";
 
 export default function Contact() {
   const { isDark, isKorean } = useTheme();
@@ -31,7 +32,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-6 mt-12">
             {/* Email */}
             <a
-              href="mailto:jaehyunkkang15634@gmail.com"
+              href={contactLinks.email}
               className={`border rounded-lg p-8 transition-all hover:scale-105 ${
                 isDark ? "border-neutral-800 hover:border-neutral-700" : "border-neutral-300 hover:border-neutral-400"
               }`}
@@ -53,12 +54,12 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">Email</h3>
-              <p className={`break-all ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>jaehyunkkang15634@gmail.com</p>
+              <p className={`break-all ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>{contactLinks.email.replace("mailto:", "")}</p>
             </a>
 
             {/* LinkedIn */}
             <a
-              href="https://www.linkedin.com/in/%EC%9E%AC%ED%98%84-%EC%8B%A0-b26183272/"
+              href={contactLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className={`border rounded-lg p-8 transition-all hover:scale-105 ${
@@ -81,7 +82,7 @@ export default function Contact() {
 
             {/* GitHub */}
             <a
-              href="https://github.com/HectorSin"
+              href={contactLinks.github}
               target="_blank"
               rel="noopener noreferrer"
               className={`border rounded-lg p-8 transition-all hover:scale-105 ${

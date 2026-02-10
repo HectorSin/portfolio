@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useTheme } from "@/contexts/theme-context";
+import { techDocs } from "@/data/tech-docs";
+import { getTechProjectMap } from "@/data/projects";
 
 const techStack = {
   "LLM & AI Services": [
@@ -15,7 +17,7 @@ const techStack = {
     "Perplexity API",
     "Ollama",
     "Comet",
-    "Naver Clova TTS",
+    "Clova TTS",
     "FFmpeg"
   ],
   "Machine Learning": [
@@ -27,9 +29,8 @@ const techStack = {
     "FastAPI",
     "Flask",
     "Docker",
-    "Google Cloud Platform",
-    "AWS Lambda",
-    "AWS IoT Core",
+    "GCP",
+    "AWS",
     "GitHub Actions",
     "Linux"
   ],
@@ -50,6 +51,7 @@ const techStack = {
 
 export default function TechStack() {
   const { isDark, isKorean } = useTheme();
+  const techProjectMap = useMemo(() => getTechProjectMap(), []);
 
   return (
     <section
@@ -77,18 +79,39 @@ export default function TechStack() {
                 {category}
               </h3>
               <div className="flex flex-wrap gap-2">
-                {technologies.map((tech, index) => (
-                  <span
-                    key={index}
-                    className={`px-4 py-2 border rounded-lg text-sm transition-colors ${
-                      isDark
-                        ? "bg-neutral-900 border-neutral-800 hover:border-neutral-700"
-                        : "bg-neutral-100 border-neutral-300 hover:border-neutral-400"
-                    }`}
-                  >
-                    {tech}
-                  </span>
-                ))}
+                {technologies.map((tech, index) => {
+                  const projectIndex = techProjectMap[tech];
+                  const docUrl = techDocs[tech];
+                  const isClickable = projectIndex !== undefined || docUrl;
+                  const className = `px-4 py-2 border rounded-lg text-sm transition-colors ${isClickable ? "cursor-pointer" : ""} ${
+                    isDark
+                      ? "bg-neutral-900 border-neutral-800 hover:border-neutral-700"
+                      : "bg-neutral-100 border-neutral-300 hover:border-neutral-400"
+                  }`;
+                  return projectIndex !== undefined ? (
+                    <a
+                      key={index}
+                      href={`#project-${projectIndex}`}
+                      className={className}
+                    >
+                      {tech}
+                    </a>
+                  ) : docUrl ? (
+                    <a
+                      key={index}
+                      href={docUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={className}
+                    >
+                      {tech} ↗
+                    </a>
+                  ) : (
+                    <span key={index} className={className}>
+                      {tech}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           ))}
