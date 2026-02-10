@@ -5,40 +5,43 @@ import { useTheme } from "@/contexts/theme-context";
 
 const techStack = {
   "LLM & AI Services": [
-    "Gemini API",
+    "LangChain",
+    "LangGraph",
+    "RAG",
+    "Prompt Engineering",
     "OpenAI GPT-4",
     "Claude API",
+    "Gemini API",
     "Perplexity API",
-    "Naver Clova TTS",
     "Ollama",
-    "LangChain",
-    "RAG",
-    "Prompt Engineering"
-  ],
-  "Backend & Infrastructure": [
-    "Python",
-    "FastAPI",
-    "Flask",
-    "Google Cloud Platform",
-    "AWS IoT Core",
-    "AWS Lambda",
-    "Docker",
-    "GitHub Actions",
-    "Linux"
-  ],
-  "Databases": [
-    "PostgreSQL",
-    "MongoDB",
-    "MySQL",
-    "Chroma",
-    "Pinecone"
+    "Comet",
+    "Naver Clova TTS",
+    "FFmpeg"
   ],
   "Machine Learning": [
     "PyTorch",
     "TensorFlow"
   ],
+  "Backend & Infrastructure": [
+    "Python",
+    "FastAPI",
+    "Flask",
+    "Docker",
+    "Google Cloud Platform",
+    "AWS Lambda",
+    "AWS IoT Core",
+    "GitHub Actions",
+    "Linux"
+  ],
+  "Databases": [
+    "Chroma",
+    "PostgreSQL",
+    "MongoDB",
+    "MySQL"
+  ],
   "Tools & Collaboration": [
     "Git",
+    "Claude Code",
     "Notion",
     "Slack",
     "Figma"
