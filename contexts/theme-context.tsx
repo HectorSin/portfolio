@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 
 interface ThemeContextType {
   isDark: boolean;
@@ -35,16 +35,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isDark]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setIsDark((prev) => !prev);
-  };
+  }, []);
 
-  const toggleLanguage = () => {
+  const toggleLanguage = useCallback(() => {
     setIsKorean((prev) => !prev);
-  };
+  }, []);
+
+  const value = useMemo(
+    () => ({ isDark, toggleTheme, isKorean, toggleLanguage }),
+    [isDark, isKorean, toggleTheme, toggleLanguage]
+  );
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme, isKorean, toggleLanguage }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );

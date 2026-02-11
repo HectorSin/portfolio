@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import Image from "next/image";
 import { useTheme } from "@/contexts/theme-context";
 
 // SVG Icons
@@ -90,6 +91,9 @@ const BlurText: React.FC<BlurTextProps> = ({
   const ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -99,14 +103,10 @@ const BlurText: React.FC<BlurTextProps> = ({
       { threshold: 0.1 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    observer.observe(node);
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
+      observer.unobserve(node);
     };
   }, []);
 
@@ -139,7 +139,7 @@ export default function Hero() {
   const { isDark, toggleTheme, isKorean, toggleLanguage } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSignature, setShowSignature] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -163,35 +163,36 @@ export default function Hero() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const lastY = lastScrollYRef.current;
 
       // 스크롤이 300px 미만이면 항상 보이기
       if (currentScrollY < 300) {
         setShowSignature(true);
       }
       // 위로 스크롤하면 보이기
-      else if (currentScrollY < lastScrollY) {
+      else if (currentScrollY < lastY) {
         setShowSignature(true);
       }
       // 아래로 스크롤하고 300px 넘으면 숨기기
-      else if (currentScrollY > lastScrollY && currentScrollY > 300) {
+      else if (currentScrollY > lastY && currentScrollY > 300) {
         setShowSignature(false);
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollYRef.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { label: isKorean ? "홈" : "HOME", href: "#", highlight: true },
     { label: isKorean ? "소개" : "ABOUT", href: "#about" },
     { label: isKorean ? "프로젝트" : "PROJECTS", href: "#projects" },
     { label: isKorean ? "기술 스택" : "TECH STACK", href: "#tech-stack" },
     { label: isKorean ? "경력" : "EXPERIENCE", href: "#experience" },
     { label: isKorean ? "연락처" : "CONTACT", href: "#contact" },
-  ];
+  ], [isKorean]);
 
   const tagline = isKorean
     ? "AI 서비스 엔지니어 | AI 모델을 비즈니스 임팩트로 전환"
@@ -242,16 +243,13 @@ export default function Hero() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300"
-                    style={{
-                      color: item.highlight ? "#C3E41D" : isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#C3E41D";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = item.highlight ? "#C3E41D" : (isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)");
-                    }}
+                    className={`block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 hover:!text-[#C3E41D] ${
+                      item.highlight
+                        ? "text-[#C3E41D]"
+                        : isDark
+                          ? "text-white"
+                          : "text-neutral-900"
+                    }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -353,11 +351,13 @@ export default function Hero() {
 
             {/* Profile Picture */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-              <div className="w-[65px] h-[110px] sm:w-[90px] sm:h-[152px] md:w-[110px] md:h-[185px] lg:w-[129px] lg:h-[218px] rounded-full overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-110 cursor-pointer">
-                <img
+              <div className="relative w-[65px] h-[110px] sm:w-[90px] sm:h-[152px] md:w-[110px] md:h-[185px] lg:w-[129px] lg:h-[218px] rounded-full overflow-hidden shadow-2xl transition-transform duration-300 hover:scale-110 cursor-pointer">
+                <Image
                   src="/profile.jpg"
                   alt="Sin Jaehyun Profile"
-                  className="w-full h-full object-cover"
+                  fill
+                  priority
+                  className="object-cover"
                 />
               </div>
             </div>
