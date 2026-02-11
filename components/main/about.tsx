@@ -61,7 +61,7 @@ export default function About() {
                 <div className="flex justify-between items-center">
                   <span className="text-lg">{isKorean ? "스페인어" : "Spanish"}</span>
                   <span className={isDark ? "text-neutral-500" : "text-neutral-700"}>
-                    {isKorean ? "중급" : "Intermediate"}
+                    {isKorean ? "초급" : "Beginner"}
                   </span>
                 </div>
               </div>
