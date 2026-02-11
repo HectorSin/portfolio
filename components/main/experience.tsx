@@ -168,7 +168,7 @@ export default function Experience() {
       }}
     >
       <div className="max-w-6xl w-full">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight" style={{ color: "#C3E41D" }}>
+        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight text-balance" style={{ color: "#C3E41D" }}>
           {isKorean ? "경력" : "EXPERIENCE"}
         </h2>
 
@@ -250,7 +250,7 @@ export default function Experience() {
 
               const className = `border rounded-lg p-6 transition-colors ${
                 isDark ? "border-neutral-800 hover:border-neutral-700" : "border-neutral-300 hover:border-neutral-400"
-              } ${activity.link ? "cursor-pointer hover:scale-105" : ""}`;
+              } ${activity.link ? "cursor-pointer transition-transform hover:scale-105 motion-reduce:hover:scale-100" : ""}`;
 
               return activity.link ? (
                 <a

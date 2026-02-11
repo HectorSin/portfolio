@@ -16,7 +16,7 @@ export default function About() {
       }}
     >
       <div className="max-w-6xl w-full">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight" style={{ color: "#C3E41D" }}>
+        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight text-balance" style={{ color: "#C3E41D" }}>
           {isKorean ? "소개" : "ABOUT"}
         </h2>
 
@@ -91,8 +91,8 @@ export default function About() {
               </p>
               <p className={`italic ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
                 {isKorean
-                  ? '"최첨단 AI 연구와 실제 비즈니스 가치를 연결합니다"'
-                  : '"Bridging cutting-edge AI research with real-world business value"'}
+                  ? '\u201C최첨단 AI 연구와 실제 비즈니스 가치를 연결합니다\u201D'
+                  : '\u201CBridging cutting-edge AI research with real-world business value\u201D'}
               </p>
             </div>
           </div>

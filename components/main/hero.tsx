@@ -15,6 +15,7 @@ const MenuIcon = ({ className = "" }: { className?: string }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
+    aria-hidden="true"
   >
     <line x1="3" y1="12" x2="21" y2="12" />
     <line x1="3" y1="6" x2="21" y2="6" />
@@ -32,6 +33,7 @@ const XIcon = ({ className = "" }: { className?: string }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
+    aria-hidden="true"
   >
     <line x1="18" y1="6" x2="6" y2="18" />
     <line x1="6" y1="6" x2="18" y2="18" />
@@ -48,6 +50,7 @@ const ChevronDownIcon = ({ className = "" }: { className?: string }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
+    aria-hidden="true"
   >
     <polyline points="6 9 12 15 18 9" />
   </svg>
@@ -77,6 +80,7 @@ interface BlurTextProps {
   direction?: "top" | "bottom";
   className?: string;
   style?: React.CSSProperties;
+  as?: "p" | "h1" | "h2" | "span";
 }
 
 const BlurText: React.FC<BlurTextProps> = ({
@@ -86,9 +90,19 @@ const BlurText: React.FC<BlurTextProps> = ({
   direction = "top",
   className = "",
   style,
+  as: Tag = "p",
 }) => {
   const [inView, setInView] = useState(false);
-  const ref = useRef<HTMLParagraphElement>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     const node = ref.current;
@@ -115,23 +129,27 @@ const BlurText: React.FC<BlurTextProps> = ({
   }, [text, animateBy]);
 
   return (
-    <p ref={ref} className={`inline-flex flex-wrap ${className}`} style={style}>
+    <div ref={ref}>
+    <Tag className={`inline-flex flex-wrap ${className}`} style={style}>
       {segments.map((segment, i) => (
         <span
           key={i}
-          style={{
+          style={prefersReducedMotion ? {
             display: "inline-block",
-            filter: inView ? "blur(0px)" : "blur(10px)",
+            opacity: inView ? 1 : 0,
+          } : {
+            display: "inline-block",
             opacity: inView ? 1 : 0,
             transform: inView ? "translateY(0)" : `translateY(${direction === "top" ? "-20px" : "20px"})`,
-            transition: `all 0.5s ease-out ${i * delay}ms`,
+            transition: `opacity 0.5s ease-out ${i * delay}ms, transform 0.5s ease-out ${i * delay}ms`,
           }}
         >
           {segment}
           {animateBy === "words" && i < segments.length - 1 ? "\u00A0" : ""}
         </span>
       ))}
-    </p>
+    </Tag>
+    </div>
   );
 };
 
@@ -220,7 +238,7 @@ export default function Hero() {
             <button
               ref={buttonRef}
               type="button"
-              className="p-2 transition-colors duration-300 z-50 text-neutral-500 hover:text-black dark:hover:text-white"
+              className="p-2 transition-colors duration-300 z-50 text-neutral-500 hover:text-black dark:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3E41D] focus-visible:rounded"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -243,7 +261,7 @@ export default function Hero() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className={`block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 hover:!text-[#C3E41D] ${
+                    className={`block text-lg md:text-xl font-bold tracking-tight py-1.5 px-2 cursor-pointer transition-colors duration-300 hover:!text-[#C3E41D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3E41D] focus-visible:rounded ${
                       item.highlight
                         ? "text-[#C3E41D]"
                         : isDark
@@ -284,7 +302,7 @@ export default function Hero() {
             <button
               type="button"
               onClick={toggleLanguage}
-              className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity flex items-center justify-center text-xs font-bold"
+              className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity flex items-center justify-center text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3E41D]"
               style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
               aria-label="Toggle language"
             >
@@ -307,7 +325,7 @@ export default function Hero() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity"
+              className="relative w-16 h-8 rounded-full hover:opacity-80 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3E41D]"
               style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
               aria-label="Toggle theme"
             >
@@ -334,6 +352,7 @@ export default function Hero() {
                 delay={100}
                 animateBy="letters"
                 direction="top"
+                as="h1"
                 className="font-bold text-[100px] sm:text-[140px] md:text-[180px] lg:text-[210px] leading-[0.75] tracking-tighter uppercase justify-center whitespace-nowrap"
                 style={{ color: "#C3E41D", fontFamily: "'Fira Code', monospace" }}
               />
@@ -344,6 +363,7 @@ export default function Hero() {
                 delay={100}
                 animateBy="letters"
                 direction="top"
+                as="span"
                 className="font-bold text-[100px] sm:text-[140px] md:text-[180px] lg:text-[210px] leading-[0.75] tracking-tighter uppercase justify-center whitespace-nowrap"
                 style={{ color: "#C3E41D", fontFamily: "'Fira Code', monospace" }}
               />
@@ -381,7 +401,7 @@ export default function Hero() {
         {/* Scroll Indicator */}
         <button
           type="button"
-          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-300"
+          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3E41D] focus-visible:rounded"
           aria-label="Scroll down"
           onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
         >

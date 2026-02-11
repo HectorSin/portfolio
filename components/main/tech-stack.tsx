@@ -63,7 +63,7 @@ export default function TechStack() {
       }}
     >
       <div className="max-w-6xl w-full">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight" style={{ color: "#C3E41D" }}>
+        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight text-balance" style={{ color: "#C3E41D" }}>
           {isKorean ? "기술 스택" : "TECH STACK"}
         </h2>
 

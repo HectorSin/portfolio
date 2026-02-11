@@ -24,10 +24,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <a
+          href="#about"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-[#C3E41D] focus:text-black focus:rounded focus:font-bold"
+        >
+          Skip to content
+        </a>
         <ThemeProvider>
           {children}
         </ThemeProvider>

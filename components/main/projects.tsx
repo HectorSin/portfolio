@@ -44,7 +44,7 @@ export default function Projects() {
       }}
     >
       <div className="max-w-6xl w-full">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight" style={{ color: "#C3E41D" }}>
+        <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-tight text-balance" style={{ color: "#C3E41D" }}>
           {isKorean ? "프로젝트" : "PROJECTS"}
         </h2>
 
@@ -53,12 +53,13 @@ export default function Projects() {
             <div
               key={index}
               id={`project-${index}`}
+              style={{ scrollMarginTop: "5rem" }}
               className={`border rounded-lg p-8 transition-colors ${
                 isDark ? "border-neutral-800 hover:border-neutral-700" : "border-neutral-300 hover:border-neutral-400"
               }`}
             >
               <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <h3 className="text-2xl md:text-3xl font-bold mb-2">
                     {typeof project.title === 'string' ? project.title : (isKorean ? project.title.ko : project.title.en)}
                   </h3>
@@ -142,7 +143,7 @@ export default function Projects() {
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowAll(!showAll)}
-              className={`px-8 py-3 rounded-lg font-semibold transition-all ${
+              className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
                 isDark
                   ? "bg-neutral-900 border-2 border-neutral-800 hover:border-neutral-700"
                   : "bg-neutral-100 border-2 border-neutral-300 hover:border-neutral-400"
