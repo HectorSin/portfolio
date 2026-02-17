@@ -73,7 +73,7 @@ const experiences = [
     company: "TurbineCrew",
     role: {
       en: "AI/IoT Engineer",
-      ko: "AI/IoT Engineer 계약직 사원"
+      ko: "AI/IoT Engineer 인턴 사원"
     },
     period: "2024.01 ~ 2024.02",
     type: {
