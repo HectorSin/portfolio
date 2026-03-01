@@ -141,7 +141,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "LLM returned an empty response." }, { status: 502 });
     }
 
-    const sources = getRelevantKnowledge(latestUserMessage.content).map((item) => item.title);
+    const sources = getRelevantKnowledge(latestUserMessage.content).map((item) => ({
+      id: item.id,
+      title: item.title,
+      sectionId: item.sectionId,
+    }));
     return NextResponse.json({ answer, sources });
   } catch (error) {
     const message =

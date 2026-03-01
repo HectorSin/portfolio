@@ -2,6 +2,7 @@ import { projects } from "@/data/projects";
 import { contactLinks, projectLinks } from "@/data/links";
 import { techDocs } from "@/data/tech-docs";
 import { profileData } from "@/data/profile";
+import { getProjectAnchorIdByIndex } from "@/lib/project-anchors";
 
 export interface KnowledgeSnippet {
   id: string;
@@ -9,6 +10,7 @@ export interface KnowledgeSnippet {
   content: string;
   tags: string[];
   source: string;
+  sectionId: string;
 }
 
 function toEnglish(value: string | { en: string; ko: string } | undefined): string {
@@ -29,6 +31,7 @@ const profileSnippet: KnowledgeSnippet = {
   id: "profile",
   title: "Candidate Profile",
   source: "data/profile.ts",
+  sectionId: "about",
   tags: ["profile", "education", "language", "target-role", "bio"],
   content: [
     `Name: ${profileData.name}`,
@@ -48,6 +51,7 @@ const contactSnippet: KnowledgeSnippet = {
   id: "contact",
   title: "Contact Information",
   source: "contact section",
+  sectionId: "contact",
   tags: ["contact", "email", "github", "linkedin", "location"],
   content: [
     `Email: ${contactLinks.email.replace("mailto:", "")}`,
@@ -72,6 +76,7 @@ const projectSnippets: KnowledgeSnippet[] = projects.map((project, index) => {
     id: `project-${index + 1}`,
     title: `Project: ${title}`,
     source: "data/projects.ts",
+    sectionId: getProjectAnchorIdByIndex(index),
     tags: [title, company, ...project.tech].map((value) => value.toLowerCase()),
     content: [
       `Title: ${title}`,
@@ -92,6 +97,7 @@ const linksSnippet: KnowledgeSnippet = {
   id: "links",
   title: "External References",
   source: "data/links.ts",
+  sectionId: "projects",
   tags: ["external", "references", "links"],
   content: Object.entries(projectLinks)
     .map(([name, url]) => `${name}: ${url}`)
@@ -102,6 +108,7 @@ const techDocsSnippet: KnowledgeSnippet = {
   id: "tech-docs",
   title: "Technology Documentation Links",
   source: "data/tech-docs.ts",
+  sectionId: "tech-stack",
   tags: ["tech", "docs", "references"],
   content: Object.entries(techDocs)
     .map(([name, url]) => `${name}: ${url}`)

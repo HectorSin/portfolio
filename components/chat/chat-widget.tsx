@@ -9,6 +9,12 @@ type UiMessage = {
   content: string;
 };
 
+type SourceRef = {
+  id: string;
+  title: string;
+  sectionId: string;
+};
+
 const WELCOME_MESSAGE = {
   ko: "안녕하세요. 포트폴리오 기반으로 Jaehyun Sin에 대해 답변해드릴게요. 프로젝트, 기술 스택, 경력, 협업 방식 등을 물어보세요.",
   en: "Hello. I can answer portfolio-based questions about Jaehyun Sin. Ask about projects, tech stack, experience, or collaboration style.",
@@ -19,7 +25,7 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [sources, setSources] = useState<string[]>([]);
+  const [sources, setSources] = useState<SourceRef[]>([]);
   const [messages, setMessages] = useState<UiMessage[]>([
     { role: "assistant", content: isKorean ? WELCOME_MESSAGE.ko : WELCOME_MESSAGE.en },
   ]);
@@ -73,7 +79,7 @@ export default function ChatWidget() {
       const payload = (await response.json()) as {
         answer?: string;
         error?: string;
-        sources?: string[];
+        sources?: SourceRef[];
       };
 
       if (!response.ok || !payload.answer) {
@@ -89,6 +95,20 @@ export default function ChatWidget() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function handleSourceClick(sectionId: string) {
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    if (!sectionId) {
+      return;
+    }
+
+    window.location.hash = sectionId;
   }
 
   return (
@@ -160,9 +180,26 @@ export default function ChatWidget() {
               </p>
             )}
             {sources.length > 0 && (
-              <p className="text-xs" style={{ opacity: 0.85 }}>
-                {labels.sources}: {sources.join(", ")}
-              </p>
+              <div className="space-y-1">
+                <p className="text-xs" style={{ opacity: 0.85 }}>
+                  {labels.sources}
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {sources.map((source) => (
+                    <button
+                      key={source.id}
+                      type="button"
+                      onClick={() => handleSourceClick(source.sectionId)}
+                      className="rounded-full px-2 py-1 text-[11px] underline underline-offset-2"
+                      style={{
+                        backgroundColor: isDark ? "hsl(0 0% 16%)" : "hsl(0 0% 90%)",
+                      }}
+                    >
+                      {source.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
 
