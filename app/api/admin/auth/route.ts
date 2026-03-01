@@ -21,7 +21,7 @@ function setSessionCookie(response: NextResponse, value: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    path: "/admin",
+    path: "/",
     maxAge: SESSION_MAX_AGE_SECONDS,
   });
 }
@@ -54,7 +54,7 @@ export async function DELETE() {
   response.cookies.set({
     name: ADMIN_SESSION_COOKIE,
     value: "",
-    path: "/admin",
+    path: "/",
     maxAge: 0,
   });
   return response;
