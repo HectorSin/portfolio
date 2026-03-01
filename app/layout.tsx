@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/theme-context";
 import ChatWidget from "@/components/chat/chat-widget";
+import PageViewTracker from "@/components/analytics/page-view-tracker";
 
 export const metadata: Metadata = {
   title: "Portfolio - Jaehyun Sin",
@@ -23,6 +24,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <ThemeProvider>
+          <PageViewTracker />
           {children}
           <ChatWidget />
         </ThemeProvider>

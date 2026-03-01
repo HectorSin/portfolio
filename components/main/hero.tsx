@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { useTheme } from "@/contexts/theme-context";
+import { getPublicTotalVisits } from "@/lib/analytics/public";
 
 // SVG Icons
 const MenuIcon = ({ className = "" }: { className?: string }) => (
@@ -159,9 +160,23 @@ export default function Hero() {
   const { isDark, toggleTheme, isKorean, toggleLanguage } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSignature, setShowSignature] = useState(true);
+  const [totalVisits, setTotalVisits] = useState<number | null>(null);
   const lastScrollYRef = useRef(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    void (async () => {
+      const total = await getPublicTotalVisits(controller.signal);
+      if (typeof total === "number") {
+        setTotalVisits(total);
+      }
+    })();
+
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -217,6 +232,7 @@ export default function Hero() {
   const tagline = isKorean
     ? "AI 서비스 엔지니어 | AI 모델을 비즈니스 임팩트로 전환"
     : "AI Service Engineer | Transforming AI Models into Business Impact";
+  const totalVisitorsLabel = isKorean ? "누적 방문자" : "Total Visitors";
 
   return (
     <div
@@ -398,6 +414,12 @@ export default function Hero() {
               style={{ fontFamily: "'Antic', sans-serif" }}
             />
           </div>
+        </div>
+
+        <div className="absolute bottom-14 md:bottom-16 left-1/2 -translate-x-1/2 px-4">
+          <p className="text-xs md:text-sm text-neutral-500 tracking-wide text-center">
+            {totalVisitorsLabel}: {totalVisits?.toLocaleString() ?? "-"}
+          </p>
         </div>
 
         {/* Scroll Indicator */}

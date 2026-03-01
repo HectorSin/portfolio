@@ -119,3 +119,46 @@ Private
 - âœ… ì½”ë“œ êµ¬ì¡°ì™€ ê¸°ëŠ¥ì€ ì°¸ê³ í•˜ë˜, ìì‹ ë§Œì˜ ìŠ¤íƒ€ì¼ë¡œ ì»¤ìŠ¤í„°ë§ˆì´ì§•í•˜ì„¸ìš”
 
 ì´ í…œí”Œë¦¿ì´ ì—¬ëŸ¬ë¶„ì˜ ë©‹ì§„ í¬íŠ¸í´ë¦¬ì˜¤ë¥¼ ë§Œë“œëŠ” ë° ë„ì›€ì´ ë˜ê¸¸ ë°”ëë‹ˆë‹¤! ğŸ’ª
+
+## Analytics ¼³Á¤ (Vercel Postgres)
+
+Vercel ÇÁ·ÎÁ§Æ® È¯°æº¯¼ö¿¡ ¾Æ·¡ °ªÀ» ¼³Á¤ÇÏ¼¼¿ä.
+
+- `POSTGRES_URL`: Vercel Postgres/Neon ¿¬°á ¹®ÀÚ¿­
+- `ADMIN_STATS_TOKEN`: °ü¸®ÀÚ Åë°è API º¸È£¿ë ºñ¹Ğ ÅäÅ«
+
+°ø°³ API:
+
+- `GET /api/analytics/public` : UI Ç¥½Ã¿ë ´©Àû ¹æ¹®ÀÚ¼ö Á¶È¸
+
+°ü¸®ÀÚ API:
+
+- `GET /api/analytics/stats`
+- ¿äÃ» Çì´õ: `Authorization: Bearer <ADMIN_STATS_TOKEN>`
+
+Æ®·¡Å· API:
+
+- `POST /api/analytics/track` : ÆäÀÌÁö ¹æ¹® ½Ã ÀÚµ¿ È£Ãâ
+
+## ¹èÆ÷ ÈÄ È®ÀÎ
+
+¹èÆ÷ ¿Ï·á ÈÄ ¾Æ·¡ Ç×¸ñÀ» È®ÀÎÇÏ¼¼¿ä.
+
+1. °ø°³ Ä«¿îÅÍ È®ÀÎ
+- `GET https://<your-domain>/api/analytics/public`
+- ±â´ë °á°ú: `200` + `{ "totalVisits": number, "updatedAt": string }`
+
+2. °ü¸®ÀÚ ÀÎÁõ ½ÇÆĞ È®ÀÎ
+- ÅäÅ« ¾øÀÌ `GET https://<your-domain>/api/analytics/stats`
+- ±â´ë °á°ú: `401 Unauthorized`
+
+3. °ü¸®ÀÚ Åë°è Á¤»ó È®ÀÎ
+- Çì´õ Æ÷ÇÔ `GET https://<your-domain>/api/analytics/stats`
+- `Authorization: Bearer <ADMIN_STATS_TOKEN>`
+- ±â´ë °á°ú: `200` + `totalVisits`, `todayVisits`, `monthVisits`, `daily`, `monthly`
+
+4. UI È®ÀÎ
+- È¨ÆäÀÌÁö Hero ¼½¼Ç¿¡ `Total Visitors` / `´©Àû ¹æ¹®ÀÚ` Ç¥½Ã È®ÀÎ
+
+5. Áßº¹ ¹æÁö È®ÀÎ (30ºĞ)
+- °°Àº ºê¶ó¿ìÀú ¼¼¼Ç¿¡¼­ ¿©·¯ ¹ø »õ·Î°íÄ§ÇØµµ Ä«¿îÆ®°¡ ±Ş°İÈ÷ Áõ°¡ÇÏÁö ¾Ê´ÂÁö È®ÀÎ
