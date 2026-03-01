@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { useTheme } from "@/contexts/theme-context";
 import { techDocs } from "@/data/tech-docs";
-import { getTechProjectMap } from "@/data/projects";
+import { getTechProjectAnchorMap } from "@/lib/project-anchors";
 
 const techStack = {
   "LLM & AI Services": [
@@ -51,7 +51,7 @@ const techStack = {
 
 export default function TechStack() {
   const { isDark, isKorean } = useTheme();
-  const techProjectMap = useMemo(() => getTechProjectMap(), []);
+  const techProjectMap = useMemo(() => getTechProjectAnchorMap(), []);
 
   return (
     <section
@@ -80,18 +80,18 @@ export default function TechStack() {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {technologies.map((tech, index) => {
-                  const projectIndex = techProjectMap[tech];
+                  const projectAnchorId = techProjectMap[tech];
                   const docUrl = techDocs[tech];
-                  const isClickable = projectIndex !== undefined || docUrl;
+                  const isClickable = projectAnchorId !== undefined || docUrl;
                   const className = `px-4 py-2 border rounded-lg text-sm transition-colors ${isClickable ? "cursor-pointer" : ""} ${
                     isDark
                       ? "bg-neutral-900 border-neutral-800 hover:border-neutral-700"
                       : "bg-neutral-100 border-neutral-300 hover:border-neutral-400"
                   }`;
-                  return projectIndex !== undefined ? (
+                  return projectAnchorId !== undefined ? (
                     <a
                       key={index}
-                      href={`#project-${projectIndex}`}
+                      href={`#${projectAnchorId}`}
                       className={className}
                     >
                       {tech}
