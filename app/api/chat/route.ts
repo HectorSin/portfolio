@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildKnowledgeContext, getRelevantKnowledge } from "@/lib/chat/knowledge";
+import { getRelevantKnowledge } from "@/lib/chat/knowledge";
 import { buildUserPrompt, CHAT_SYSTEM_PROMPT } from "@/lib/chat/prompt";
 import { checkRateLimit } from "@/lib/chat/rate-limit";
 
@@ -24,6 +24,13 @@ interface GeminiResponse {
     };
   }>;
 }
+
+type CitationSource = {
+  id: string;
+  title: string;
+  sectionId: string;
+  citationNumber: number;
+};
 
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 1200;
@@ -91,7 +98,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "A user message is required." }, { status: 400 });
   }
 
-  const knowledgeContext = buildKnowledgeContext(latestUserMessage.content);
+  const relevantKnowledge = getRelevantKnowledge(latestUserMessage.content);
+  const knowledgeContext = relevantKnowledge
+    .map((snippet, index) => `${index + 1}. [${snippet.title}] ${snippet.content}`)
+    .join("\n");
   const userPrompt = buildUserPrompt(latestUserMessage.content, knowledgeContext);
 
   const model = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
@@ -141,12 +151,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "LLM returned an empty response." }, { status: 502 });
     }
 
-    const sources = getRelevantKnowledge(latestUserMessage.content).map((item) => ({
+    const sources: CitationSource[] = relevantKnowledge.map((item, index) => ({
       id: item.id,
       title: item.title,
       sectionId: item.sectionId,
+      citationNumber: index + 1,
     }));
-    return NextResponse.json({ answer, sources });
+    const citationMap = Object.fromEntries(
+      sources.map((source) => [
+        source.citationNumber,
+        { id: source.id, title: source.title, sectionId: source.sectionId },
+      ])
+    );
+
+    return NextResponse.json({ answer, sources, citationMap });
   } catch (error) {
     const message =
       error instanceof Error && error.name === "AbortError"

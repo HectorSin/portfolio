@@ -5,6 +5,8 @@ import React, { ReactNode } from "react";
 type Props = {
   content: string;
   isDark: boolean;
+  citationMap?: Record<number, { id: string; title: string; sectionId: string }>;
+  onCitationClick?: (citationNumber: number) => void;
 };
 
 type InlineToken =
@@ -12,11 +14,14 @@ type InlineToken =
   | { type: "code"; value: string }
   | { type: "bold"; value: string }
   | { type: "italic"; value: string }
-  | { type: "link"; label: string; href: string };
+  | { type: "link"; label: string; href: string }
+  | { type: "citation"; number: number };
 
 function parseInline(text: string): InlineToken[] {
   const tokens: InlineToken[] = [];
   let remaining = text;
+  const citationGroupPattern = /\[\s*(\d+(?:\s*(?:,|;|\/|&|\band\b|\b및\b)\s*\d+)+)\s*\]/i;
+  const citationSplitPattern = /\s*(?:,|;|\/|&|\band\b|\b및\b)\s*/i;
 
   const patterns: Array<{
     type: InlineToken["type"];
@@ -24,6 +29,8 @@ function parseInline(text: string): InlineToken[] {
   }> = [
     { type: "code", regex: /`([^`]+)`/ },
     { type: "link", regex: /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/ },
+    { type: "text", regex: citationGroupPattern },
+    { type: "citation", regex: /\[\s*(\d+)\s*\]/ },
     { type: "bold", regex: /\*\*([^*]+)\*\*/ },
     { type: "italic", regex: /\*([^*]+)\*/ },
   ];
@@ -62,6 +69,30 @@ function parseInline(text: string): InlineToken[] {
         label: best.match[1],
         href: best.match[2],
       });
+    } else if (best.type === "text") {
+      const citationNumbers = best.match[1]
+        .split(citationSplitPattern)
+        .map((value) => Number(value.trim()))
+        .filter((value) => Number.isInteger(value) && value > 0);
+
+      if (citationNumbers.length > 1) {
+        citationNumbers.forEach((citationNumber, citationIndex) => {
+          tokens.push({
+            type: "citation",
+            number: citationNumber,
+          });
+          if (citationIndex < citationNumbers.length - 1) {
+            tokens.push({ type: "text", value: "," });
+          }
+        });
+      } else {
+        tokens.push({ type: "text", value: best.match[0] });
+      }
+    } else if (best.type === "citation") {
+      tokens.push({
+        type: "citation",
+        number: Number(best.match[1]),
+      });
     } else {
       tokens.push({
         type: best.type as "code" | "bold" | "italic",
@@ -75,7 +106,13 @@ function parseInline(text: string): InlineToken[] {
   return tokens;
 }
 
-function renderInline(text: string, keyPrefix: string, isDark: boolean): ReactNode[] {
+function renderInline(
+  text: string,
+  keyPrefix: string,
+  isDark: boolean,
+  citationMap?: Record<number, { id: string; title: string; sectionId: string }>,
+  onCitationClick?: (citationNumber: number) => void
+): ReactNode[] {
   const tokens = parseInline(text);
   return tokens.map((token, index) => {
     const key = `${keyPrefix}-${index}`;
@@ -101,6 +138,28 @@ function renderInline(text: string, keyPrefix: string, isDark: boolean): ReactNo
     if (token.type === "italic") {
       return <em key={key}>{token.value}</em>;
     }
+    if (token.type === "citation") {
+      const citation = citationMap?.[token.number];
+      if (!citation || !onCitationClick) {
+        return <React.Fragment key={key}>[{token.number}]</React.Fragment>;
+      }
+      return (
+        <sup key={key} className="ml-[0.1em] align-super leading-none">
+          <button
+            type="button"
+            onClick={() => onCitationClick(token.number)}
+            className="inline-flex px-[0.08em] font-semibold underline underline-offset-2"
+            style={{
+              fontSize: "0.72em",
+              color: isDark ? "hsl(76 76% 62%)" : "hsl(76 88% 24%)",
+            }}
+            aria-label={`Go to source [${token.number}]: ${citation.title}`}
+          >
+            [{token.number}]
+          </button>
+        </sup>
+      );
+    }
     return (
       <a
         key={key}
@@ -115,7 +174,12 @@ function renderInline(text: string, keyPrefix: string, isDark: boolean): ReactNo
   });
 }
 
-function renderMarkdown(content: string, isDark: boolean): ReactNode[] {
+function renderMarkdown(
+  content: string,
+  isDark: boolean,
+  citationMap?: Record<number, { id: string; title: string; sectionId: string }>,
+  onCitationClick?: (citationNumber: number) => void
+): ReactNode[] {
   const blocks = content.split(/```/g);
   const result: ReactNode[] = [];
 
@@ -156,7 +220,7 @@ function renderMarkdown(content: string, isDark: boolean): ReactNode[] {
           level <= 2 ? "text-base font-bold" : level <= 4 ? "text-sm font-bold" : "text-sm font-semibold";
         result.push(
           <p key={`${keyPrefix}-h-${i}`} className={className}>
-            {renderInline(text, `${keyPrefix}-h-inline-${i}`, isDark)}
+            {renderInline(text, `${keyPrefix}-h-inline-${i}`, isDark, citationMap, onCitationClick)}
           </p>
         );
         i += 1;
@@ -170,7 +234,13 @@ function renderMarkdown(content: string, isDark: boolean): ReactNode[] {
             className="border-l-2 pl-3 text-xs opacity-90"
             style={{ borderColor: "#C3E41D" }}
           >
-            {renderInline(line.replace(/^>\s+/, ""), `${keyPrefix}-q-inline-${i}`, isDark)}
+            {renderInline(
+              line.replace(/^>\s+/, ""),
+              `${keyPrefix}-q-inline-${i}`,
+              isDark,
+              citationMap,
+              onCitationClick
+            )}
           </blockquote>
         );
         i += 1;
@@ -188,7 +258,13 @@ function renderMarkdown(content: string, isDark: boolean): ReactNode[] {
           <ul key={`${keyPrefix}-ul-${i}`} className="list-disc pl-5 space-y-1">
             {items.map((item, itemIndex) => (
               <li key={`${keyPrefix}-ul-item-${i}-${itemIndex}`}>
-                {renderInline(item, `${keyPrefix}-ul-inline-${i}-${itemIndex}`, isDark)}
+                {renderInline(
+                  item,
+                  `${keyPrefix}-ul-inline-${i}-${itemIndex}`,
+                  isDark,
+                  citationMap,
+                  onCitationClick
+                )}
               </li>
             ))}
           </ul>
@@ -208,7 +284,13 @@ function renderMarkdown(content: string, isDark: boolean): ReactNode[] {
           <ol key={`${keyPrefix}-ol-${i}`} className="list-decimal pl-5 space-y-1">
             {items.map((item, itemIndex) => (
               <li key={`${keyPrefix}-ol-item-${i}-${itemIndex}`}>
-                {renderInline(item, `${keyPrefix}-ol-inline-${i}-${itemIndex}`, isDark)}
+                {renderInline(
+                  item,
+                  `${keyPrefix}-ol-inline-${i}-${itemIndex}`,
+                  isDark,
+                  citationMap,
+                  onCitationClick
+                )}
               </li>
             ))}
           </ol>
@@ -233,7 +315,13 @@ function renderMarkdown(content: string, isDark: boolean): ReactNode[] {
 
       result.push(
         <p key={`${keyPrefix}-p-${i}`} className="whitespace-pre-wrap">
-          {renderInline(paragraphLines.join("\n"), `${keyPrefix}-p-inline-${i}`, isDark)}
+          {renderInline(
+            paragraphLines.join("\n"),
+            `${keyPrefix}-p-inline-${i}`,
+            isDark,
+            citationMap,
+            onCitationClick
+          )}
         </p>
       );
       i = j;
@@ -243,6 +331,6 @@ function renderMarkdown(content: string, isDark: boolean): ReactNode[] {
   return result;
 }
 
-export default function MarkdownMessage({ content, isDark }: Props) {
-  return <div className="space-y-2">{renderMarkdown(content, isDark)}</div>;
+export default function MarkdownMessage({ content, isDark, citationMap, onCitationClick }: Props) {
+  return <div className="space-y-2">{renderMarkdown(content, isDark, citationMap, onCitationClick)}</div>;
 }

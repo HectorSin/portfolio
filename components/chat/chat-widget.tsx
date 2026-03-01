@@ -7,13 +7,23 @@ import MarkdownMessage from "@/components/chat/markdown-message";
 type UiMessage = {
   role: "user" | "assistant";
   content: string;
+  citationMap?: CitationMap;
 };
 
 type SourceRef = {
   id: string;
   title: string;
   sectionId: string;
+  citationNumber: number;
 };
+
+type CitationRef = {
+  id: string;
+  title: string;
+  sectionId: string;
+};
+
+type CitationMap = Record<number, CitationRef>;
 
 const WELCOME_MESSAGE = {
   ko: "안녕하세요. 포트폴리오 기반으로 Jaehyun Sin에 대해 답변해드릴게요. 프로젝트, 기술 스택, 경력, 협업 방식 등을 물어보세요.",
@@ -80,13 +90,21 @@ export default function ChatWidget() {
         answer?: string;
         error?: string;
         sources?: SourceRef[];
+        citationMap?: CitationMap;
       };
 
       if (!response.ok || !payload.answer) {
         throw new Error(payload.error ?? "Request failed");
       }
 
-      setMessages((prev) => [...prev, { role: "assistant", content: payload.answer as string }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: payload.answer as string,
+          citationMap: payload.citationMap ?? {},
+        },
+      ]);
       setSources(payload.sources ?? []);
     } catch (error) {
       const detail =
@@ -109,6 +127,14 @@ export default function ChatWidget() {
     }
 
     window.location.hash = sectionId;
+  }
+
+  function handleCitationClick(citationNumber: number, citationMap?: CitationMap) {
+    const citation = citationMap?.[citationNumber];
+    if (!citation) {
+      return;
+    }
+    handleSourceClick(citation.sectionId);
   }
 
   return (
@@ -168,7 +194,12 @@ export default function ChatWidget() {
                 }}
               >
                 {message.role === "assistant" ? (
-                  <MarkdownMessage content={message.content} isDark={isDark} />
+                  <MarkdownMessage
+                    content={message.content}
+                    isDark={isDark}
+                    citationMap={message.citationMap}
+                    onCitationClick={(citationNumber) => handleCitationClick(citationNumber, message.citationMap)}
+                  />
                 ) : (
                   message.content
                 )}
@@ -195,7 +226,7 @@ export default function ChatWidget() {
                         backgroundColor: isDark ? "hsl(0 0% 16%)" : "hsl(0 0% 90%)",
                       }}
                     >
-                      {source.title}
+                      [{source.citationNumber}] {source.title}
                     </button>
                   ))}
                 </div>
