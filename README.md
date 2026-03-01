@@ -4,7 +4,7 @@
 
 ## 🌐 배포
 
-**Live Demo**: [https://portfolio-tawny-three-15.vercel.app/](https://portfolio-tawny-three-15.vercel.app/)
+**Live Demo**: [https://www.jaehyunsin.com](https://www.jaehyunsin.com)
 
 ## 🚀 기술 스택
 
