@@ -12,7 +12,7 @@ type ChatLogInput = {
 
 let schemaReady: Promise<void> | null = null;
 
-async function ensureChatLogSchema(): Promise<void> {
+export async function ensureChatLogSchema(): Promise<void> {
   if (!schemaReady) {
     schemaReady = (async () => {
       await sql`
@@ -65,4 +65,3 @@ export async function saveChatLog(input: ChatLogInput): Promise<void> {
     VALUES (${question}, ${answer}, ${error}, ${model}, ${ip}, ${userAgent}, ${referer});
   `;
 }
-
