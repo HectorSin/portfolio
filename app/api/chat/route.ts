@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getRelevantKnowledge } from "@/lib/chat/knowledge";
 import { buildUserPrompt, CHAT_SYSTEM_PROMPT } from "@/lib/chat/prompt";
 import { checkRateLimit } from "@/lib/chat/rate-limit";
+import { saveChatLog } from "@/lib/chat/log";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -56,6 +57,8 @@ function sanitizeMessages(messages: ChatMessage[]): ChatMessage[] {
 
 export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
+  const userAgent = request.headers.get("user-agent") ?? "unknown";
+  const referer = request.headers.get("referer") ?? "unknown";
   const rateLimit = checkRateLimit(ip);
   if (!rateLimit.allowed) {
     return NextResponse.json(
@@ -135,6 +138,18 @@ export async function POST(request: NextRequest) {
 
     if (!upstream.ok) {
       const fallbackText = await upstream.text();
+      try {
+        await saveChatLog({
+          question: latestUserMessage.content,
+          error: fallbackText.slice(0, 400),
+          model,
+          ip,
+          userAgent,
+          referer,
+        });
+      } catch {
+        // Ignore logging errors to keep chat availability.
+      }
       return NextResponse.json(
         { error: "LLM request failed.", detail: fallbackText.slice(0, 400) },
         { status: 502 }
@@ -164,12 +179,38 @@ export async function POST(request: NextRequest) {
       ])
     );
 
+    try {
+      await saveChatLog({
+        question: latestUserMessage.content,
+        answer,
+        model,
+        ip,
+        userAgent,
+        referer,
+      });
+    } catch {
+      // Ignore logging errors to keep chat availability.
+    }
+
     return NextResponse.json({ answer, sources, citationMap });
   } catch (error) {
     const message =
       error instanceof Error && error.name === "AbortError"
         ? "LLM request timed out."
         : "Unexpected server error.";
+
+    try {
+      await saveChatLog({
+        question: latestUserMessage.content,
+        error: message,
+        model,
+        ip,
+        userAgent,
+        referer,
+      });
+    } catch {
+      // Ignore logging errors to keep chat availability.
+    }
 
     return NextResponse.json({ error: message }, { status: 500 });
   } finally {
