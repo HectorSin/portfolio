@@ -11,10 +11,21 @@ type MonthlyStat = {
   visits: number;
 };
 
+type IpVisitStat = {
+  ip: string;
+  visitCount: number;
+  firstSeenAt: string;
+  lastSeenAt: string;
+};
+
 export type AdminAnalyticsStats = {
   totalVisits: number;
   todayVisits: number;
   monthVisits: number;
+  totalUsers: number;
+  returningUsers: number;
+  revisitRate: number;
+  recentIpVisits: IpVisitStat[];
   daily: DailyStat[];
   monthly: MonthlyStat[];
 };
@@ -67,6 +78,21 @@ async function ensureSchema(): Promise<void> {
       `;
 
       await sql`
+        CREATE TABLE IF NOT EXISTS analytics_ip_visits (
+          ip VARCHAR(100) PRIMARY KEY,
+          visit_count BIGINT NOT NULL DEFAULT 0,
+          first_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+      `;
+
+      await sql`
+        CREATE INDEX IF NOT EXISTS idx_analytics_ip_last_seen
+        ON analytics_ip_visits (last_seen_at DESC);
+      `;
+
+      await sql`
         INSERT INTO analytics_totals (id, total_visits)
         VALUES (1, 0)
         ON CONFLICT (id) DO NOTHING;
@@ -83,7 +109,8 @@ async function ensureSchema(): Promise<void> {
 export async function trackPageView(
   path: string,
   sessionId: string,
-  dedupeWindowMinutes: number
+  dedupeWindowMinutes: number,
+  ip: string
 ): Promise<boolean> {
   await ensureSchema();
 
@@ -91,6 +118,7 @@ export async function trackPageView(
   const { date, month } = getKstDateParts(now);
   const bucket = getWindowBucket(dedupeWindowMinutes, now.getTime());
   const dedupeKey = `${sessionId}:${path}:${dedupeWindowMinutes}:${bucket}`;
+  const hasTrackableIp = Boolean(ip && ip !== "unknown");
 
   const result = await sql<{ counted: number }>`
     WITH inserted AS (
@@ -122,6 +150,17 @@ export async function trackPageView(
       SET visits = analytics_monthly.visits + 1,
           updated_at = NOW()
       RETURNING 1
+    ),
+    bump_ip AS (
+      INSERT INTO analytics_ip_visits (ip, visit_count, first_seen_at, last_seen_at, updated_at)
+      SELECT ${ip}, 1, NOW(), NOW(), NOW()
+      FROM inserted
+      WHERE ${hasTrackableIp}
+      ON CONFLICT (ip) DO UPDATE
+      SET visit_count = analytics_ip_visits.visit_count + 1,
+          last_seen_at = NOW(),
+          updated_at = NOW()
+      RETURNING 1
     )
     SELECT COALESCE((SELECT ok FROM inserted LIMIT 1), 0)::int AS counted;
   `;
@@ -145,7 +184,15 @@ export async function getAdminStats(): Promise<AdminAnalyticsStats> {
 
   const { date, month } = getKstDateParts();
 
-  const [totalResult, dayResult, monthResult, dailyResult, monthlyResult] = await Promise.all([
+  const [
+    totalResult,
+    dayResult,
+    monthResult,
+    userStatsResult,
+    dailyResult,
+    monthlyResult,
+    recentIpResult,
+  ] = await Promise.all([
     sql<{ total_visits: number | string }>`
       SELECT total_visits
       FROM analytics_totals
@@ -164,6 +211,12 @@ export async function getAdminStats(): Promise<AdminAnalyticsStats> {
       WHERE visit_month = ${month}
       LIMIT 1;
     `,
+    sql<{ total_users: number | string; returning_users: number | string }>`
+      SELECT
+        COUNT(*)::bigint AS total_users,
+        COUNT(*) FILTER (WHERE visit_count > 1)::bigint AS returning_users
+      FROM analytics_ip_visits;
+    `,
     sql<{ date: string; visits: number | string }>`
       SELECT TO_CHAR(visit_date, 'YYYY-MM-DD') AS date, visits
       FROM analytics_daily
@@ -176,12 +229,36 @@ export async function getAdminStats(): Promise<AdminAnalyticsStats> {
       ORDER BY visit_month DESC
       LIMIT 12;
     `,
+    sql<{ ip: string; visit_count: number | string; first_seen_at: string; last_seen_at: string }>`
+      SELECT
+        ip,
+        visit_count,
+        TO_CHAR(first_seen_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI:SS') AS first_seen_at,
+        TO_CHAR(last_seen_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD HH24:MI:SS') AS last_seen_at
+      FROM analytics_ip_visits
+      ORDER BY last_seen_at DESC
+      LIMIT 100;
+    `,
   ]);
+
+  const totalUsers = toNumber(userStatsResult.rows[0]?.total_users ?? 0);
+  const returningUsers = toNumber(userStatsResult.rows[0]?.returning_users ?? 0);
+  const revisitRate =
+    totalUsers > 0 ? Number(((returningUsers / totalUsers) * 100).toFixed(2)) : 0;
 
   return {
     totalVisits: toNumber(totalResult.rows[0]?.total_visits ?? 0),
     todayVisits: toNumber(dayResult.rows[0]?.visits ?? 0),
     monthVisits: toNumber(monthResult.rows[0]?.visits ?? 0),
+    totalUsers,
+    returningUsers,
+    revisitRate,
+    recentIpVisits: recentIpResult.rows.map((row) => ({
+      ip: row.ip,
+      visitCount: toNumber(row.visit_count),
+      firstSeenAt: row.first_seen_at,
+      lastSeenAt: row.last_seen_at,
+    })),
     daily: dailyResult.rows
       .map((row) => ({ date: row.date, visits: toNumber(row.visits) }))
       .reverse(),
@@ -190,4 +267,3 @@ export async function getAdminStats(): Promise<AdminAnalyticsStats> {
       .reverse(),
   };
 }
-

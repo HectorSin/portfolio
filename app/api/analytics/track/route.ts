@@ -13,6 +13,20 @@ type TrackBody = {
 
 const SESSION_ID_PATTERN = /^[a-zA-Z0-9._-]{8,128}$/;
 
+function getClientIp(request: NextRequest): string {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0].trim().slice(0, 100);
+  }
+
+  const realIp = request.headers.get("x-real-ip");
+  if (realIp) {
+    return realIp.trim().slice(0, 100);
+  }
+
+  return "unknown";
+}
+
 function sanitizePath(path: string | undefined): string {
   if (!path || typeof path !== "string") {
     return "/";
@@ -24,6 +38,7 @@ function sanitizePath(path: string | undefined): string {
 }
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
   let body: TrackBody;
   try {
     body = (await request.json()) as TrackBody;
@@ -49,7 +64,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const counted = await trackPageView(path, sessionId, dedupeWindowMinutes);
+    const counted = await trackPageView(path, sessionId, dedupeWindowMinutes, ip);
     return NextResponse.json(
       { counted, reason: counted ? "ok" : "duplicate" },
       { status: 200 }
@@ -58,4 +73,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ counted: false, reason: "error" }, { status: 500 });
   }
 }
-
