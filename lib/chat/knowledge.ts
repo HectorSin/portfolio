@@ -1,6 +1,7 @@
 import { projects } from "@/data/projects";
 import { contactLinks, projectLinks } from "@/data/links";
 import { techDocs } from "@/data/tech-docs";
+import { profileData } from "@/data/profile";
 
 export interface KnowledgeSnippet {
   id: string;
@@ -27,15 +28,19 @@ function toEnglishArray(value: string[] | { en: string[]; ko: string[] } | undef
 const profileSnippet: KnowledgeSnippet = {
   id: "profile",
   title: "Candidate Profile",
-  source: "about section",
+  source: "data/profile.ts",
   tags: ["profile", "education", "language", "target-role", "bio"],
   content: [
-    "Name: Jaehyun Sin",
-    "Role: AI Service Engineer specializing in LLM-based systems and production-ready AI applications.",
-    "Education: Ajou University, B.S. in e-Business (major), B.S. in AI Convergence (double major), graduation target February 2026.",
-    "Languages: Korean (native), English (fluent), Spanish (beginner).",
-    "Currently seeking: AI/ML Engineer, LLM Service Engineer, or Data Engineer opportunities.",
-    "Focus: multi-LLM orchestration, RAG systems, and measurable business impact."
+    `Name: ${profileData.name}`,
+    `Role: ${profileData.role.en}`,
+    `Education: ${profileData.education
+      .map((entry) => `${entry.school.en}, ${entry.degree.en}, ${entry.graduation.en}`)
+      .join(" / ")}`,
+    `Languages: ${profileData.languages
+      .map((entry) => `${entry.name.en} (${entry.level.en})`)
+      .join(", ")}`,
+    `Currently seeking: ${profileData.currentlySeeking.en}.`,
+    `Focus: ${profileData.focus.en}.`,
   ].join(" "),
 };
 

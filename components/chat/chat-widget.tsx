@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useTheme } from "@/contexts/theme-context";
+import MarkdownMessage from "@/components/chat/markdown-message";
 
 type UiMessage = {
   role: "user" | "assistant";
@@ -146,7 +147,11 @@ export default function ChatWidget() {
                       : "hsl(0 0% 12%)",
                 }}
               >
-                {message.content}
+                {message.role === "assistant" ? (
+                  <MarkdownMessage content={message.content} isDark={isDark} />
+                ) : (
+                  message.content
+                )}
               </div>
             ))}
             {isLoading && (
