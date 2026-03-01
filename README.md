@@ -119,46 +119,45 @@ Private
 - ✅ 코드 구조와 기능은 참고하되, 자신만의 스타일로 커스터마이징하세요
 
 이 템플릿이 여러분의 멋진 포트폴리오를 만드는 데 도움이 되길 바랍니다! 💪
+## Analytics 설정 (Vercel Postgres)
 
-## Analytics ���� (Vercel Postgres)
+Vercel 프로젝트 환경변수에 아래 값을 설정하세요.
 
-Vercel ������Ʈ ȯ�溯���� �Ʒ� ���� �����ϼ���.
+- `POSTGRES_URL`: Vercel Postgres/Neon 연결 문자열
+- `ADMIN_STATS_TOKEN`: 관리자 통계 API 보호용 비밀 토큰
 
-- `POSTGRES_URL`: Vercel Postgres/Neon ���� ���ڿ�
-- `ADMIN_STATS_TOKEN`: ������ ��� API ��ȣ�� ��� ��ū
+공개 API:
 
-���� API:
+- `GET /api/analytics/public` : UI 표시용 누적 방문자수 조회
 
-- `GET /api/analytics/public` : UI ǥ�ÿ� ���� �湮�ڼ� ��ȸ
-
-������ API:
+관리자 API:
 
 - `GET /api/analytics/stats`
-- ��û ���: `Authorization: Bearer <ADMIN_STATS_TOKEN>`
+- 요청 헤더: `Authorization: Bearer <ADMIN_STATS_TOKEN>`
 
-Ʈ��ŷ API:
+트래킹 API:
 
-- `POST /api/analytics/track` : ������ �湮 �� �ڵ� ȣ��
+- `POST /api/analytics/track` : 페이지 방문 시 자동 호출
 
-## ���� �� Ȯ��
+## 배포 후 확인
 
-���� �Ϸ� �� �Ʒ� �׸��� Ȯ���ϼ���.
+배포 완료 후 아래 항목을 확인하세요.
 
-1. ���� ī���� Ȯ��
+1. 공개 카운터 확인
 - `GET https://<your-domain>/api/analytics/public`
-- ��� ���: `200` + `{ "totalVisits": number, "updatedAt": string }`
+- 기대 결과: `200` + `{ "totalVisits": number, "updatedAt": string }`
 
-2. ������ ���� ���� Ȯ��
-- ��ū ���� `GET https://<your-domain>/api/analytics/stats`
-- ��� ���: `401 Unauthorized`
+2. 관리자 인증 실패 확인
+- 토큰 없이 `GET https://<your-domain>/api/analytics/stats`
+- 기대 결과: `401 Unauthorized`
 
-3. ������ ��� ���� Ȯ��
-- ��� ���� `GET https://<your-domain>/api/analytics/stats`
+3. 관리자 통계 정상 확인
+- 헤더 포함 `GET https://<your-domain>/api/analytics/stats`
 - `Authorization: Bearer <ADMIN_STATS_TOKEN>`
-- ��� ���: `200` + `totalVisits`, `todayVisits`, `monthVisits`, `daily`, `monthly`
+- 기대 결과: `200` + `totalVisits`, `todayVisits`, `monthVisits`, `daily`, `monthly`
 
-4. UI Ȯ��
-- Ȩ������ Hero ���ǿ� `Total Visitors` / `���� �湮��` ǥ�� Ȯ��
+4. UI 확인
+- 홈페이지 Hero 섹션에 `Total Visitors` / `누적 방문자` 표시 확인
 
-5. �ߺ� ���� Ȯ�� (30��)
-- ���� ������ ���ǿ��� ���� �� ���ΰ�ħ�ص� ī��Ʈ�� �ް��� �������� �ʴ��� Ȯ��
+5. 중복 방지 확인 (30분)
+- 같은 브라우저 세션에서 여러 번 새로고침해도 카운트가 급격히 증가하지 않는지 확인
