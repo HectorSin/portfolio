@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
-import { useTheme } from "@/contexts/theme-context";
-import { techDocs } from "@/data/tech-docs";
 import { projects } from "@/data/projects";
+import { techDocs } from "@/data/tech-docs";
+import { useTheme } from "@/contexts/theme-context";
 import { getAllProjectAnchorIds } from "@/lib/project-anchors";
+import { hasProjectDetail } from "@/lib/projects";
 
 export default function Projects() {
   const { isDark, isKorean } = useTheme();
@@ -67,9 +69,28 @@ export default function Projects() {
             >
               <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                    {typeof project.title === "string" ? project.title : isKorean ? project.title.ko : project.title.en}
-                  </h3>
+                  {hasProjectDetail(project) ? (
+                    <h3 className="text-2xl md:text-3xl font-bold mb-2">
+                      <Link href={`/projects/${project.slug}`} className="hover:underline focus-visible:underline">
+                        {typeof project.title === "string" ? project.title : isKorean ? project.title.ko : project.title.en}
+                      </Link>
+                    </h3>
+                  ) : (
+                    <h3 className="text-2xl md:text-3xl font-bold mb-2">
+                      {typeof project.title === "string" ? project.title : isKorean ? project.title.ko : project.title.en}
+                    </h3>
+                  )}
+
+                  <p className={`text-xs mb-2 ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
+                    {hasProjectDetail(project)
+                      ? isKorean
+                        ? "상세 페이지 제공"
+                        : "Detail page available"
+                      : isKorean
+                      ? "상세 페이지 준비 중"
+                      : "Detail page coming soon"}
+                  </p>
+
                   {project.links && (
                     <div className="flex gap-3 mt-1 mb-1">
                       {project.links.map((link, linkIndex) => (
@@ -81,16 +102,18 @@ export default function Projects() {
                           className="text-sm hover:underline"
                           style={{ color: "#C3E41D" }}
                         >
-                          {link.label} ↗
+                          {link.label} (ext)
                         </a>
                       ))}
                     </div>
                   )}
+
                   <p className={`text-sm ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
                     {typeof project.company === "string" ? project.company : isKorean ? project.company.ko : project.company.en} |{" "}
                     {typeof project.team === "string" ? project.team : isKorean ? project.team.ko : project.team.en}
                   </p>
                 </div>
+
                 <span className={`mt-2 md:mt-0 text-sm font-semibold whitespace-nowrap ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
                   {project.period}
                 </span>
@@ -109,7 +132,7 @@ export default function Projects() {
                     (achievement, achievementIndex) => (
                       <li key={achievementIndex} className="flex items-start">
                         <span className={isDark ? "text-green-400" : "text-green-600"} style={{ marginRight: "0.75rem" }}>
-                          •
+                          -
                         </span>
                         <span className={`text-sm ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>{achievement}</span>
                       </li>
@@ -130,7 +153,7 @@ export default function Projects() {
                     }`;
                     return docUrl ? (
                       <a key={techIndex} href={docUrl} target="_blank" rel="noopener noreferrer" className={className}>
-                        {tech} ↗
+                        {tech} (doc)
                       </a>
                     ) : (
                       <span key={techIndex} className={className}>
@@ -140,6 +163,14 @@ export default function Projects() {
                   })}
                 </div>
               </div>
+
+              {hasProjectDetail(project) && (
+                <div className="mt-6">
+                  <Link href={`/projects/${project.slug}`} className="text-sm hover:underline" style={{ color: "#C3E41D" }}>
+                    {isKorean ? "프로젝트 상세 보기" : "View project details"}
+                  </Link>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -163,3 +194,5 @@ export default function Projects() {
     </section>
   );
 }
+
+

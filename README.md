@@ -161,3 +161,14 @@ Vercel 프로젝트 환경변수에 아래 값을 설정하세요.
 
 5. 중복 방지 확인 (30분)
 - 같은 브라우저 세션에서 여러 번 새로고침해도 카운트가 급격히 증가하지 않는지 확인
+
+## Project Detail Authoring
+
+Project detail pages are generated from `data/projects.ts` using `/projects/[slug]`.
+Long-form detail content is managed per slug folder in `data/project-details/<slug>/index.ts`.
+
+- Add a new project entry with unique `id` and `slug`.
+- Add a detail module in `data/project-details/<slug>/index.ts` and register it in `data/project-details/index.ts` when ready.
+- Cards with no `detail` stay non-clickable by design.
+- Place UML images in `public/projects/<slug>/...` and reference them from `detail.umlImages`.
+- Duplicate `id` or `slug` values throw at startup through `validateProjectCatalog`.

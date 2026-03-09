@@ -1,0 +1,53 @@
+@startuml
+title LLM Education Content Pipeline - UML System Design
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam defaultTextAlignment center
+skinparam packageStyle rectangle
+
+actor Operator
+actor Reviewer
+
+package "Data Pipeline" {
+  artifact "Educational Dataset\n(Textbook / Legacy Questions)" as Dataset
+  component "Embedding Pipeline" as Embedding
+  database "Vector DB" as VectorDB
+
+  Dataset --> Embedding
+  Embedding --> VectorDB
+}
+
+package "Main Pipeline" {
+  component "n8n Workflow\nPrompt + Retry Control" as N8N
+  component "LangChain Orchestrator\nPrompt Templates\nTool Calling\nLLM Routing" as Orchestrator
+  component "RAG Retrieval\nTop-k Context Fetch" as Retrieval
+  component "LLM Generation\nGemini | ChatGPT | Claude" as Generation
+  component "MCP Evaluation Tool\nFormat Validation\nDifficulty Scoring\nCurriculum Check" as Evaluation
+  database "PostgreSQL\nGeneration Results + QA State" as DB
+  component "QA Dashboard\nReview + Issue Inspection" as Dashboard
+  artifact "Final Content\nPublish" as Output
+
+  N8N --> Orchestrator
+  Orchestrator -right-> Retrieval
+  Retrieval --> Generation
+  Generation -down-> Evaluation
+  Evaluation --> DB
+  DB -right-> Dashboard
+  Dashboard --> Output
+}
+
+package "Observability" {
+  component "LLM Logs\nPrompt Versioning\nGeneration Metrics" as Obs
+}
+
+Operator --> N8N : trigger generation
+VectorDB --> Retrieval
+Reviewer --> Dashboard : review results
+Dashboard ..> N8N : prompt update
+Orchestrator ..> Obs : traces
+Generation ..> Obs : logs
+Evaluation ..> Obs : metrics
+
+@enduml
