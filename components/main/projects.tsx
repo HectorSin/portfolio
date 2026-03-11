@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { Minus, Plus } from "lucide-react";
 import { projects, type LocalizedList, type LocalizedText, type Project } from "@/data/projects";
 import { techDocs } from "@/data/tech-docs";
 import { useTheme } from "@/contexts/theme-context";
@@ -29,15 +30,19 @@ function toLocalizedArray(value: string[] | LocalizedList | undefined, isKorean:
   return Array.isArray(value) ? value : isKorean ? value.ko : value.en;
 }
 
+function formatProjectPeriod(period: string): string {
+  return period.replace(" ~ ", " — ");
+}
+
 function getDetailStatusLabel(project: Project, isKorean: boolean): string {
   if (hasProjectDetail(project)) {
-    return isKorean ? "\uC0C1\uC138 \uD398\uC774\uC9C0 \uACF5\uAC1C" : "Detail page available";
+    return isKorean ? "상세 페이지 공개" : "Detail page available";
   }
-  return isKorean ? "\uC0C1\uC138 \uD398\uC774\uC9C0 \uC900\uBE44 \uC911" : "Detail page coming soon";
+  return isKorean ? "상세 페이지 준비 중" : "Detail page coming soon";
 }
 
 function getResultLabel(project: Project, isKorean: boolean): string {
-  return toLocalized(project.featuredResultLabel, isKorean) || (isKorean ? "\uB300\uD45C \uC131\uACFC" : "Result");
+  return toLocalized(project.featuredResultLabel, isKorean) || (isKorean ? "대표 성과" : "Result");
 }
 
 function getResultText(project: Project, isKorean: boolean): string {
@@ -56,6 +61,14 @@ function getContributionList(project: Project, isKorean: boolean): string[] {
   }
 
   return toLocalizedArray(project.achievements, isKorean).slice(1);
+}
+
+function getSecondaryToggleLabel(isOpen: boolean, isKorean: boolean): string {
+  if (isOpen) {
+    return isKorean ? "상세 닫기" : "Hide details";
+  }
+
+  return isKorean ? "상세 보기" : "View details";
 }
 
 function SecondaryProjects({
@@ -96,129 +109,179 @@ function SecondaryProjects({
   }, [entries]);
 
   return (
-    <section className="mt-12">
-      <p className={`text-sm uppercase tracking-[0.18em] mb-2 ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
-        {isKorean ? "\uAE30\uD0C0 \uD504\uB85C\uC81D\uD2B8" : "Additional Projects"}
-      </p>
-      <p className={`text-sm max-w-2xl leading-7 mb-5 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
+    <section className="mt-16">
+      <div className="flex items-center gap-4">
+        <div className="h-px flex-1" style={{ backgroundColor: isDark ? "rgba(159, 207, 142, 0.22)" : "rgba(79, 127, 77, 0.18)" }} />
+        <p className={`text-sm uppercase tracking-[0.18em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
+          {isKorean ? "기타 프로젝트" : "Additional Projects"}
+        </p>
+        <div className="h-px flex-1" style={{ backgroundColor: isDark ? "rgba(159, 207, 142, 0.22)" : "rgba(79, 127, 77, 0.18)" }} />
+      </div>
+
+      <p
+        className="mt-5 max-w-2xl text-base md:text-lg font-medium leading-[1.6] mb-6"
+        style={{ color: isDark ? "rgba(226, 232, 224, 0.9)" : "#465043" }}
+      >
         {isKorean
-          ? "\uAC04\uB2E8\uD788 \uD6D1\uC5B4\uBCFC \uC218 \uC788\uB3C4\uB85D \uC555\uCD95\uD574 \uB454 \uD504\uB85C\uC81D\uD2B8 \uBAA9\uB85D\uC785\uB2C8\uB2E4."
-          : "Compressed project list for quick scanning, expandable only when needed."}
+          ? "간단히 훑어볼 수 있도록 압축해 둔 프로젝트 목록입니다."
+          : "A compressed project list designed for quick scanning."}
       </p>
 
-      <div className="rounded-[1.75rem] border overflow-hidden" style={{ backgroundColor: palette.surface, borderColor: palette.border }}>
+      <div
+        className="overflow-hidden rounded-[1.75rem] border"
+        style={{
+          backgroundColor: palette.surface,
+          borderColor: isDark ? "rgba(159, 207, 142, 0.18)" : "rgba(79, 127, 77, 0.16)",
+        }}
+      >
         {entries.map(({ project, anchorId }, index) => {
           const isOpen = openSecondaryId === project.id;
           const accordionContentId = `${project.id}-content`;
+          const summary = toLocalized(project.description, isKorean);
+          const meta = `${toLocalized(project.company, isKorean)} | ${toLocalized(project.team, isKorean)}`;
+          const summaryLinks = project.links ?? [];
+          const rowBorderColor = isDark ? "rgba(159, 207, 142, 0.14)" : "rgba(79, 127, 77, 0.12)";
+          const openBorderColor = isDark ? "rgba(159, 207, 142, 0.34)" : "rgba(79, 127, 77, 0.28)";
+          const rowBackground = isOpen
+            ? isDark
+              ? "rgba(255,255,255,0.028)"
+              : "rgba(248, 251, 246, 0.96)"
+            : isDark
+              ? "rgba(255,255,255,0.015)"
+              : "rgba(255,255,255,0.72)";
 
           return (
             <article
               key={`${anchorId}-${index}`}
               id={anchorId}
               className={index > 0 ? "border-t" : ""}
-              style={index > 0 ? { borderColor: palette.border } : undefined}
+              style={{
+                borderColor: index > 0 ? rowBorderColor : undefined,
+                boxShadow: isOpen ? `inset 2px 0 0 ${palette.accent}` : "none",
+              }}
             >
               <button
                 type="button"
                 onClick={() => setOpenSecondaryId((prev) => (prev === project.id ? null : project.id))}
-                className="w-full text-left px-5 py-4 transition-colors"
-                style={{ backgroundColor: isOpen ? palette.surfaceAlt : palette.surface }}
+                className="group w-full px-5 py-5 text-left transition-all duration-200 hover:[&_.secondary-project-toggle]:opacity-100"
+                style={{ backgroundColor: rowBackground }}
                 aria-expanded={isOpen}
                 aria-controls={accordionContentId}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                      <h3 className="text-lg md:text-xl font-semibold">{toLocalized(project.title, isKorean)}</h3>
-                      <span className="text-xs font-medium" style={{ color: palette.textMuted }}>
-                        {getDetailStatusLabel(project, isKorean)}
+                <div className="flex items-start justify-between gap-5">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="pr-2 text-lg font-semibold leading-snug tracking-[-0.01em] md:text-[1.35rem]">
+                        {toLocalized(project.title, isKorean)}
+                      </h3>
+                      <span
+                        className="secondary-project-toggle inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] opacity-100 transition-all duration-200 md:opacity-70"
+                        style={{
+                          color: isOpen ? palette.accentStrong : palette.textMuted,
+                          borderColor: isOpen ? openBorderColor : rowBorderColor,
+                          backgroundColor: isOpen
+                            ? isDark
+                              ? "rgba(159, 207, 142, 0.08)"
+                              : "rgba(79, 127, 77, 0.08)"
+                            : isDark
+                              ? "rgba(255,255,255,0.03)"
+                              : "rgba(255,255,255,0.8)",
+                        }}
+                      >
+                        {getSecondaryToggleLabel(isOpen, isKorean)}
+                        {isOpen ? <Minus size={14} strokeWidth={2.2} /> : <Plus size={14} strokeWidth={2.2} />}
                       </span>
                     </div>
-                    <p className="text-sm mt-2 leading-7" style={{ color: palette.textMuted }}>
-                      {toLocalized(project.company, isKorean)} | {toLocalized(project.team, isKorean)}
+
+                    <p className={`mt-2 text-sm leading-7 ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
+                      {summary}
+                      {isOpen && summaryLinks.length > 0 && (
+                        <span className="ml-2 inline-flex flex-wrap items-center gap-x-2 gap-y-1 align-baseline">
+                          {summaryLinks.map((link) => (
+                            <a
+                              key={`${project.id}-${link.label}-inline`}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm font-medium hover:underline"
+                              style={accentStyle}
+                            >
+                              ({link.label})
+                            </a>
+                          ))}
+                        </span>
+                      )}
                     </p>
-                    <p className="text-sm leading-7" style={{ color: palette.textMuted }}>
-                      {project.period}
-                    </p>
+
+                    <div
+                      className="mt-3 flex flex-col gap-1 text-xs md:flex-row md:flex-wrap md:items-center md:gap-x-4 md:gap-y-1"
+                      style={{ color: palette.textMuted }}
+                    >
+                      <p className="leading-6">{meta}</p>
+                      <span className="hidden md:inline" aria-hidden="true">
+                        •
+                      </span>
+                      <p className="leading-6">{formatProjectPeriod(project.period)}</p>
+                    </div>
                   </div>
-                  <span className="text-lg leading-none" style={{ color: palette.accent }}>
-                    {isOpen ? "-" : "+"}
-                  </span>
                 </div>
               </button>
 
-              {isOpen && (
-                <div id={accordionContentId} className="px-5 pb-5" style={{ backgroundColor: palette.surfaceAlt }}>
-                  <p className={`text-sm leading-7 pt-1 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
-                    {toLocalized(project.description, isKorean)}
-                  </p>
+              <div
+                className="grid transition-[grid-template-rows,opacity] duration-200 ease-out"
+                style={{
+                  gridTemplateRows: isOpen ? "1fr" : "0fr",
+                  opacity: isOpen ? 1 : 0,
+                  backgroundColor: rowBackground,
+                }}
+              >
+                <div className="overflow-hidden">
+                  <div
+                    id={accordionContentId}
+                    className="px-5 pb-5"
+                    aria-hidden={!isOpen}
+                    style={{ pointerEvents: isOpen ? "auto" : "none" }}
+                  >
+                    <div
+                      className="mb-4 h-px w-full"
+                      style={{ backgroundColor: isOpen ? openBorderColor : rowBorderColor }}
+                    />
 
-                  {project.links && project.links.length > 0 && (
-                    <div className="flex flex-wrap gap-3 mt-4">
-                      {project.links.map((link) => (
-                        <a
-                          key={`${project.id}-${link.label}`}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                    <div>
+                      <h4 className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: palette.textMuted }}>
+                        {isKorean ? "핵심 성과" : "Key achievements"}
+                      </h4>
+                      <ul className="space-y-2">
+                        {toLocalizedArray(project.achievements, isKorean).map((achievement, achievementIndex) => (
+                          <li key={achievementIndex} className={`text-sm leading-7 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
+                            - {achievement}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-5">
+                      <h4 className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: palette.textMuted }}>
+                        {isKorean ? "사용 도구" : "Tools"}
+                      </h4>
+                      <p className={`text-sm leading-7 ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>{project.tech.join(", ")}</p>
+                    </div>
+
+                    {hasProjectDetail(project) && (
+                      <div className="mt-5">
+                        <Link
+                          href={`/projects/${project.slug}`}
                           className="text-sm hover:underline"
                           style={accentStyle}
+                          tabIndex={isOpen ? undefined : -1}
                         >
-                          {link.label} (ext)
-                        </a>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="mt-5">
-                    <h4 className="text-xs font-semibold mb-2 tracking-[0.16em] uppercase" style={{ color: palette.textMuted }}>
-                      {isKorean ? "\uD575\uC2EC \uC131\uACFC" : "Key achievements"}
-                    </h4>
-                    <ul className="space-y-2">
-                      {toLocalizedArray(project.achievements, isKorean).map((achievement, achievementIndex) => (
-                        <li key={achievementIndex} className={`text-sm leading-7 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
-                          - {achievement}
-                        </li>
-                      ))}
-                    </ul>
+                          {isKorean ? "프로젝트 상세 보기" : "View project details"}
+                        </Link>
+                      </div>
+                    )}
                   </div>
-
-                  <div className="mt-5">
-                    <h4 className="text-xs font-semibold mb-2 tracking-[0.16em] uppercase" style={{ color: palette.textMuted }}>
-                      {isKorean ? "\uAE30\uC220 \uC2A4\uD0DD" : "Tech stack"}
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech) => {
-                        const docUrl = techDocs[tech];
-                        const className = "px-3 py-1 border rounded-full text-xs transition-colors";
-                        const style = {
-                          borderColor: palette.border,
-                          backgroundColor: isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.7)",
-                          color: isDark ? "hsl(0 0% 92%)" : "hsl(0 0% 15%)",
-                        };
-
-                        return docUrl ? (
-                          <a key={`${project.id}-${tech}`} href={docUrl} target="_blank" rel="noopener noreferrer" className={className} style={style}>
-                            [{tech}] (doc)
-                          </a>
-                        ) : (
-                          <span key={`${project.id}-${tech}`} className={className} style={style}>
-                            [{tech}]
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {hasProjectDetail(project) && (
-                    <div className="mt-5">
-                      <Link href={`/projects/${project.slug}`} className="text-sm hover:underline" style={accentStyle}>
-                        {isKorean ? "\uD504\uB85C\uC81D\uD2B8 \uC0C1\uC138 \uBCF4\uAE30" : "View project details"}
-                      </Link>
-                    </div>
-                  )}
                 </div>
-              )}
+              </div>
             </article>
           );
         })}
@@ -257,16 +320,19 @@ export default function Projects() {
       }}
     >
       <div className="max-w-[1100px] w-full">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight text-balance" style={{ color: palette.accentStrong }}>
-          {isKorean ? "\uD504\uB85C\uC81D\uD2B8" : "PROJECTS"}
+        <h2 className="mb-4 text-4xl font-bold tracking-tight text-balance md:text-5xl lg:text-6xl" style={{ color: palette.accentStrong }}>
+          {isKorean ? "프로젝트" : "PROJECTS"}
         </h2>
         <p
-          className="max-w-2xl text-base md:text-lg font-medium leading-[1.6] mb-12"
+          className="mb-8 max-w-2xl text-base font-medium leading-[1.6] md:text-lg"
           style={{ color: isDark ? "rgba(226, 232, 224, 0.9)" : "#465043" }}
         >
           {isKorean
-            ? "AI \uD30C\uC774\uD504\uB77C\uC778 \uC124\uACC4\uC640 \uC11C\uBE44\uC2A4 \uC790\uB3D9\uD654 \uACBD\uD5D8\uC744 \uC911\uC2EC\uC73C\uB85C \uC815\uB9AC\uD588\uC2B5\uB2C8\uB2E4."
+            ? "AI 파이프라인 설계와 서비스 자동화 경험을 중심으로 정리했습니다."
             : "Selected work centered on AI pipeline design and service automation."}
+        </p>
+        <p className={`mb-6 text-sm uppercase tracking-[0.18em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
+          {isKorean ? "대표 프로젝트" : "Featured Projects"}
         </p>
 
         <div className="grid gap-6">
@@ -294,18 +360,18 @@ export default function Projects() {
                       className="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-[0.12em] uppercase"
                       style={{ backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(79,127,77,0.08)", color: palette.textMuted }}
                     >
-                      DATE {project.period.replace(" ~ ", " - ")}
+                      DATE {formatProjectPeriod(project.period)}
                     </span>
                   </div>
 
                   {hasProjectDetail(project) ? (
-                    <h3 className="mt-5 text-3xl md:text-[2rem] font-bold tracking-tight leading-tight">
+                    <h3 className="mt-5 text-3xl font-bold tracking-tight leading-tight md:text-[2rem]">
                       <Link href={`/projects/${project.slug}`} className="hover:underline focus-visible:underline">
                         {toLocalized(project.title, isKorean)}
                       </Link>
                     </h3>
                   ) : (
-                    <h3 className="mt-5 text-3xl md:text-[2rem] font-bold tracking-tight leading-tight">{toLocalized(project.title, isKorean)}</h3>
+                    <h3 className="mt-5 text-3xl font-bold tracking-tight leading-tight md:text-[2rem]">{toLocalized(project.title, isKorean)}</h3>
                   )}
 
                   <div
@@ -316,10 +382,10 @@ export default function Projects() {
                       boxShadow: isDark ? "0 12px 28px rgba(0,0,0,0.22)" : "0 12px 28px rgba(53, 93, 56, 0.10)",
                     }}
                   >
-                    <p className="text-xs font-semibold tracking-[0.18em] uppercase" style={{ color: palette.accentStrong }}>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: palette.accentStrong }}>
                       {getResultLabel(project, isKorean)}
                     </p>
-                    <p className="mt-2 text-2xl md:text-[1.75rem] font-bold leading-tight" style={{ color: palette.accentStrong }}>
+                    <p className="mt-2 text-2xl font-bold leading-tight md:text-[1.75rem]" style={{ color: palette.accentStrong }}>
                       {getResultText(project, isKorean)}
                     </p>
                   </div>
@@ -332,7 +398,7 @@ export default function Projects() {
                   </p>
 
                   <div className="mt-7">
-                    <h4 className="text-xs font-semibold tracking-[0.16em] uppercase" style={{ color: palette.textMuted }}>
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: palette.textMuted }}>
                       Key Contributions
                     </h4>
                     <ul className="mt-4 space-y-3">
@@ -346,8 +412,8 @@ export default function Projects() {
                   </div>
 
                   <div className="mt-7">
-                    <h4 className="text-xs font-semibold tracking-[0.16em] uppercase" style={{ color: palette.textMuted }}>
-                      {isKorean ? "\uAE30\uC220 \uC2A4\uD0DD" : "Tech Stack"}
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: palette.textMuted }}>
+                      {isKorean ? "기술 스택" : "Tech Stack"}
                     </h4>
                     <div className="mt-4 flex flex-wrap gap-2.5">
                       {project.tech.map((tech) => {
@@ -400,7 +466,7 @@ export default function Projects() {
                           backgroundColor: isDark ? "rgba(159, 207, 142, 0.08)" : "rgba(79, 127, 77, 0.10)",
                         }}
                       >
-                        {isKorean ? "\uD504\uB85C\uC81D\uD2B8 \uC0C1\uC138 \uBCF4\uAE30" : "View project details"}
+                        {isKorean ? "프로젝트 상세 보기" : "View project details"}
                       </Link>
                     )}
                   </div>
@@ -419,18 +485,18 @@ export default function Projects() {
                     </div>
                   ) : (
                     <div
-                      className="rounded-[1rem] p-5 min-h-[220px]"
+                      className="min-h-[220px] rounded-[1rem] p-5"
                       style={{ background: `linear-gradient(160deg, ${palette.accentSoft} 0%, ${palette.surfaceAlt} 100%)` }}
                     >
-                      <p className="text-xs font-semibold tracking-[0.16em] uppercase" style={{ color: palette.accentStrong }}>
-                        {isKorean ? "\uC2A4\uB0C5\uC0F7" : "Snapshot"}
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: palette.accentStrong }}>
+                        {isKorean ? "스냅샷" : "Snapshot"}
                       </p>
                       <p className="mt-6 text-xl font-semibold leading-snug" style={{ color: palette.accentStrong }}>
-                        {isKorean ? "\uC0AC\uC9C4 \uB610\uB294 \uC774\uBBF8\uC9C0 \uC900\uBE44 \uC911\uC785\uB2C8\uB2E4." : "Image or screenshot coming soon."}
+                        {isKorean ? "사진 또는 이미지 준비 중입니다." : "Image or screenshot coming soon."}
                       </p>
                       <p className="mt-4 text-sm leading-7" style={{ color: palette.textMuted }}>
                         {isKorean
-                          ? "\uCD94\uD6C4 \uC11C\uBE44\uC2A4 \uD654\uBA74 \uB610\uB294 \uAD6C\uC870 \uB2E4\uC774\uC5B4\uADF8\uB7A8\uC744 \uCD94\uAC00\uD560 \uC608\uC815\uC785\uB2C8\uB2E4."
+                          ? "추후 서비스 화면 또는 구조 다이어그램을 추가할 예정입니다."
                           : "A service screen or architecture diagram will be added here later."}
                       </p>
                     </div>
