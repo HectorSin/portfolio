@@ -7,7 +7,14 @@ export type { LocalizedList, LocalizedText, ProjectDetail, ProjectLink } from "@
 export interface Project {
   id: string;
   slug: string;
+  isFeatured: boolean;
   title: string | LocalizedText;
+  featuredSubtitle?: string | LocalizedText;
+  featuredResult?: string | LocalizedText;
+  featuredResultLabel?: string | LocalizedText;
+  keyContributions?: string[] | LocalizedList;
+  previewImageSrc?: string;
+  previewImageAlt?: string | LocalizedText;
   period: string;
   company: string | LocalizedText;
   team: string | LocalizedText;
@@ -20,9 +27,39 @@ export interface Project {
 
 const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
   {
+    isFeatured: true,
     title: {
       en: "LLM-based Educational Content Auto-Generation Pipeline",
       ko: "LLM 기반 교육 콘텐츠 자동 생성 파이프라인",
+    },
+    featuredSubtitle: {
+      en: "Production pipeline for education content generation and validation",
+      ko: "교육 콘텐츠 생성과 검증을 자동화한 프로덕션 파이프라인",
+    },
+    featuredResultLabel: {
+      en: "Result",
+      ko: "대표 성과",
+    },
+    featuredResult: {
+      en: "Google Play Education category #2",
+      ko: "Google Play 교육 카테고리 2위",
+    },
+    keyContributions: {
+      en: [
+        "Designed and implemented the LangChain-based generation pipeline",
+        "Built Flask API and PostgreSQL-backed content workflow",
+        "Added automated validation with RAG and evaluation tooling",
+      ],
+      ko: [
+        "LangChain 기반 생성 파이프라인 설계 및 구현",
+        "Flask API 및 PostgreSQL 연동 워크플로 구축",
+        "RAG 및 평가 도구 기반 자동 검수 체계 설계",
+      ],
+    },
+    previewImageSrc: "/projects/llm-education-content-pipeline/uml-overview.svg",
+    previewImageAlt: {
+      en: "Pipeline overview diagram",
+      ko: "파이프라인 개요 다이어그램",
     },
     period: "2025.05 ~ 2025.08",
     company: "FilledU",
@@ -50,9 +87,34 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     links: appStoreLinks,
   },
   {
+    isFeatured: true,
     title: {
       en: "Automated MP3 Splitting for Listening Assessments",
       ko: "듣기평가 MP3 문항별 자동 분할",
+    },
+    featuredSubtitle: {
+      en: "Audio automation workflow for assessment production",
+      ko: "듣기평가 제작을 위한 음원 자동화 워크플로",
+    },
+    featuredResultLabel: {
+      en: "Result",
+      ko: "대표 성과",
+    },
+    featuredResult: {
+      en: "206 files processed with zero errors",
+      ko: "206개 파일 무오류 처리",
+    },
+    keyContributions: {
+      en: [
+        "Implemented Whisper-based timestamp extraction and FFmpeg splitting",
+        "Built problem-number recognition and validation pipeline",
+        "Automated the full editing flow to remove recurring manual work",
+      ],
+      ko: [
+        "Whisper 기반 타임스탬프 추출 및 FFmpeg 자동 분할 구현",
+        "문항 번호 인식 및 검증 파이프라인 구축",
+        "반복 편집 작업 전체를 자동화해 수작업 제거",
+      ],
     },
     period: "2025.03 ~ 2025.06",
     company: "FilledU",
@@ -82,6 +144,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     links: appStoreLinks,
   },
   {
+    isFeatured: false,
     title: {
       en: "Vietnam ELECS 2024 Tech Sales & MOU Execution",
       ko: "베트남 ELECS 2024 기술 영업 및 MOU 체결",
@@ -112,6 +175,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     links: [{ label: "News", url: projectLinks["Vietnam ELECS 2024 Tech Sales & MOU Execution"] }],
   },
   {
+    isFeatured: false,
     title: {
       en: "SmartPole IoT Sensor Data Collection & Cloud System",
       ko: "스마트폴 IoT 센서 데이터 수집 및 클라우드 전송 시스템",
@@ -143,6 +207,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     tech: ["Python", "Raspberry Pi", "Jetson Nano", "AWS", "Linux"],
   },
   {
+    isFeatured: false,
     title: {
       en: "Cognee Open Source Project Contribution",
       ko: "Cognee 오픈소스 프로젝트 기여",
@@ -176,6 +241,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     ],
   },
   {
+    isFeatured: false,
     title: {
       en: "ControlNet-based Illustration Conversion AI Model",
       ko: "ControlNet 기반 일러스트 변환 AI 모델",
@@ -208,6 +274,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     tech: ["Python", "Stable Diffusion", "ControlNet", "OpenAI GPT-4", "Linux"],
   },
   {
+    isFeatured: false,
     title: {
       en: "SnackCast - AI-based News Podcast Auto-Generation",
       ko: "SnackCast - AI 기반 뉴스 팟캐스트 자동 생성",
@@ -240,6 +307,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     tech: ["Python", "LangChain", "Perplexity API", "FastAPI", "PostgreSQL", "Docker", "GCP", "Clova TTS"],
   },
   {
+    isFeatured: false,
     title: {
       en: "Personalized Travel Route Recommendation Service",
       ko: "개인 맞춤형 여행 경로 추천 서비스",
