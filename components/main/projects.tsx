@@ -474,15 +474,37 @@ export default function Projects() {
 
                 <div className="rounded-[1.35rem] border p-3" style={{ backgroundColor: isDark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.78)", borderColor: palette.border }}>
                   {project.previewImageSrc ? (
-                    <div className="overflow-hidden rounded-[1rem] border" style={{ borderColor: palette.border }}>
-                      <Image
-                        src={project.previewImageSrc}
-                        alt={toLocalized(project.previewImageAlt, isKorean) || toLocalized(project.title, isKorean)}
-                        width={640}
-                        height={480}
-                        className="h-auto w-full"
-                      />
-                    </div>
+                    hasProjectDetail(project) ? (
+                      <Link
+                        href={`/projects/${project.slug}`}
+                        className="block overflow-hidden rounded-[1rem] border transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                        style={{
+                          borderColor: palette.border,
+                          ...(isDark
+                            ? { boxShadow: "0 0 0 0 rgba(0,0,0,0)", ["--tw-ring-color" as string]: "rgba(159, 207, 142, 0.65)", ["--tw-ring-offset-color" as string]: "rgba(10, 10, 10, 1)" }
+                            : { boxShadow: "0 0 0 0 rgba(0,0,0,0)", ["--tw-ring-color" as string]: "rgba(79, 127, 77, 0.45)", ["--tw-ring-offset-color" as string]: "rgba(255, 255, 255, 1)" }),
+                        }}
+                        aria-label={`${toLocalized(project.title, isKorean)} ${isKorean ? "상세 보기" : "details"}`}
+                      >
+                        <Image
+                          src={project.previewImageSrc}
+                          alt={toLocalized(project.previewImageAlt, isKorean) || toLocalized(project.title, isKorean)}
+                          width={640}
+                          height={480}
+                          className="h-auto w-full transition-transform duration-300 hover:scale-[1.02]"
+                        />
+                      </Link>
+                    ) : (
+                      <div className="overflow-hidden rounded-[1rem] border" style={{ borderColor: palette.border }}>
+                        <Image
+                          src={project.previewImageSrc}
+                          alt={toLocalized(project.previewImageAlt, isKorean) || toLocalized(project.title, isKorean)}
+                          width={640}
+                          height={480}
+                          className="h-auto w-full"
+                        />
+                      </div>
+                    )
                   ) : (
                     <div
                       className="min-h-[220px] rounded-[1rem] p-5"

@@ -25,8 +25,15 @@ export interface ProjectUmlImage {
   caption?: LocalizedText;
 }
 
+export interface ProjectHighlightMetric {
+  value: LocalizedText;
+  label: LocalizedText;
+}
+
 export interface ProjectDetail {
   overview: LocalizedText;
+  summary?: LocalizedText;
+  highlightMetrics?: ProjectHighlightMetric[];
   sections: ProjectDetailSection[];
   umlImages?: ProjectUmlImage[];
 }
