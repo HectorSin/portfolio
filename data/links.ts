@@ -3,6 +3,7 @@ export const contactLinks = {
   email: "mailto:jaehyunkkang15634@gmail.com",
   linkedin: "https://www.linkedin.com/in/%EC%9E%AC%ED%98%84-%EC%8B%A0-b26183272/",
   github: "https://github.com/HectorSin",
+  locationMap: "https://www.google.com/maps/place/South+Korea",
 };
 
 // Experience - company links
