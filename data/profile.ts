@@ -60,20 +60,24 @@ export const profileData = {
   bio: [
     {
       ko: "LLM 기반 AI 시스템과 애플리케이션을 설계하고 운영하는 엔지니어입니다.",
-      en: "I am an engineer who designs and operates LLM-based AI systems and applications.",
+      en: "I design and operate LLM-based AI systems and applications.",
     },
     {
-      ko: "multi-LLM 오케스트레이션, RAG 시스템, 확장 가능한 백엔드 아키텍처를 중심으로 AI 서비스를 구축합니다.",
-      en: "I build AI services centered on multi-LLM orchestration, RAG systems, and scalable backend architecture.",
+      ko: "multi-LLM orchestration과 RAG 시스템,\n확장 가능한 백엔드 아키텍처를 중심으로 AI 서비스를 구축합니다.",
+      en: "I build AI services around multi-LLM orchestration and RAG systems,\nand scalable backend architecture.",
     },
     {
-      ko: "교육과 에너지 스타트업에서 비용 절감과 운영 효율을 만드는 엔드투엔드 AI 솔루션을 배포했습니다.",
-      en: "I have shipped end-to-end AI solutions for education and energy startups that improved cost efficiency and operations.",
+      ko: "교육과 에너지 스타트업 환경에서 비용 절감과 운영 효율을 만드는 엔드투엔드 AI 솔루션을\n실제 서비스에 배포했습니다.",
+      en: "I shipped end-to-end AI solutions\ninto production for education and energy startups, improving cost efficiency and operations.",
+    },
+    {
+      ko: "LLM 기반 콘텐츠 생성 파이프라인을 구축해\n콘텐츠 제작 기간을 6주에서 2주로 단축하고 연간 약 200만 원의 외주 비용을 절감했습니다.",
+      en: "I built an LLM-based content generation pipeline,\ncut content production time from 6 weeks to 2 weeks and reduced outsourced production costs by about KRW 2 million annually.",
     },
   ] as LocalizedText[],
   quote: {
-    ko: "최신 AI 연구를 실제 비즈니스 가치로 연결하는 것을 목표로 합니다.",
-    en: "I aim to connect the latest AI research with real business value.",
+    ko: "최신 AI 연구를 현실 비즈니스 가치로 연결합니다.",
+    en: "Bridging the latest AI research with real business value.",
   },
   currentlySeeking: {
     ko: "AI/ML 엔지니어, LLM 서비스 엔지니어, 데이터 엔지니어 포지션",
