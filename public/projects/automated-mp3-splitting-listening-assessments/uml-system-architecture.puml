@@ -1,0 +1,41 @@
+@startuml
+title Listening Assessment MP3 Splitting System Architecture
+
+skinparam shadowing false
+skinparam linetype ortho
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+skinparam packageStyle rectangle
+
+actor "Content Team" as ContentTeam
+
+component "Admin Upload Interface\nMP3 upload and job trigger" as Upload
+storage "MP3 Storage\nUploaded source audio files" as StorageInput
+
+package "Audio Processing Service" {
+  component "Audio Processing Engine\nWaveform analysis\nSilence detection\nBoundary detection" as Engine
+  component "Timestamp Inference Module" as Timestamp
+  component "Validation & Quality Check Layer" as Validation
+  component "FFmpeg Segmentation Engine" as Segmentation
+}
+
+database "Segmented MP3 Storage" as Storage
+component "Listening Assessment App\nContent delivery" as App
+
+ContentTeam --> Upload
+Upload --> StorageInput
+StorageInput --> Engine
+Engine --> Timestamp
+Timestamp --> Validation
+Validation --> Segmentation
+Segmentation --> Storage
+Storage --> App
+
+note right of Engine
+Design Decision:
+LLM-based timestamp extraction was evaluated first,
+but final split points were determined by waveform-based
+signal analysis for higher precision.
+end note
+
+@enduml

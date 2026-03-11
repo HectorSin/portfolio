@@ -1,0 +1,27 @@
+@startuml
+title Listening Assessment MP3 Splitting Processing Pipeline
+
+skinparam shadowing false
+skinparam linetype ortho
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+skinparam packageStyle rectangle
+
+artifact "Listening Assessment\nSource MP3\n20-30 minute audio recording" as Source
+component "Waveform Analysis Module\nAudio signal parsing" as Waveform
+component "Silence Detection Module\n3+ second gap detection" as Silence
+component "Boundary Detection Module\nRecurring waveform transition analysis" as Boundary
+component "Timestamp Inference Module\nQuestion start calculation" as Timestamp
+component "Validation & Quality Check Layer\nOrder check\nQuestion count check\nInterval anomaly check" as Validation
+component "Segmentation Export Module\nFFmpeg segment export" as Splitter
+artifact "Segmented Question\nMP3 Files" as Output
+
+Source --> Waveform
+Waveform --> Silence
+Silence --> Boundary
+Boundary --> Timestamp
+Timestamp --> Validation
+Validation --> Splitter
+Splitter --> Output
+
+@enduml
