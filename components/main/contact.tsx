@@ -6,6 +6,16 @@ import { contactLinks } from "@/data/links";
 
 export default function Contact() {
   const { isDark, isKorean } = useTheme();
+  const cardClassName = `group rounded-lg border px-5 py-6 transition-all duration-200 motion-reduce:transition-none motion-reduce:hover:transform-none hover:-translate-y-0.5 hover:shadow-lg ${
+    isDark
+      ? "border-neutral-800 hover:border-neutral-600 hover:shadow-lime-950/20"
+      : "border-neutral-300 hover:border-neutral-500 hover:shadow-neutral-300/80"
+  }`;
+  const iconWrapperClassName = `mb-5 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors ${
+    isDark ? "bg-neutral-900 text-neutral-300 group-hover:bg-lime-400/10 group-hover:text-lime-300" : "bg-lime-100 text-neutral-700 group-hover:bg-lime-200 group-hover:text-neutral-900"
+  }`;
+  const bodyClassName = isDark ? "text-neutral-400" : "text-neutral-600";
+  const metaClassName = "mt-1 text-sm text-neutral-500";
 
   return (
     <section
@@ -24,7 +34,7 @@ export default function Contact() {
         <div className="space-y-8">
           <p className={`text-2xl leading-relaxed ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
             {isKorean
-              ? "새로운 기회, 협업, 혁신적인 AI 프로젝트에 대한 논의는 언제나 환영입니다."
+              ? "AI 프로젝트 협업과 새로운 기회에 대해 언제든지 연락 주세요."
               : "I'm always open to discussing new opportunities, collaborations, or innovative AI projects."}
           </p>
 
@@ -33,13 +43,11 @@ export default function Contact() {
             {/* Email */}
             <a
               href={contactLinks.email}
-              className={`border rounded-lg p-8 transition-transform transition-colors hover:scale-105 motion-reduce:hover:scale-100 ${
-                isDark ? "border-neutral-800 hover:border-neutral-700" : "border-neutral-300 hover:border-neutral-400"
-              }`}
+              className={cardClassName}
             >
-              <div className="mb-4">
+              <div className={iconWrapperClassName}>
                 <svg
-                  className={`w-12 h-12 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}
+                  className="h-7 w-7"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -55,7 +63,9 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">Email</h3>
-              <p className={`break-all ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>{contactLinks.email.replace("mailto:", "")}</p>
+              <p className="text-base font-medium">Let&apos;s work together</p>
+              <p className={metaClassName}>{isKorean ? "이메일로 편하게 연락 주세요" : "Send me an email"}</p>
+              <p className={`mt-4 break-all ${bodyClassName}`}>{contactLinks.email.replace("mailto:", "")}</p>
             </a>
 
             {/* LinkedIn */}
@@ -63,13 +73,11 @@ export default function Contact() {
               href={contactLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className={`border rounded-lg p-8 transition-transform transition-colors hover:scale-105 motion-reduce:hover:scale-100 ${
-                isDark ? "border-neutral-800 hover:border-neutral-700" : "border-neutral-300 hover:border-neutral-400"
-              }`}
+              className={cardClassName}
             >
-              <div className="mb-4">
+              <div className={iconWrapperClassName}>
                 <svg
-                  className={`w-12 h-12 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}
+                  className="h-7 w-7"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +87,7 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">LinkedIn</h3>
-              <p className={isDark ? "text-neutral-400" : "text-neutral-600"}>Connect with me</p>
+              <p className={bodyClassName}>Let&apos;s connect</p>
             </a>
 
             {/* GitHub */}
@@ -87,13 +95,11 @@ export default function Contact() {
               href={contactLinks.github}
               target="_blank"
               rel="noopener noreferrer"
-              className={`border rounded-lg p-8 transition-transform transition-colors hover:scale-105 motion-reduce:hover:scale-100 ${
-                isDark ? "border-neutral-800 hover:border-neutral-700" : "border-neutral-300 hover:border-neutral-400"
-              }`}
+              className={cardClassName}
             >
-              <div className="mb-4">
+              <div className={iconWrapperClassName}>
                 <svg
-                  className={`w-12 h-12 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}
+                  className="h-7 w-7"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,14 +109,19 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">GitHub</h3>
-              <p className={isDark ? "text-neutral-400" : "text-neutral-600"}>Check out my code</p>
+              <p className={bodyClassName}>View my repositories</p>
             </a>
 
             {/* Location */}
-            <div className={`border rounded-lg p-8 ${isDark ? "border-neutral-800" : "border-neutral-300"}`}>
-              <div className="mb-4">
+            <a
+              href={contactLinks.locationMap}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cardClassName}
+            >
+              <div className={iconWrapperClassName}>
                 <svg
-                  className={`w-12 h-12 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}
+                  className="h-7 w-7"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -132,9 +143,9 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">Location</h3>
-              <p className={isDark ? "text-neutral-400" : "text-neutral-600"}>South Korea</p>
-              <p className={`text-sm mt-1 ${isDark ? "text-neutral-500" : "text-neutral-500"}`}>Open to remote opportunities</p>
-            </div>
+              <p className={bodyClassName}>South Korea</p>
+              <p className={metaClassName}>Open to remote opportunities</p>
+            </a>
           </div>
 
           {/* Footer Note */}
