@@ -33,7 +33,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
       ko: "LLM 기반 교육 콘텐츠 자동 생성 파이프라인",
     },
     featuredSubtitle: {
-      en: "Production pipeline for education content generation and validation",
+      en: "Production pipeline that automated education content generation and validation",
       ko: "교육 콘텐츠 생성과 검증을 자동화한 프로덕션 파이프라인",
     },
     featuredResultLabel: {
@@ -46,14 +46,14 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     },
     keyContributions: {
       en: [
-        "Designed and implemented the LangChain-based generation pipeline",
-        "Built Flask API and PostgreSQL-backed content workflow",
-        "Added automated validation with RAG and evaluation tooling",
+        "Designed a LangChain-based multi-LLM generation pipeline",
+        "Built RAG and vector-database validation for curriculum alignment",
+        "Created an n8n workflow interface for non-technical operators",
       ],
       ko: [
-        "LangChain 기반 생성 파이프라인 설계 및 구현",
-        "Flask API 및 PostgreSQL 연동 워크플로 구축",
-        "RAG 및 평가 도구 기반 자동 검수 체계 설계",
+        "LangChain 기반 멀티 LLM 생성 파이프라인 설계",
+        "RAG 및 벡터 데이터베이스 기반 문맥 검증 체계 구축",
+        "비개발자 운영을 위한 n8n 워크플로 인터페이스 설계",
       ],
     },
     previewImageSrc: "/projects/llm-education-content-pipeline/uml-overview.svg",
@@ -68,22 +68,24 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
       ko: "6명 (개발 60%, DB 설계 40%, 기획 30%)",
     },
     description: {
-      en: "LLM-based automated educational content generation system, achieved #2 ranking in Google Play Education category.",
-      ko: "LLM 기반 교육 콘텐츠 자동 생성 시스템을 구축해 Google Play 교육 카테고리 2위를 달성했습니다.",
+      en: "Replaced an outsourcing-heavy content production workflow with an LLM-based generation pipeline, improving both speed and cost structure.",
+      ko: "외주 중심으로 운영되던 교육 콘텐츠 제작 프로세스를 LLM 기반 자동 생성 파이프라인으로 전환해 제작 속도와 비용 구조를 동시에 개선했습니다.",
     },
     achievements: {
       en: [
-        "Designed and implemented content generation pipeline using LangChain + Gemini API",
-        "Developed Flask backend API and PostgreSQL integration",
-        "Achieved Google Play Education category #2 ranking",
+        "Automatically generated more than 5,000 educational content items",
+        "Reduced production lead time from 4 months to 1 month",
+        "Saved about KRW 10 million in annual outsourcing costs",
+        "Applied to a live service that reached #2 in Google Play Education",
       ],
       ko: [
-        "LangChain + Gemini API 기반 콘텐츠 생성 파이프라인 설계 및 구현",
-        "Flask 백엔드 API 개발 및 PostgreSQL 연동",
-        "Google Play 교육 카테고리 2위 달성",
+        "교육 콘텐츠 5,000개 이상 자동 생성",
+        "콘텐츠 제작 기간 4개월에서 1개월로 단축",
+        "외주 비용 연간 약 1,000만 원 절감",
+        "실서비스 적용 후 Google Play 교육 카테고리 2위 달성",
       ],
     },
-    tech: ["Python", "LangChain", "Gemini API", "Flask", "PostgreSQL", "Linux"],
+    tech: ["Python", "LangChain", "Gemini API", "Claude", "ChatGPT", "Flask", "PostgreSQL", "Linux", "n8n", "Vector Database"],
     links: appStoreLinks,
   },
   {
@@ -101,8 +103,8 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
       ko: "대표 성과",
     },
     featuredResult: {
-      en: "206 files processed with zero errors",
-      ko: "206개 파일 무오류 처리",
+      en: "206 files processed with zero errors, 100% outsourcing cost reduction",
+      ko: "206개 파일 무오류 처리, 외주 비용 100% 절감",
     },
     keyContributions: {
       en: [
@@ -131,13 +133,13 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
         "100% automation of audio editing, saving 2M KRW annually",
         "Implemented timestamp extraction using Whisper STT and FFmpeg-based MP3 splitting",
         "Developed LangChain-based problem number recognition pipeline and quality validation",
-        "Processed 206 files with zero errors",
+        "Processed 206 files with zero errors and reduced outsourcing costs by 100%",
       ],
       ko: [
         "음원 편집 100% 자동화로 연간 200만 원 절감",
         "Whisper STT 기반 타임스탬프 추출 및 FFmpeg 자동 분할 구현",
         "LangChain 기반 문항 번호 인식 및 품질 검증 파이프라인 개발",
-        "206개 파일 무오류 처리",
+        "206개 파일 무오류 처리 및 외주 비용 100% 절감",
       ],
     },
     tech: ["Python", "FFmpeg", "Whisper", "LangChain", "Linux"],
