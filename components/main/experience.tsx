@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Blocks, BookOpenText, Lightbulb, PenSquare, UsersRound } from "lucide-react";
 import { useTheme } from "@/contexts/theme-context";
 import { activityLinks, companyLinks } from "@/data/links";
 
@@ -27,7 +27,7 @@ type ExperienceEntry = {
 type ActivityEntry = {
   title: LocalizedText;
   description: LocalizedText;
-  icon: string;
+  icon: React.ComponentType<{ className?: string }>;
   link?: string;
 };
 
@@ -157,10 +157,10 @@ const activities: ActivityEntry[] = [
       ko: "알고리즘 문제 해결",
     },
     description: {
-      en: "Actively solving problems on Baekjoon Online Judge",
-      ko: "백준 온라인 저지에서 꾸준히 문제 해결",
+      en: "Strengthening algorithmic thinking through consistent problem solving on Baekjoon Online Judge.",
+      ko: "백준 온라인 저지에서 꾸준한 문제 해결로 알고리즘 사고력 강화",
     },
-    icon: "⌘",
+    icon: BookOpenText,
     link: activityLinks["Competitive Programming"],
   },
   {
@@ -169,10 +169,10 @@ const activities: ActivityEntry[] = [
       ko: "Cognee 오픈소스 기여",
     },
     description: {
-      en: "Contributing to a knowledge graph framework",
-      ko: "지식 그래프 프레임워크에 기여",
+      en: "Contributing to an open source project focused on knowledge graph based memory management.",
+      ko: "Knowledge Graph 기반 메모리 관리 오픈소스 프로젝트에 기여",
     },
-    icon: "◎",
+    icon: Blocks,
     link: activityLinks["Cognee Open Source Contribution"],
   },
   {
@@ -181,10 +181,10 @@ const activities: ActivityEntry[] = [
       ko: "LinkedIn 콘텐츠 발행",
     },
     description: {
-      en: "Writing about AI agents, RAG, and LLM trends",
-      ko: "AI Agent, RAG, LLM 트렌드 관련 글 발행",
+      en: "Publishing technical analysis content on AI agents, RAG, and LLM trends on a regular basis.",
+      ko: "AI Agent, RAG, LLM 트렌드 분석 콘텐츠를 정기적으로 발행",
     },
-    icon: "↗",
+    icon: PenSquare,
     link: activityLinks["LinkedIn Content Creator"],
   },
   {
@@ -193,10 +193,10 @@ const activities: ActivityEntry[] = [
       ko: "문화 교류 동아리 운영",
     },
     description: {
-      en: "Scaled the club from 4 to 130 members",
-      ko: "동아리를 4명에서 130명 규모로 확장",
+      en: "Led operations that grew a cultural exchange club from 4 to 130 members.",
+      ko: "문화 교류 동아리를 4명에서 130명 규모로 성장시킨 운영 경험",
     },
-    icon: "◇",
+    icon: UsersRound,
     link: activityLinks["Cultural Exchange Leadership"],
   },
 ];
@@ -372,30 +372,33 @@ export default function Experience() {
           <h3 className={`text-3xl font-bold mb-8 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
             {isKorean ? "활동 및 기타 성과" : "Activities & Achievements"}
           </h3>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-5">
             {activities.map((activity) => {
+              const ActivityIcon = activity.icon;
               const content = (
                 <>
                   <div
-                    className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border text-xl ${
-                      isDark ? "border-neutral-800 bg-neutral-950 text-neutral-300" : "border-neutral-300 bg-white text-neutral-700"
+                    className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border transition-colors duration-300 ${
+                      isDark
+                        ? "border-neutral-800 bg-[rgba(195,228,29,0.08)] text-neutral-200 group-hover:border-neutral-700 group-hover:bg-[rgba(195,228,29,0.14)]"
+                        : "border-neutral-300 bg-[rgba(195,228,29,0.14)] text-neutral-800 group-hover:border-neutral-400 group-hover:bg-[rgba(195,228,29,0.2)]"
                     }`}
                   >
-                    {activity.icon}
+                    <ActivityIcon className="h-5 w-5" />
                   </div>
                   <h4 className="text-xl font-bold mb-2">
                     {t(activity.title, isKorean)}
                   </h4>
-                  <p className={isDark ? "text-neutral-400" : "text-neutral-600"}>
+                  <p className={`leading-7 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
                     {t(activity.description, isKorean)}
                   </p>
                 </>
               );
 
-              const className = `border rounded-[1.25rem] p-6 transition-all duration-300 ${
+              const className = `group border rounded-[1.25rem] p-6 min-h-[208px] transition-all duration-300 ${
                 isDark
-                  ? "border-neutral-800 hover:border-neutral-700 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]"
-                  : "border-neutral-300 hover:border-neutral-400 hover:shadow-[0_20px_50px_rgba(15,23,42,0.06)]"
+                  ? "border-neutral-800 hover:border-neutral-600 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]"
+                  : "border-neutral-300 hover:border-neutral-500 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)]"
               } ${activity.link ? "cursor-pointer hover:-translate-y-0.5 motion-reduce:transform-none" : ""}`;
 
               return activity.link ? (
@@ -425,12 +428,26 @@ export default function Experience() {
           <h3 className="text-2xl font-bold mb-4" style={{ color: ACCENT_COLOR }}>
             {isKorean ? "현재 찾고 있는 역할" : "Currently Seeking"}
           </h3>
-          <p className={`text-lg ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
-            {isKorean
-              ? "AI/ML Engineer, LLM Service Engineer, Data Engineer 포지션"
-              : "AI/ML Engineer, LLM Service Engineer, or Data Engineer positions"}
-          </p>
-          <p className={`mt-2 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
+          <div className="grid gap-2 md:grid-cols-3">
+            {["AI/ML Engineer", "LLM Service Engineer", "Data Engineer"].map((role) => (
+              <div
+                key={role}
+                className={`rounded-2xl border px-4 py-3 text-sm font-medium ${
+                  isDark
+                    ? "border-neutral-800 bg-neutral-950 text-neutral-300"
+                    : "border-neutral-300 bg-white text-neutral-700"
+                }`}
+              >
+                <div className="flex items-center justify-center gap-2 text-center">
+                  <Lightbulb className="h-4 w-4 shrink-0" style={{ color: ACCENT_COLOR }} />
+                  <span className="text-[15px] font-semibold tracking-[-0.01em] md:text-base">
+                    {role}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className={`mt-5 ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
             {isKorean
               ? "측정 가능한 ROI를 만드는 프로덕션 LLM 애플리케이션과 고도화된 RAG 시스템에 집중하고 있습니다."
               : "Focused on production-ready LLM applications with measurable ROI and advanced RAG systems."}
