@@ -9,6 +9,12 @@ export interface Project {
   slug: string;
   isFeatured: boolean;
   title: string | LocalizedText;
+  featuredSubtitle?: string | LocalizedText;
+  featuredResult?: string | LocalizedText;
+  featuredResultLabel?: string | LocalizedText;
+  keyContributions?: string[] | LocalizedList;
+  previewImageSrc?: string;
+  previewImageAlt?: string | LocalizedText;
   period: string;
   company: string | LocalizedText;
   team: string | LocalizedText;
@@ -25,6 +31,35 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     title: {
       en: "LLM-based Educational Content Auto-Generation Pipeline",
       ko: "LLM 기반 교육 콘텐츠 자동 생성 파이프라인",
+    },
+    featuredSubtitle: {
+      en: "Production pipeline for education content generation and validation",
+      ko: "교육 콘텐츠 생성과 검증을 자동화한 프로덕션 파이프라인",
+    },
+    featuredResultLabel: {
+      en: "Result",
+      ko: "대표 성과",
+    },
+    featuredResult: {
+      en: "Google Play Education category #2",
+      ko: "Google Play 교육 카테고리 2위",
+    },
+    keyContributions: {
+      en: [
+        "Designed and implemented the LangChain-based generation pipeline",
+        "Built Flask API and PostgreSQL-backed content workflow",
+        "Added automated validation with RAG and evaluation tooling",
+      ],
+      ko: [
+        "LangChain 기반 생성 파이프라인 설계 및 구현",
+        "Flask API 및 PostgreSQL 연동 워크플로 구축",
+        "RAG 및 평가 도구 기반 자동 검수 체계 설계",
+      ],
+    },
+    previewImageSrc: "/projects/llm-education-content-pipeline/uml-overview.svg",
+    previewImageAlt: {
+      en: "Pipeline overview diagram",
+      ko: "파이프라인 개요 다이어그램",
     },
     period: "2025.05 ~ 2025.08",
     company: "FilledU",
@@ -56,6 +91,30 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     title: {
       en: "Automated MP3 Splitting for Listening Assessments",
       ko: "듣기평가 MP3 문항별 자동 분할",
+    },
+    featuredSubtitle: {
+      en: "Audio automation workflow for assessment production",
+      ko: "듣기평가 제작을 위한 음원 자동화 워크플로",
+    },
+    featuredResultLabel: {
+      en: "Result",
+      ko: "대표 성과",
+    },
+    featuredResult: {
+      en: "206 files processed with zero errors",
+      ko: "206개 파일 무오류 처리",
+    },
+    keyContributions: {
+      en: [
+        "Implemented Whisper-based timestamp extraction and FFmpeg splitting",
+        "Built problem-number recognition and validation pipeline",
+        "Automated the full editing flow to remove recurring manual work",
+      ],
+      ko: [
+        "Whisper 기반 타임스탬프 추출 및 FFmpeg 자동 분할 구현",
+        "문항 번호 인식 및 검증 파이프라인 구축",
+        "반복 편집 작업 전체를 자동화해 수작업 제거",
+      ],
     },
     period: "2025.03 ~ 2025.06",
     company: "FilledU",
