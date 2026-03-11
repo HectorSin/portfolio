@@ -7,6 +7,7 @@ export type { LocalizedList, LocalizedText, ProjectDetail, ProjectLink } from "@
 export interface Project {
   id: string;
   slug: string;
+  isFeatured: boolean;
   title: string | LocalizedText;
   period: string;
   company: string | LocalizedText;
@@ -20,6 +21,7 @@ export interface Project {
 
 const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
   {
+    isFeatured: true,
     title: {
       en: "LLM-based Educational Content Auto-Generation Pipeline",
       ko: "LLM 기반 교육 콘텐츠 자동 생성 파이프라인",
@@ -50,6 +52,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     links: appStoreLinks,
   },
   {
+    isFeatured: true,
     title: {
       en: "Automated MP3 Splitting for Listening Assessments",
       ko: "듣기평가 MP3 문항별 자동 분할",
@@ -82,6 +85,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     links: appStoreLinks,
   },
   {
+    isFeatured: false,
     title: {
       en: "Vietnam ELECS 2024 Tech Sales & MOU Execution",
       ko: "베트남 ELECS 2024 기술 영업 및 MOU 체결",
@@ -112,6 +116,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     links: [{ label: "News", url: projectLinks["Vietnam ELECS 2024 Tech Sales & MOU Execution"] }],
   },
   {
+    isFeatured: false,
     title: {
       en: "SmartPole IoT Sensor Data Collection & Cloud System",
       ko: "스마트폴 IoT 센서 데이터 수집 및 클라우드 전송 시스템",
@@ -143,6 +148,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     tech: ["Python", "Raspberry Pi", "Jetson Nano", "AWS", "Linux"],
   },
   {
+    isFeatured: false,
     title: {
       en: "Cognee Open Source Project Contribution",
       ko: "Cognee 오픈소스 프로젝트 기여",
@@ -176,6 +182,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     ],
   },
   {
+    isFeatured: false,
     title: {
       en: "ControlNet-based Illustration Conversion AI Model",
       ko: "ControlNet 기반 일러스트 변환 AI 모델",
@@ -208,6 +215,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     tech: ["Python", "Stable Diffusion", "ControlNet", "OpenAI GPT-4", "Linux"],
   },
   {
+    isFeatured: false,
     title: {
       en: "SnackCast - AI-based News Podcast Auto-Generation",
       ko: "SnackCast - AI 기반 뉴스 팟캐스트 자동 생성",
@@ -240,6 +248,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
     tech: ["Python", "LangChain", "Perplexity API", "FastAPI", "PostgreSQL", "Docker", "GCP", "Clova TTS"],
   },
   {
+    isFeatured: false,
     title: {
       en: "Personalized Travel Route Recommendation Service",
       ko: "개인 맞춤형 여행 경로 추천 서비스",

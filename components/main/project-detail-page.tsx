@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { type Project } from "@/data/projects";
 import { useTheme } from "@/contexts/theme-context";
+import { getProjectAccentStyle } from "@/lib/project-accent";
 
 interface ProjectDetailPageProps {
   project: Project;
@@ -25,6 +26,7 @@ function toLocalizedArray(value: string[] | { en: string[]; ko: string[] }, isKo
 
 export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   const { isDark, isKorean } = useTheme();
+  const accentStyle = getProjectAccentStyle(isDark);
 
   if (!project.detail) {
     return null;
@@ -40,8 +42,8 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     >
       <div className="max-w-5xl mx-auto">
         <div className="mb-8">
-          <Link href="/#projects" className="text-sm hover:underline" style={{ color: "#C3E41D" }}>
-            {isKorean ? "프로젝트 목록으로" : "Back to projects"}
+          <Link href="/#projects" className="text-sm hover:underline" style={accentStyle}>
+            {isKorean ? "\uD504\uB85C\uC81D\uD2B8 \uBAA9\uB85D\uC73C\uB85C" : "Back to projects"}
           </Link>
         </div>
 
@@ -57,7 +59,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
         </header>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">{isKorean ? "핵심 성과" : "Key Achievements"}</h2>
+          <h2 className="text-xl font-semibold mb-4">{isKorean ? "\uD575\uC2EC \uC131\uACFC" : "Key Achievements"}</h2>
           <ul className="space-y-2">
             {toLocalizedArray(project.achievements, isKorean).map((achievement, index) => (
               <li key={`${project.id}-achievement-${index}`} className={`text-sm leading-6 ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
@@ -68,7 +70,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-4">{isKorean ? "상세 설명" : "Detailed Notes"}</h2>
+          <h2 className="text-xl font-semibold mb-4">{isKorean ? "\uC0C1\uC138 \uC124\uBA85" : "Detailed Notes"}</h2>
           <div className="space-y-8">
             {project.detail.sections.map((section) => (
               <article key={section.key} className={`border rounded-lg p-6 ${isDark ? "border-neutral-800" : "border-neutral-300"}`}>
@@ -87,7 +89,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
         {project.detail.umlImages && project.detail.umlImages.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-xl font-semibold mb-4">{isKorean ? "UML 다이어그램" : "UML Diagrams"}</h2>
+            <h2 className="text-xl font-semibold mb-4">{isKorean ? "UML \uB2E4\uC774\uC5B4\uADF8\uB7A8" : "UML Diagrams"}</h2>
             <div className="space-y-8">
               {project.detail.umlImages.map((diagram, index) => (
                 <figure
@@ -112,14 +114,8 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                     </figcaption>
                   )}
                   <div className="mt-3">
-                    <a
-                      href={diagram.src}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs hover:underline"
-                      style={{ color: "#C3E41D" }}
-                    >
-                      {isKorean ? "원본 다이어그램 보기" : "Open full-size diagram"}
+                    <a href={diagram.src} target="_blank" rel="noopener noreferrer" className="text-xs hover:underline" style={accentStyle}>
+                      {isKorean ? "\uC6D0\uBCF8 \uB2E4\uC774\uC5B4\uADF8\uB7A8 \uBCF4\uAE30" : "Open full-size diagram"}
                     </a>
                   </div>
                 </figure>
@@ -129,7 +125,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
         )}
 
         <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">{isKorean ? "기술 스택" : "Tech Stack"}</h2>
+          <h2 className="text-xl font-semibold mb-4">{isKorean ? "\uAE30\uC220 \uC2A4\uD0DD" : "Tech Stack"}</h2>
           <div className="flex flex-wrap gap-2">
             {project.tech.map((tech) => (
               <span
@@ -146,7 +142,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
         {project.links && project.links.length > 0 && (
           <section>
-            <h2 className="text-xl font-semibold mb-4">{isKorean ? "관련 링크" : "Related Links"}</h2>
+            <h2 className="text-xl font-semibold mb-4">{isKorean ? "\uAD00\uB828 \uB9C1\uD06C" : "Related Links"}</h2>
             <div className="flex flex-wrap gap-3">
               {project.links.map((link) => (
                 <a
@@ -155,7 +151,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm hover:underline"
-                  style={{ color: "#C3E41D" }}
+                  style={accentStyle}
                 >
                   {link.label} (ext)
                 </a>
@@ -167,5 +163,3 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     </main>
   );
 }
-
-
