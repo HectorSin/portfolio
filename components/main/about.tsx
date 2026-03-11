@@ -96,7 +96,7 @@ export default function About() {
               <h3 className={sectionTitleClass}>{isKorean ? "학력" : "Education"}</h3>
               <div className="space-y-2">
                 <p className="text-xl font-semibold">{t(firstEducation.school, isKorean)}</p>
-                <p className={secondaryTextClass}>{t(firstEducation.degree, isKorean)}</p>
+                <p className={`${secondaryTextClass} whitespace-pre-line`}>{t(firstEducation.degree, isKorean)}</p>
                 <p className={secondaryTextClass}>{t(firstEducation.graduation, isKorean)}</p>
               </div>
             </div>

@@ -34,8 +34,8 @@ export const profileData = {
         en: "Ajou University",
       },
       degree: {
-        ko: "경영인텔리전스학과 (주전공), 인공지능융합학과 (복수전공)",
-        en: "B.S. in e-Business (Major), B.S. in AI Convergence (Double Major)",
+        ko: "경영인텔리전스학과 (주전공)\n인공지능융합학과 (복수전공)",
+        en: "B.S. in e-Business (Major)\nB.S. in AI Convergence (Double Major)",
       },
       graduation: {
         ko: "2026년 2월 졸업",
