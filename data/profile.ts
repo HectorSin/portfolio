@@ -52,8 +52,8 @@ export const profileData = {
   ] as LanguageEntry[],
   bio: [
     {
-      ko: "LLM 기반 시스템과 프로덕션 수준 AI 애플리케이션을 설계하고 운영합니다.",
-      en: "I build and operate LLM-based systems and production-grade AI applications.",
+      ko: "LLM 기반 시스템과 AI 애플리케이션을 설계하고 운영합니다.",
+      en: "I build and operate LLM-based systems and AI applications.",
     },
     {
       ko: "multi-LLM 오케스트레이션, RAG 시스템, 확장 가능한 백엔드 아키텍처를 중심으로 비즈니스 임팩트를 만드는 데 집중합니다.",
