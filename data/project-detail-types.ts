@@ -30,10 +30,16 @@ export interface ProjectHighlightMetric {
   label: LocalizedText;
 }
 
+export interface ProjectDetailQnaItem {
+  question: LocalizedText;
+  answer: LocalizedText;
+}
+
 export interface ProjectDetail {
   overview: LocalizedText;
   summary?: LocalizedText;
   highlightMetrics?: ProjectHighlightMetric[];
   sections: ProjectDetailSection[];
+  qna?: ProjectDetailQnaItem[];
   umlImages?: ProjectUmlImage[];
 }

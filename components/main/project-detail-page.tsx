@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { type Project } from "@/data/projects";
@@ -28,8 +28,30 @@ function toLocalizedArray(value: string[] | { en: string[]; ko: string[] } | und
 }
 
 export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
-  const { isDark, isKorean } = useTheme();
+  const { isDark, isKorean, toggleLanguage, toggleTheme } = useTheme();
+  const [showHeader, setShowHeader] = useState(true);
+  const lastScrollYRef = useRef(0);
   const accentStyle = getProjectAccentStyle(isDark);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const lastScrollY = lastScrollYRef.current;
+
+      if (currentScrollY < 120) {
+        setShowHeader(true);
+      } else if (currentScrollY < lastScrollY) {
+        setShowHeader(true);
+      } else if (currentScrollY > lastScrollY) {
+        setShowHeader(false);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   if (!project.detail) {
     return null;
@@ -37,6 +59,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
   const summary = project.detail.summary ? toLocalized(project.detail.summary, isKorean) : "";
   const highlightMetrics = project.detail.highlightMetrics ?? [];
+  const qnaItems = project.detail.qna ?? [];
   const umlImages = project.detail.umlImages ?? [];
   const dividerColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(15,23,42,0.08)";
   const contentWidthClass = "max-w-[46rem]";
@@ -44,19 +67,82 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   return (
     <main
       id="top"
-      className="min-h-screen px-6 py-16"
+      className="min-h-screen px-6 py-28"
       style={{
         backgroundColor: isDark ? "hsl(0 0% 0%)" : "hsl(0 0% 98%)",
         color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
       }}
     >
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-8">
-          <Link href="/#projects" className="text-sm hover:underline" style={accentStyle}>
+      <header
+        className="fixed inset-x-0 top-0 z-40 px-6 py-6 transition-transform duration-300"
+        style={{
+          transform: showHeader ? "translateY(0)" : "translateY(-100%)",
+        }}
+      >
+        <nav className="mx-auto flex max-w-5xl items-center justify-between">
+          <Link
+            href="/#projects"
+            className={`inline-flex items-center rounded-full border px-4 py-2 text-sm font-semibold transition-opacity hover:opacity-80 ${
+              isDark ? "border-neutral-700 bg-neutral-950/90" : "border-neutral-300 bg-white/90"
+            }`}
+            style={accentStyle}
+          >
             {isKorean ? "프로젝트 목록으로" : "Back to projects"}
           </Link>
-        </div>
 
+          <div
+            className="text-4xl"
+            style={{
+              color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
+              fontFamily: "'Brush Script MT', 'Lucida Handwriting', cursive",
+            }}
+          >
+            SJ
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="relative flex h-8 w-16 items-center justify-center rounded-full text-xs font-bold transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3E41D]"
+              style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
+              aria-label="Toggle language"
+            >
+              <span className={`absolute transition-opacity duration-300 ${isKorean ? "opacity-100" : "opacity-30"}`} style={{ left: "0.5rem" }}>
+                KO
+              </span>
+              <span className={`absolute transition-opacity duration-300 ${!isKorean ? "opacity-100" : "opacity-30"}`} style={{ right: "0.5rem" }}>
+                EN
+              </span>
+              <div
+                className="absolute left-1 top-1 h-6 w-6 rounded-full transition-transform duration-300"
+                style={{
+                  backgroundColor: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
+                  transform: isKorean ? "translateX(0)" : "translateX(2rem)",
+                }}
+              />
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="relative h-8 w-16 rounded-full transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C3E41D]"
+              style={{ backgroundColor: isDark ? "hsl(0 0% 15%)" : "hsl(0 0% 90%)" }}
+              aria-label="Toggle theme"
+            >
+              <div
+                className="absolute left-1 top-1 h-6 w-6 rounded-full transition-transform duration-300"
+                style={{
+                  backgroundColor: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
+                  transform: isDark ? "translateX(2rem)" : "translateX(0)",
+                }}
+              />
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <div className="mx-auto max-w-5xl">
         <header className="mb-14 border-b pb-10" style={{ borderColor: dividerColor }}>
           <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">{toLocalized(project.title, isKorean)}</h1>
           <p className={`mb-2 text-sm ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>{project.period}</p>
@@ -174,6 +260,37 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             ))}
           </div>
         </section>
+
+        {qnaItems.length > 0 && (
+          <section className="mb-14 border-b pb-10" style={{ borderColor: dividerColor }}>
+            <h2 className="mb-6 text-xl font-semibold">Q&A</h2>
+            <div className={`${contentWidthClass} space-y-3`}>
+              {qnaItems.map((item, index) => (
+                <details
+                  key={`${project.id}-qna-${index}`}
+                  className={`group rounded-[1.5rem] border px-5 py-4 ${
+                    isDark ? "border-neutral-800 bg-neutral-950/70" : "border-neutral-200 bg-white"
+                  }`}
+                >
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-sm font-semibold leading-6">
+                    <span>{toLocalized(item.question, isKorean)}</span>
+                    <span
+                      aria-hidden="true"
+                      className={`mt-0.5 shrink-0 text-lg leading-none transition-transform group-open:rotate-45 ${
+                        isDark ? "text-neutral-400" : "text-neutral-500"
+                      }`}
+                    >
+                      +
+                    </span>
+                  </summary>
+                  <p className={`pt-3 text-sm leading-7 md:text-[15px] ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
+                    {toLocalized(item.answer, isKorean)}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="mb-8">
           <h2 className="mb-4 text-xl font-semibold">{isKorean ? "기술 스택" : "Tech Stack"}</h2>

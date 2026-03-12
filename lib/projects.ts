@@ -59,6 +59,15 @@ export function validateProjectCatalog(catalog: Project[]): void {
           throw new Error(`Project UML image alt text is incomplete: ${project.slug} (#${imageIndex + 1})`);
         }
       });
+
+      project.detail.qna?.forEach((item, itemIndex) => {
+        if (!item.question.en || !item.question.ko) {
+          throw new Error(`Project detail Q&A question is incomplete: ${project.slug} (#${itemIndex + 1})`);
+        }
+        if (!item.answer.en || !item.answer.ko) {
+          throw new Error(`Project detail Q&A answer is incomplete: ${project.slug} (#${itemIndex + 1})`);
+        }
+      });
     }
   }
 }

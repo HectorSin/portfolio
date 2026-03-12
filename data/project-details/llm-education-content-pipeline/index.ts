@@ -182,6 +182,99 @@ export const llmEducationContentPipelineDetail: ProjectDetail = {
     },
   ],
 
+  qna: [
+    {
+      question: {
+        ko: "전체 파이프라인은 어떤 구조로 동작했나요?",
+        en: "How did the overall pipeline work end to end?",
+      },
+      answer: {
+        ko: "콘텐츠 생성 요청이 들어오면 먼저 데이터베이스와 서버에서 교과서, 문제집, 개념서, 기존 콘텐츠 등 관련 참고 자료를 수집합니다. 이후 PDF와 문서를 바로 LLM에 넣지 않고, 문서 레이아웃 분석과 텍스트 추출 과정을 거쳐 LLM이 읽기 쉬운 형태로 전처리했습니다. 그 다음 정제된 데이터를 chunk 단위로 분할하고 retrieval 가능한 구조로 구성한 뒤, 각 콘텐츠 유형에 맞는 프롬프트와 참조 데이터를 함께 사용해 생성 파이프라인을 실행했습니다. 생성 결과는 자동 검증과 휴먼 검수를 함께 거쳐 최종 반영되도록 설계했습니다.",
+        en: "When a content generation request came in, the pipeline first collected relevant reference materials such as textbooks, workbooks, concept books, and existing content from the database and servers. Instead of sending raw PDFs and documents directly into the LLM, it ran document layout analysis and text extraction first so the inputs were easier for the model to read. The cleaned data was then split into chunks, organized into a retrieval-ready structure, and passed into generation flows with prompts and reference data tailored to each content type. Final outputs were designed to go through both automated validation and human review before release.",
+      },
+    },
+    {
+      question: {
+        ko: "왜 RAG 방식을 사용했나요?",
+        en: "Why did you use a RAG-based approach?",
+      },
+      answer: {
+        ko: "교육 콘텐츠는 창의성보다 정확성과 기준 일치가 더 중요했기 때문입니다. 기존 자료와 평가 기준이 이미 존재하는 상황에서, 모든 컨텍스트를 한 번에 넣는 방식은 오히려 출력 품질을 불안정하게 만들었습니다. 그래서 필요한 자료만 검색해 주입하는 RAG 구조를 적용했고, 이를 통해 hallucination을 줄이고 교육과정 기준에 맞는 일관된 출력을 유도했습니다.",
+        en: "Because educational content depends more on accuracy and standards alignment than on open-ended creativity. Since the source materials and evaluation criteria already existed, trying to inject all context at once actually made output quality less stable. A RAG structure let the system retrieve only the relevant references, which reduced hallucinations and produced more consistent outputs aligned with the curriculum.",
+      },
+    },
+    {
+      question: {
+        ko: "왜 여러 LLM을 함께 사용했나요?",
+        en: "Why did you use multiple LLMs together?",
+      },
+      answer: {
+        ko: "모델마다 강점이 다르다고 판단했기 때문입니다. 긴 문맥을 바탕으로 자연스러운 설명을 만드는 데 강한 모델이 있었고, 수학적 로직이나 계산 문제 생성에 더 적합한 모델도 있었습니다. 또 어떤 모델은 문장을 더 사람답고 부드럽게 다듬는 데 장점이 있었습니다. 그래서 하나의 모델만 고정적으로 쓰기보다, 콘텐츠 유형과 작업 성격에 따라 모델을 다르게 활용해 전체 품질을 높였습니다.",
+        en: "Because different models had different strengths. Some were better at producing natural explanations over long contexts, others were better suited for math logic or calculation-based question generation, and some were stronger at polishing phrasing so it sounded more natural. Instead of locking the system to one model, the pipeline selected models based on content type and task characteristics to improve overall quality.",
+      },
+    },
+    {
+      question: {
+        ko: "PDF를 바로 LLM에 넣지 않고 별도 전처리를 한 이유는 무엇인가요?",
+        en: "Why didn’t you feed PDFs directly into the LLM?",
+      },
+      answer: {
+        ko: "실제 문서에는 표, 단 분리, 제목 구조, 번호 체계처럼 텍스트 외의 레이아웃 정보가 많이 포함되어 있습니다. 이런 문서를 그대로 넣으면 LLM이 문맥을 잘못 읽거나 필요한 정보를 놓치는 경우가 생겼습니다. 그래서 문서 레이아웃을 먼저 인식하고, 그 구조 안에서 필요한 텍스트를 추출해 정제한 뒤 LLM 입력으로 사용했습니다. 이 전처리 단계가 전체 생성 품질에 꽤 큰 영향을 주었습니다.",
+        en: "Real documents contain a lot of layout information beyond plain text, such as tables, multi-column structure, headings, and numbering systems. If those files are passed through as-is, the LLM can misread the context or miss important details. The pipeline first analyzed document layout, extracted the necessary text within that structure, and cleaned it before using it as model input. That preprocessing step had a significant impact on generation quality.",
+      },
+    },
+    {
+      question: {
+        ko: "생성된 콘텐츠의 품질은 어떻게 검증했나요?",
+        en: "How did you validate the quality of generated content?",
+      },
+      answer: {
+        ko: "품질 검증은 세 단계로 운영했습니다. 먼저 LLM self-critique 방식으로 형식이나 내용의 이상 여부를 자동 점검했고, 그 다음 알고리즘 기반 evaluation metric으로 구조적 오류를 탐지했습니다. 마지막으로 실제 운영에서는 콘텐츠팀이 휴먼 인 더 루프 형태로 결과를 확인했습니다. 여러 방법을 함께 사용했지만, 실제로는 알고리즘 기반 검증이 가장 안정적으로 동작했습니다.",
+        en: "Quality validation was run in three stages. First, the system used LLM self-critique to automatically check for issues in structure or content. Next, it used algorithm-based evaluation metrics to detect structural errors. Finally, in production, the content team reviewed outputs in a human-in-the-loop process. Multiple methods were used together, but in practice the algorithm-based validation turned out to be the most stable.",
+      },
+    },
+    {
+      question: {
+        ko: "API 호출량이나 비용 문제는 어떻게 관리했나요?",
+        en: "How did you manage API usage and cost?",
+      },
+      answer: {
+        ko: "가장 중요한 원칙은 필요한 데이터만 넣는 것이었습니다. 참고 자료가 많다고 해서 모두 넣기보다, retrieval을 통해 관련성이 높은 데이터만 선택해 입력했습니다. 또 반복적으로 재사용되는 결과는 캐싱했고, 생성 작업은 batch 단위로 나누어 처리했습니다. 이렇게 해서 비용을 줄이는 동시에 rate limit 문제도 완화할 수 있었습니다.",
+        en: "The main principle was to send only the data that was actually needed. Instead of including every available reference, the system used retrieval to select only the most relevant materials. It also cached repeatedly reused results and processed generation jobs in batches. That reduced cost while also easing rate-limit pressure.",
+      },
+    },
+    {
+      question: {
+        ko: "장애가 발생했을 때는 어떻게 대응했나요?",
+        en: "How did you handle failures in the pipeline?",
+      },
+      answer: {
+        ko: "전체 파이프라인을 무조건 다시 실행하는 구조는 비효율적이기 때문에, 각 생성 단계와 결과물 단위로 로그를 남기고 실패 지점을 추적할 수 있게 했습니다. 예를 들어 여러 콘텐츠 유형 중 하나만 실패한 경우에는 전체를 재실행하지 않고, 해당 데이터만 제거하거나 다시 생성하는 방식으로 대응했습니다. 또 외부 LLM API 상태가 불안정할 때는 즉시 재시도하기보다 대기 시간을 두고 재처리하도록 설계했습니다.",
+        en: "Re-running the entire pipeline for every issue would have been inefficient, so the system logged each generation stage and output unit in a way that made failure points traceable. For example, if only one content type failed, the team could remove or regenerate only that part instead of re-running everything. When external LLM APIs were unstable, the pipeline also used delayed reprocessing instead of immediate retries.",
+      },
+    },
+    {
+      question: {
+        ko: "왜 Airflow 대신 n8n(또는 경량 자동화 구조)을 선택했나요?",
+        en: "Why did you choose n8n or a lightweight automation flow instead of Airflow?",
+      },
+      answer: {
+        ko: "이 프로젝트의 핵심은 대규모 데이터 파이프라인 그 자체보다, 비개발자도 운영 가능한 콘텐츠 생성 구조를 만드는 것이었습니다. Airflow는 강력하지만 상대적으로 무겁고, 이 프로젝트 규모에서는 운영 비용이 더 커질 수 있다고 판단했습니다. 반면 n8n 기반 구조는 콘텐츠팀이 흐름을 이해하고 제어하기 더 쉬웠고, 반복 작업을 빠르게 조정하는 데 유리했습니다. 즉, 기술적으로 가장 무거운 도구보다 실제 운영 조직에 맞는 도구를 선택한 것입니다.",
+        en: "The core goal of this project was not to build the heaviest possible data pipeline, but to create a content-generation workflow that non-developers could actually operate. Airflow is powerful, but it is also relatively heavy, and at this project scale it would likely have increased operational cost. An n8n-based flow was easier for the content team to understand and control, and it made repetitive workflow adjustments faster. In short, the choice prioritized fit with the operating team over using the biggest orchestration tool.",
+      },
+    },
+    {
+      question: {
+        ko: "이 프로젝트를 다시 만든다면 무엇을 더 개선하고 싶나요?",
+        en: "If you rebuilt this project, what would you improve further?",
+      },
+      answer: {
+        ko: "현재 구조는 생성과 검증을 안정적으로 자동화하는 데 초점이 맞춰져 있었기 때문에, 앞으로는 품질 평가 체계를 더 정량화하고 싶습니다. 예를 들어 콘텐츠 유형별 평가 지표를 더 세분화하고, 모델 선택이나 프롬프트 전략도 실험 결과에 따라 자동으로 조정되는 구조로 발전시킬 수 있습니다. 또 API 장애나 품질 저하를 더 빠르게 감지할 수 있도록 모니터링 체계도 강화하고 싶습니다.",
+        en: "The current system was focused on making generation and validation reliably automated, so the next improvement would be to make quality evaluation more quantitative. For example, evaluation metrics could be refined by content type, and model selection or prompt strategy could evolve into a system that adjusts automatically based on experiment results. I would also strengthen monitoring so API failures or quality degradation could be detected more quickly.",
+      },
+    },
+  ],
+
   umlImages: [
     {
       src: "/projects/llm-education-content-pipeline/uml-overview.svg",
