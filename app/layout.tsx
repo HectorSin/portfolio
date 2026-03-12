@@ -7,6 +7,12 @@ import PageViewTracker from "@/components/analytics/page-view-tracker";
 export const metadata: Metadata = {
   title: "Portfolio - Jaehyun Sin",
   description: "Portfolio of Jaehyun Sin",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({

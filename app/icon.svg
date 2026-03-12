@@ -1,0 +1,5 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="16" y="16" width="224" height="224" rx="56" fill="#050505"/>
+  <rect x="16" y="16" width="224" height="224" rx="56" stroke="#C3E41D" stroke-width="12"/>
+  <text x="128" y="146" text-anchor="middle" fill="#C3E41D" font-size="92" font-weight="700" font-family="'Fira Code', 'Consolas', monospace">SJ</text>
+</svg>
