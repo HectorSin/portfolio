@@ -59,7 +59,11 @@ function CategoryPreview({
   return <PlaceholderTile label={label} featured={featured} />;
 }
 
-export default function AboutHubPage() {
+interface AboutHubPageProps {
+  awardPreviewImageSrc?: string;
+}
+
+export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps) {
   const { isDark, isKorean } = useTheme();
 
   return (
@@ -77,11 +81,6 @@ export default function AboutHubPage() {
               Resume Map
             </p>
             <h2 className="mt-2 text-2xl font-bold md:text-3xl">{isKorean ? "상세 이력 카테고리" : "Detailed Sections"}</h2>
-            <p className={`mt-3 text-[15px] leading-7 ${isDark ? "text-neutral-300" : "text-neutral-800"}`}>
-              {isKorean
-                ? "가장 먼저 봐야 하는 섹션은 추천서입니다. 협업 신뢰와 평가를 중심으로 전체 구조를 읽을 수 있게 배치했습니다."
-                : "Start with recommendations first. The layout is intentionally anchored around trust and collaboration."}
-            </p>
           </div>
         </div>
 
@@ -89,7 +88,12 @@ export default function AboutHubPage() {
           {aboutCategoryCards.map((category, index) => {
             const Icon = getCategoryIcon(category.slug);
             const featured = index === 0;
-            const previewImageSrc = category.slug === "recommendations" ? recommendationItems[0]?.imageSrc : undefined;
+            const previewImageSrc =
+              category.slug === "recommendations"
+                ? recommendationItems[0]?.imageSrc
+                : category.slug === "awards"
+                  ? awardPreviewImageSrc
+                  : undefined;
 
             const content = (
               <article
@@ -143,26 +147,9 @@ export default function AboutHubPage() {
                     {pickLocalizedText(category.stat, isKorean)}
                   </span>
                   <span className="inline-flex items-center gap-2 text-sm font-semibold" style={{ color: ACCENT }}>
-                    {category.href
-                      ? isKorean
-                        ? "자세히 보기"
-                        : "Open section"
-                      : isKorean
-                        ? "준비 중"
-                        : "Planned"}
+                    {category.href ? (isKorean ? "자세히 보기" : "Open section") : isKorean ? "준비 중" : "Planned"}
                     {category.href && <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
                   </span>
-                </div>
-
-                <div className={`mt-5 h-px w-full ${isDark ? "bg-neutral-800" : "bg-neutral-200"}`} />
-                <div className={`mt-4 text-sm font-medium ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
-                  {category.href
-                    ? isKorean
-                      ? "요약과 썸네일 중심으로 먼저 공개합니다."
-                      : "Opens with preview-first content and supporting summaries."
-                    : isKorean
-                      ? "실제 자료 정리 후 순차적으로 확장됩니다."
-                      : "This section will expand as assets are prepared."}
                 </div>
               </article>
             );

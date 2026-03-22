@@ -33,11 +33,14 @@ export interface AboutDocumentItem {
 
 export interface AboutAwardItem {
   title: LocalizedText;
+  result: LocalizedText;
   organizer: LocalizedText;
   date: string;
-  description: LocalizedText;
-  thumbnailLabel: LocalizedText;
-  imageSrc?: string;
+}
+
+export interface AboutGalleryItem {
+  src: string;
+  alt: LocalizedText;
 }
 
 export interface PersonalHighlightItem {
@@ -96,7 +99,7 @@ export const aboutCategoryCards: AboutCategoryCard[] = [
       en: "Recognition and proof points in one view",
     },
     summary: {
-      ko: "대회, 프로그램, 인턴십에서 받은 성과를 시기순으로 보고 증빙 자료와 함께 정리할 예정입니다.",
+      ko: "대회, 프로그램, 인턴십에서 받은 성과를 시기순으로 확인할 수 있는 아카이브입니다.",
       en: "A compact timeline of awards and recognitions, designed to connect each item with supporting material.",
     },
     eyebrow: {
@@ -232,43 +235,262 @@ export const recommendationItems: AboutDocumentItem[] = [
 export const awardItems: AboutAwardItem[] = [
   {
     title: {
-      ko: "우수 인턴 선정",
-      en: "Outstanding Intern Recognition",
+      ko: "포트폴리오 경진대회",
+      en: "Portfolio Competition",
+    },
+    result: {
+      ko: "우수상",
+      en: "Excellence Award",
     },
     organizer: {
-      ko: "TurbineCrew",
-      en: "TurbineCrew",
+      ko: "㈜ HR브라운",
+      en: "HRBrown Co., Ltd.",
     },
-    date: "2024.02",
-    description: {
-      ko: "실시간 IoT 데이터 수집 및 적재 자동화 구현에 대한 실행력과 기여도를 인정받아 받은 성과입니다.",
-      en: "Recognition received for execution quality and contribution while building an AWS-based IoT data pipeline.",
-    },
-    thumbnailLabel: {
-      ko: "인턴 우수상 증빙 이미지 자리",
-      en: "Outstanding intern certificate slot",
-    },
+    date: "2026.01.29",
   },
   {
     title: {
-      ko: "수상 경력 샘플",
-      en: "Award Sample",
+      ko: "우수사원",
+      en: "Outstanding Employee",
+    },
+    result: {
+      ko: "우수사원",
+      en: "Outstanding Employee",
     },
     organizer: {
-      ko: "주최 기관명 추후 반영",
-      en: "Organizer to be added",
+      ko: "㈜ 터빈크루",
+      en: "TurbineCrew Co., Ltd.",
     },
-    date: "2025",
-    description: {
-      ko: "추후 실제 수상명, 주최, 설명, 사진 증빙을 연결할 수 있도록 마련한 카드입니다.",
-      en: "A prepared card for an upcoming award entry with organizer, context, and supporting image.",
+    date: "2024.02.26",
+  },
+  {
+    title: {
+      ko: "학교장추천 장학 및 일반장학금 2회",
+      en: "Principal's Recommendation Scholarship and General Scholarship (twice)",
     },
-    thumbnailLabel: {
-      ko: "수상 이미지 자리",
-      en: "Award image slot",
+    result: {
+      ko: "장학금 수혜",
+      en: "Scholarship Recipient",
     },
+    organizer: {
+      ko: "아주대학교",
+      en: "Ajou University",
+    },
+    date: "2018.12 ~ 2023.06",
+  },
+  {
+    title: {
+      ko: "경영대학 학술제",
+      en: "College of Business Administration Academic Festival",
+    },
+    result: {
+      ko: "금상 · 2위",
+      en: "Gold Prize · 2nd Place",
+    },
+    organizer: {
+      ko: "아주대학교",
+      en: "Ajou University",
+    },
+    date: "2018.10.15",
+  },
+  {
+    title: {
+      ko: "영역별 토론대회",
+      en: "Debate Competition by Category",
+    },
+    result: {
+      ko: "최우수상 · 1위",
+      en: "Grand Prize · 1st Place",
+    },
+    organizer: {
+      ko: "대구외국어고등학교",
+      en: "Daegu Foreign Language High School",
+    },
+    date: "2016.07.19",
+  },
+  {
+    title: {
+      ko: "대구외국어고등학교 모의 UN",
+      en: "Daegu Foreign Language High School Model UN",
+    },
+    result: {
+      ko: "은상 · 3위",
+      en: "Silver Prize · 3rd Place",
+    },
+    organizer: {
+      ko: "대구외국어고등학교",
+      en: "Daegu Foreign Language High School",
+    },
+    date: "2016.01.12",
+  },
+  {
+    title: {
+      ko: "대구외국어고등학교 모의 UN",
+      en: "Daegu Foreign Language High School Model UN",
+    },
+    result: {
+      ko: "동상 · 4위",
+      en: "Bronze Prize · 4th Place",
+    },
+    organizer: {
+      ko: "대구외국어고등학교",
+      en: "Daegu Foreign Language High School",
+    },
+    date: "2015.09.01",
+  },
+  {
+    title: {
+      ko: "STUDENT OF THE MONTH 수상",
+      en: "Student of the Month",
+    },
+    result: {
+      ko: "최우수상 · 1위",
+      en: "Top Honor · 1st Place",
+    },
+    organizer: {
+      ko: "Lincoln 국제학교",
+      en: "Lincoln International School",
+    },
+    date: "2012.08.31",
+  },
+  {
+    title: {
+      ko: "국제 수학 경시대회",
+      en: "International Math Competition",
+    },
+    result: {
+      ko: "세계 상위 400위 이내",
+      en: "Ranked within the Global Top 400",
+    },
+    organizer: {
+      ko: "Purple Comet! Math Meet",
+      en: "Purple Comet! Math Meet",
+    },
+    date: "2011.07.16",
+  },
+  {
+    title: {
+      ko: "교내 수학경시대회",
+      en: "School Mathematics Competition",
+    },
+    result: {
+      ko: "장려상",
+      en: "Encouragement Award",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2009.12.22",
+  },
+  {
+    title: {
+      ko: "교내디자인대회 생산디자인부분",
+      en: "School Design Competition, Product Design Division",
+    },
+    result: {
+      ko: "우수상",
+      en: "Excellence Award",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2008.05.19",
+  },
+  {
+    title: {
+      ko: "교내 과학의 날 경진대회",
+      en: "School Science Day Competition",
+    },
+    result: {
+      ko: "은상",
+      en: "Silver Prize",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2008.04.21",
+  },
+  {
+    title: {
+      ko: "교내 독서토론 활동",
+      en: "School Reading Discussion Activity",
+    },
+    result: {
+      ko: "우수상",
+      en: "Excellence Award",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2007.12.29",
+  },
+  {
+    title: {
+      ko: "대진문예축제한마당 장치 입체디자인",
+      en: "Daejin Literary Festival, Installation 3D Design",
+    },
+    result: {
+      ko: "장려상",
+      en: "Encouragement Award",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2007.10.22",
+  },
+  {
+    title: {
+      ko: "교내 과학의 날 경진대회",
+      en: "School Science Day Competition",
+    },
+    result: {
+      ko: "금상",
+      en: "Gold Prize",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2007.04.23",
+  },
+  {
+    title: {
+      ko: "대진독서축제한마당 잔치 독서 감상화",
+      en: "Daejin Reading Festival, Book Appreciation Painting",
+    },
+    result: {
+      ko: "장려상",
+      en: "Encouragement Award",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2006.10.23",
+  },
+  {
+    title: {
+      ko: "교내 동시짓기 대회",
+      en: "School Poetry Writing Contest",
+    },
+    result: {
+      ko: "장려상",
+      en: "Encouragement Award",
+    },
+    organizer: {
+      ko: "대구대진초등학교",
+      en: "Daegu Daejin Elementary School",
+    },
+    date: "2006.04.24",
   },
 ] as const;
+
+export const awardGalleryItems: AboutGalleryItem[] = [] as const;
 
 export const personalHighlights: PersonalHighlightItem[] = [
   {
@@ -283,8 +505,8 @@ export const personalHighlights: PersonalHighlightItem[] = [
   },
   {
     title: {
-      ko: "더빙과 보이스 작업",
-      en: "Dubbing & Voice Work",
+      ko: "더빙 작업",
+      en: "Dubbing Work",
     },
     description: {
       ko: "발성, 전달력, 표현을 다루는 취미 활동입니다. 관련 사진이나 포트폴리오 링크를 연결할 수 있도록 구성했습니다.",

@@ -105,9 +105,11 @@ export default function AboutPageShell({
               {eyebrow}
             </p>
             <h1 className="mt-3 w-full text-4xl font-bold tracking-tight md:text-6xl">{title}</h1>
-            <p className={`mt-5 max-w-5xl text-[17px] leading-8 md:text-[19px] ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
-              {description}
-            </p>
+            {description ? (
+              <p className={`mt-5 max-w-5xl text-[17px] leading-8 md:text-[19px] ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
+                {description}
+              </p>
+            ) : null}
           </div>
         </header>
 
