@@ -3,9 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Award, BriefcaseBusiness, FolderHeart, ShieldCheck, Sparkles, Users } from "lucide-react";
-import { aboutCategoryCards, aboutPageIntro, personalHighlights, pickLocalizedText, recommendationItems } from "@/data/about-detail";
-import { useTheme } from "@/contexts/theme-context";
+import {
+  aboutCategoryCards,
+  aboutPageIntro,
+  activityItems,
+  personalHighlights,
+  pickLocalizedText,
+  recommendationItems,
+} from "@/data/about-detail";
 import AboutPageShell from "@/components/about/about-page-shell";
+import { useTheme } from "@/contexts/theme-context";
 
 const ACCENT = "#0F766E";
 
@@ -93,7 +100,9 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                 ? recommendationItems[0]?.imageSrc
                 : category.slug === "awards"
                   ? awardPreviewImageSrc
-                  : undefined;
+                  : category.slug === "activities"
+                    ? activityItems[1]?.imageSrc
+                    : undefined;
 
             const content = (
               <article
@@ -128,11 +137,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                   </div>
                 </div>
 
-                <CategoryPreview
-                  label={pickLocalizedText(category.stat, isKorean)}
-                  featured={featured}
-                  imageSrc={previewImageSrc}
-                />
+                <CategoryPreview label={pickLocalizedText(category.stat, isKorean)} featured={featured} imageSrc={previewImageSrc} />
 
                 <p className={`mt-5 text-[12px] font-semibold uppercase tracking-[0.2em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
                   {pickLocalizedText(category.subtitle, isKorean)}
@@ -178,7 +183,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
             <h2 className="text-2xl font-bold md:text-3xl">{isKorean ? "일 바깥의 저" : "A little more personal"}</h2>
             <p className={`mt-3 text-[15px] leading-8 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
               {isKorean
-                ? "전문적인 이력 외에도 저를 설명해주는 취미와 표현 활동을 짧게 모았습니다. 이후 실제 사진과 링크를 추가해 더 입체적으로 확장할 수 있게 구성했습니다."
+                ? "일을 하지 않을 때의 저는, 하나를 붙잡고 조금씩 더 나아지는 과정을 즐기는 편입니다. 클라이밍에서는 한 번에 풀리지 않는 문제를 여러 번 시도하면서 방법을 바꿔보고, 더빙 할때는 같은 문장도 더 자연스럽게 들리도록 계속 다듬습니다. \n 이런 시간을 보내다 보니, 저는 결과를 빠르게 내기보다 과정을 이해하고 개선해 나가는 데 더 익숙한 사람이라는 걸 느끼게 됐습니다. \n 일 속에서도 자연스럽게 이어져, 문제를 쪼개서 접근하고 하나씩 해결해 나가는 방식으로 나타납니다."
                 : "This section holds short personal highlights that complement the professional story, with room for future images and links."}
             </p>
           </div>

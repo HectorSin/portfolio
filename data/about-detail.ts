@@ -38,6 +38,15 @@ export interface AboutAwardItem {
   date: string;
 }
 
+export interface AboutActivityItem {
+  title: LocalizedText;
+  organizer: LocalizedText;
+  dateRange: string;
+  summary: LocalizedText;
+  highlights: LocalizedText[];
+  imageSrc?: string;
+}
+
 export interface AboutGalleryItem {
   src: string;
   alt: LocalizedText;
@@ -124,18 +133,19 @@ export const aboutCategoryCards: AboutCategoryCard[] = [
       en: "Programs, events, and external participation",
     },
     summary: {
-      ko: "프로젝트 외적으로 참여했던 프로그램과 활동들을 정리할 예정입니다.",
-      en: "A curated archive of academic and external programs will be added here next.",
+      ko: "경기 청년 갭이어, 데이터 해커톤, 동계 모각소까지 프로젝트 밖에서 쌓아온 학습과 실행 경험을 모아두었습니다.",
+      en: "A compact archive of learning and execution outside project work, from the Youth Gap Year program to a data hackathon and winter study group.",
     },
     eyebrow: {
-      ko: "추가 예정",
-      en: "Coming soon",
+      ko: "실전 경험 아카이브",
+      en: "Hands-on archive",
     },
     accent: "#0F766E",
     stat: {
-      ko: "정리 중",
-      en: "In progress",
+      ko: "이미지 포함 3건",
+      en: "3 entries with images",
     },
+    href: "/about/activities",
   },
   {
     slug: "clubs",
@@ -491,6 +501,99 @@ export const awardItems: AboutAwardItem[] = [
 ] as const;
 
 export const awardGalleryItems: AboutGalleryItem[] = [] as const;
+
+export const activityItems: AboutActivityItem[] = [
+  {
+    title: {
+      ko: "경기도일자리재단 경기 청년 갭이어",
+      en: "Gyeonggi Job Foundation Youth Gap Year Program",
+    },
+    organizer: {
+      ko: "경기도일자리재단",
+      en: "Gyeonggi Job Foundation",
+    },
+    dateRange: "2024.04 ~ 2024.12",
+    summary: {
+      ko: "경기도 지원 청년 직무역량 강화 프로그램에 참여하며 AI 서비스 기획과 모델 활용 역량을 실전형으로 확장했습니다.",
+      en: "Joined a Gyeonggi-do supported youth upskilling program focused on hands-on AI service planning and model application.",
+    },
+    imageSrc: "/about/activities/경기청년갭이어.png",
+    highlights: [
+      {
+        ko: "초등학생 그림을 AI로 완성하는 'AI 스케치북' 서비스 기획 및 개발",
+        en: "Planned and developed the 'AI Sketchbook' service that completes elementary students' drawings with AI.",
+      },
+      {
+        ko: "ControlNet 활용 스케치-일러스트 변환 파이프라인 구축",
+        en: "Built a ControlNet-based sketch-to-illustration conversion pipeline.",
+      },
+      {
+        ko: "현업 멘토링을 통해 서비스 관점의 AI 모델 튜닝 역량 심화",
+        en: "Deepened AI model tuning skills through industry mentoring with a product and service perspective.",
+      },
+    ],
+  },
+  {
+    title: {
+      ko: "아주대학교 인공지능융합학과 Data 해커톤",
+      en: "Ajou University AI Convergence Department Data Hackathon",
+    },
+    organizer: {
+      ko: "아주대학교 인공지능융합학과",
+      en: "Department of AI Convergence, Ajou University",
+    },
+    dateRange: "2023.03 ~ 2023.03",
+    summary: {
+      ko: "경찰청 범죄 통계 데이터를 활용해 차년도 검거율을 예측하고 치안 전략을 제안하는 경진대회에 참여했습니다.",
+      en: "Participated in a competition that predicted next-year arrest rates from police crime statistics and proposed policing strategies.",
+    },
+    imageSrc: "/about/activities/데이터해커톤.jpg",
+    highlights: [
+      {
+        ko: "범죄 발생·검거 공공 데이터 전처리 및 탐색적 데이터 분석(EDA) 수행",
+        en: "Preprocessed public crime occurrence and arrest datasets and conducted exploratory data analysis.",
+      },
+      {
+        ko: "시계열 회귀 분석 모델을 설계해 미래 검거율 예측",
+        en: "Designed a time-series regression model to forecast future arrest rates.",
+      },
+      {
+        ko: "예측 결과를 바탕으로 범죄 취약점 분석 및 치안 전략 제안",
+        en: "Used the predictions to analyze crime vulnerabilities and suggest public safety strategies.",
+      },
+    ],
+  },
+  {
+    title: {
+      ko: "아주대학교 SW 융합교육원 2022년 동계 모각소",
+      en: "Ajou University SW Convergence Institute 2022 Winter Group Study",
+    },
+    organizer: {
+      ko: "아주대학교 SW 융합교육원",
+      en: "SW Convergence Institute, Ajou University",
+    },
+    dateRange: "2022.12 ~ 2023.03",
+    summary: {
+      ko: "방학 기간 자기주도적 그룹 스터디로 머신러닝과 딥러닝 기초를 체계적으로 심화한 활동입니다.",
+      en: "A self-directed winter group study that strengthened core machine learning and deep learning foundations during the break.",
+    },
+    imageSrc: "/about/activities/모각소.jpg",
+    highlights: [
+      {
+        ko: "Pandas, Scikit-learn 활용 ML/DL 기초 알고리즘 심화 스터디",
+        en: "Studied core ML and DL algorithms in depth using Pandas and Scikit-learn.",
+      },
+      {
+        ko: "캐글·데이콘 예제 데이터 활용 전처리 및 모델링 실습",
+        en: "Practiced preprocessing and modeling with example datasets from Kaggle and Dacon.",
+      },
+      {
+        ko: "주 1회 정기 모임에서 코드 리뷰 및 피어 러닝 수행",
+        en: "Ran weekly meetings centered on code review and peer learning.",
+      },
+    ],
+  },
+] as const;
 
 export const personalHighlights: PersonalHighlightItem[] = [
   {
