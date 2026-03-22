@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 import { useTheme } from "@/contexts/theme-context";
 import { profileData, t } from "@/data/profile";
@@ -167,6 +168,24 @@ export default function About() {
               >
                 &ldquo;{t(profileData.quote, isKorean)}&rdquo;
               </blockquote>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/about"
+                  className={`inline-flex items-center rounded-full border px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-all hover:-translate-y-0.5 ${
+                    isDark
+                      ? "border-neutral-700 bg-neutral-950 text-neutral-100 hover:border-[#C3E41D]"
+                      : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900"
+                  }`}
+                >
+                  {isKorean ? "상세 소개 페이지 보기" : "Open detailed profile"}
+                </Link>
+                <p className={`text-sm ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
+                  {isKorean
+                    ? "추천서, 수상, 활동, 취미 아카이브로 이어집니다."
+                    : "Continue to recommendations, awards, activities, and personal highlights."}
+                </p>
+              </div>
             </div>
           </div>
         </div>
