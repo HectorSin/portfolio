@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { AboutAwardItem, AboutDocumentItem, LocalizedText } from "@/data/about-detail";
 import { pickLocalizedText } from "@/data/about-detail";
@@ -19,10 +20,20 @@ interface AboutDetailPageProps {
 function PreviewCard({
   label,
   accent,
+  imageSrc,
 }: {
   label: string;
   accent: string;
+  imageSrc?: string;
 }) {
+  if (imageSrc) {
+    return (
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-black/5">
+        <Image src={imageSrc} alt={label} fill sizes="(max-width: 768px) 100vw, 320px" className="object-cover" />
+      </div>
+    );
+  }
+
   return (
     <div
       className="flex aspect-[4/3] items-end rounded-[1.5rem] p-5"
@@ -45,7 +56,7 @@ export default function AboutDetailPage({
   itemType,
 }: AboutDetailPageProps) {
   const { isDark, isKorean } = useTheme();
-  const accent = itemType === "recommendation" ? "#C3E41D" : "#7DD3FC";
+  const accent = "#0F766E";
 
   return (
     <AboutPageShell
@@ -57,8 +68,22 @@ export default function AboutDetailPage({
     >
       <section className="grid gap-5">
         {items.map((item, index) => {
-          const metaLabel = itemType === "recommendation" ? "issuer" in item ? item.issuer : null : "organizer" in item ? item.organizer : null;
-          const bodyText = itemType === "recommendation" ? ("summary" in item ? item.summary : null) : "description" in item ? item.description : null;
+          const metaLabel =
+            itemType === "recommendation"
+              ? "issuer" in item
+                ? item.issuer
+                : null
+              : "organizer" in item
+                ? item.organizer
+                : null;
+          const bodyText =
+            itemType === "recommendation"
+              ? "summary" in item
+                ? item.summary
+                : null
+              : "description" in item
+                ? item.description
+                : null;
           const actionLabel =
             itemType === "recommendation"
               ? isKorean
@@ -78,6 +103,7 @@ export default function AboutDetailPage({
               <PreviewCard
                 label={pickLocalizedText(item.thumbnailLabel, isKorean)}
                 accent={accent}
+                imageSrc={"imageSrc" in item ? item.imageSrc : undefined}
               />
 
               <div className="min-w-0">
@@ -100,6 +126,8 @@ export default function AboutDetailPage({
                   {"assetUrl" in item && item.assetUrl ? (
                     <Link
                       href={item.assetUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={`inline-flex rounded-full border px-4 py-2 text-sm font-semibold transition-opacity hover:opacity-80 ${
                         isDark ? "border-neutral-700 bg-black/40" : "border-neutral-300 bg-neutral-50"
                       }`}
@@ -107,9 +135,11 @@ export default function AboutDetailPage({
                       {isKorean ? "원본 보기" : "Open original"}
                     </Link>
                   ) : (
-                    <span className={`inline-flex rounded-full border px-4 py-2 text-sm font-semibold ${
-                      isDark ? "border-neutral-800 bg-black/40 text-neutral-300" : "border-neutral-300 bg-neutral-50 text-neutral-700"
-                    }`}>
+                    <span
+                      className={`inline-flex rounded-full border px-4 py-2 text-sm font-semibold ${
+                        isDark ? "border-neutral-800 bg-black/40 text-neutral-300" : "border-neutral-300 bg-neutral-50 text-neutral-700"
+                      }`}
+                    >
                       {actionLabel}
                     </span>
                   )}

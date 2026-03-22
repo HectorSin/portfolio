@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Award, BriefcaseBusiness, FolderHeart, ShieldCheck, Sparkles, Users } from "lucide-react";
-import { aboutCategoryCards, aboutPageIntro, personalHighlights, pickLocalizedText } from "@/data/about-detail";
+import { aboutCategoryCards, aboutPageIntro, personalHighlights, pickLocalizedText, recommendationItems } from "@/data/about-detail";
 import { useTheme } from "@/contexts/theme-context";
 import AboutPageShell from "@/components/about/about-page-shell";
 
@@ -38,6 +39,26 @@ function PlaceholderTile({ label, featured = false }: { label: string; featured?
   );
 }
 
+function CategoryPreview({
+  label,
+  featured,
+  imageSrc,
+}: {
+  label: string;
+  featured: boolean;
+  imageSrc?: string;
+}) {
+  if (imageSrc) {
+    return (
+      <div className={`relative overflow-hidden rounded-[1.75rem] ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
+        <Image src={imageSrc} alt={label} fill sizes="(max-width: 1280px) 100vw, 720px" className="object-cover" />
+      </div>
+    );
+  }
+
+  return <PlaceholderTile label={label} featured={featured} />;
+}
+
 export default function AboutHubPage() {
   const { isDark, isKorean } = useTheme();
 
@@ -49,35 +70,6 @@ export default function AboutHubPage() {
       backHref="/#about"
       backLabel={isKorean ? "메인 소개로 돌아가기" : "Back to about section"}
     >
-      <section className="mb-10 grid gap-4 md:grid-cols-3">
-        {[
-          {
-            label: isKorean ? "1차 오픈" : "Phase 1",
-            value: isKorean ? "추천서 · 수상" : "Recommendations · Awards",
-          },
-          {
-            label: isKorean ? "콘텐츠 형식" : "Format",
-            value: isKorean ? "썸네일 + 요약 + 추후 원본 연결" : "Preview + summary + later originals",
-          },
-          {
-            label: isKorean ? "확장 예정" : "Next",
-            value: isKorean ? "활동 · 동아리 · 봉사" : "Activities · clubs · volunteer",
-          },
-        ].map((item) => (
-          <article
-            key={item.label}
-            className={`rounded-[1.5rem] border px-5 py-4 ${
-              isDark ? "border-neutral-800 bg-neutral-950/65" : "border-neutral-300 bg-white/85"
-            }`}
-          >
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
-              {item.label}
-            </p>
-            <p className={`mt-2 text-[15px] font-semibold leading-6 ${isDark ? "text-neutral-100" : "text-neutral-900"}`}>{item.value}</p>
-          </article>
-        ))}
-      </section>
-
       <section className="mb-18">
         <div className="mb-8 flex items-end justify-between gap-6">
           <div>
@@ -97,6 +89,7 @@ export default function AboutHubPage() {
           {aboutCategoryCards.map((category, index) => {
             const Icon = getCategoryIcon(category.slug);
             const featured = index === 0;
+            const previewImageSrc = category.slug === "recommendations" ? recommendationItems[0]?.imageSrc : undefined;
 
             const content = (
               <article
@@ -131,7 +124,11 @@ export default function AboutHubPage() {
                   </div>
                 </div>
 
-                <PlaceholderTile label={pickLocalizedText(category.stat, isKorean)} featured={featured} />
+                <CategoryPreview
+                  label={pickLocalizedText(category.stat, isKorean)}
+                  featured={featured}
+                  imageSrc={previewImageSrc}
+                />
 
                 <p className={`mt-5 text-[12px] font-semibold uppercase tracking-[0.2em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
                   {pickLocalizedText(category.subtitle, isKorean)}

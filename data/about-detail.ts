@@ -187,41 +187,45 @@ export const aboutCategoryCards: AboutCategoryCard[] = [
 export const recommendationItems: AboutDocumentItem[] = [
   {
     title: {
-      ko: "추천서 샘플 1",
-      en: "Recommendation Sample 1",
+      ko: "강민철 교수님 추천서",
+      en: "Recommendation from Prof. Kang Mincheol",
     },
     issuer: {
-      ko: "협업 담당자 / 추후 실명 반영",
-      en: "Collaborator / name to be added",
+      ko: "강민철 교수님",
+      en: "Prof. Kang Mincheol",
     },
     date: "2025",
     summary: {
-      ko: "프로젝트 실행력, 빠른 학습 속도, 그리고 실무 커뮤니케이션 역량을 중심으로 정리할 추천서 자리입니다.",
-      en: "Reserved for a recommendation that highlights execution quality, rapid learning, and practical communication.",
+      ko: "강민철 교수님의 추천서 원본입니다. 실제 협업 맥락과 평가 포인트를 PDF 원본으로 바로 확인할 수 있습니다.",
+      en: "Original recommendation letter from Prof. Kang Mincheol. The PDF opens the full context and evaluation directly.",
     },
     thumbnailLabel: {
-      ko: "추천서 원본 썸네일 자리",
-      en: "Recommendation preview slot",
+      ko: "강민철 교수님 추천서 미리보기",
+      en: "Prof. Kang Mincheol recommendation preview",
     },
+    imageSrc: "/about/recommendations/recommendation-prof-kang-mincheol.png",
+    assetUrl: "/about/recommendations/recommendation-prof-kang-mincheol.pdf",
   },
   {
     title: {
-      ko: "추천서 샘플 2",
-      en: "Recommendation Sample 2",
+      ko: "최재영 교수님 추천서",
+      en: "Recommendation from Prof. Choi Jaeyoung",
     },
     issuer: {
-      ko: "교수님 또는 팀 리드 / 추후 반영",
-      en: "Professor or team lead / to be added",
+      ko: "최재영 교수님",
+      en: "Prof. Choi Jaeyoung",
     },
-    date: "2024",
+    date: "2025",
     summary: {
-      ko: "협업 태도, 문제 해결 방식, 책임감에 대한 코멘트를 담을 두 번째 추천서 영역입니다.",
-      en: "A second slot for recommendation content focused on ownership, collaboration style, and problem solving.",
+      ko: "최재영 교수님의 추천서 원본입니다. 추천 내용은 페이지에서 요약하고, 원문은 PDF로 직접 열람할 수 있도록 연결했습니다.",
+      en: "Original recommendation letter from Prof. Choi Jaeyoung. The page gives the overview, and the PDF provides the complete letter.",
     },
     thumbnailLabel: {
-      ko: "두 번째 추천서 자리",
-      en: "Second recommendation slot",
+      ko: "최재영 교수님 추천서 미리보기",
+      en: "Prof. Choi Jaeyoung recommendation preview",
     },
+    imageSrc: "/about/recommendations/recommendation-prof-choi-jaeyoung.png",
+    assetUrl: "/about/recommendations/recommendation-prof-choi-jaeyoung.pdf",
   },
 ] as const;
 
