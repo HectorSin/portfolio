@@ -35,7 +35,7 @@ function getCategoryIcon(slug: string) {
 function PlaceholderTile({ label, featured = false }: { label: string; featured?: boolean }) {
   return (
     <div
-      className={`flex items-end rounded-[1.75rem] p-5 ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}
+      className="flex aspect-[4/3] items-end rounded-[1.75rem] p-5"
       style={{
         background: featured
           ? "linear-gradient(135deg, rgba(15,118,110,0.42) 0%, rgba(255,255,255,0.02) 100%)"
@@ -58,7 +58,7 @@ function CategoryPreview({
 }) {
   if (imageSrc) {
     return (
-      <div className={`relative overflow-hidden rounded-[1.75rem] ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem]">
         <Image src={imageSrc} alt={label} fill sizes="(max-width: 1280px) 100vw, 720px" className="object-cover" />
       </div>
     );
