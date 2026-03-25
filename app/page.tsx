@@ -5,6 +5,7 @@ const About = dynamic(() => import("@/components/main/about"));
 const Projects = dynamic(() => import("@/components/main/projects"));
 const TechStack = dynamic(() => import("@/components/main/tech-stack"));
 const Experience = dynamic(() => import("@/components/main/experience"));
+const FeedbackDashboard = dynamic(() => import("@/components/main/feedback-dashboard"));
 const Contact = dynamic(() => import("@/components/main/contact"));
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <TechStack />
       <Experience />
       <Contact />
+      <FeedbackDashboard />
     </main>
   );
 }

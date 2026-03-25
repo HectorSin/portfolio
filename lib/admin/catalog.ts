@@ -29,10 +29,17 @@ export const CLICK_CHECK_API_CATALOG: ApiCatalogItem[] = [
     branchWork: "Admin analytics stats with IP/revisit metrics",
   },
   {
-    path: "/api/chat",
+    path: "/api/feedback/public",
+    method: "GET",
+    auth: "public",
+    description: "Returns public feedback dashboard aggregate stats only.",
+    branchWork: "Public feedback metrics for homepage dashboard",
+  },
+  {
+    path: "/api/feedback",
     method: "POST",
     auth: "public",
-    description: "Chat completion endpoint with rate limit and Q/A logging.",
-    branchWork: "Chat logging persistence to Postgres",
+    description: "Stores portfolio feedback with optional email contact.",
+    branchWork: "Feedback intake persistence to Postgres",
   },
 ];

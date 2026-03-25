@@ -5,7 +5,7 @@ import { getAdminOverview } from "@/lib/admin/overview";
 
 export const metadata: Metadata = {
   title: "Admin Stats",
-  description: "Admin analytics and chat logs overview",
+  description: "Admin analytics and portfolio feedback overview",
 };
 
 export default async function AdminStatsPage() {

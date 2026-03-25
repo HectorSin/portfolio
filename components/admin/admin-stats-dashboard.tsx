@@ -84,7 +84,7 @@ export default function AdminStatsDashboard({
 
       if (!response.ok) {
         setStatus("error");
-        setError("관리자 데이터를 불러오지 못했습니다.");
+        setError("관리자 개요를 불러오지 못했습니다.");
         return;
       }
 
@@ -93,7 +93,7 @@ export default function AdminStatsDashboard({
       setStatus("ready");
     } catch {
       setStatus("error");
-      setError("네트워크 오류로 데이터를 불러오지 못했습니다.");
+      setError("관리자 개요를 불러오는 중 오류가 발생했습니다.");
     }
   }, []);
 
@@ -115,7 +115,7 @@ export default function AdminStatsDashboard({
 
         if (!response.ok) {
           setStatus("unauthorized");
-          setError("토큰이 올바르지 않습니다.");
+          setError("관리자 토큰이 올바르지 않습니다.");
           setIsAuthenticating(false);
           return;
         }
@@ -125,7 +125,7 @@ export default function AdminStatsDashboard({
         setIsAuthenticating(false);
       } catch {
         setStatus("unauthorized");
-        setError("로그인 요청에 실패했습니다.");
+        setError("로그인 요청 중 오류가 발생했습니다.");
         setIsAuthenticating(false);
       }
     },
@@ -163,7 +163,7 @@ export default function AdminStatsDashboard({
       <div className="mx-auto max-w-lg rounded-xl border border-neutral-300 bg-white p-6 shadow-sm">
         <h1 className="text-xl font-bold">Admin Access</h1>
         <p className="mt-2 text-sm text-neutral-600">
-          `ADMIN_STATS_TOKEN`을 입력해야 관리자 통계 페이지에 접근할 수 있습니다.
+          `ADMIN_STATS_TOKEN` 값을 입력해 관리자 대시보드에 접근합니다.
         </p>
         <form className="mt-4 space-y-3" onSubmit={onLogin}>
           <input
@@ -219,7 +219,7 @@ export default function AdminStatsDashboard({
       </div>
 
       <section className="rounded-xl border border-neutral-300 bg-white p-4">
-        <h2 className="text-lg font-semibold">API Catalog (click_check)</h2>
+        <h2 className="text-lg font-semibold">API Catalog</h2>
         <div className="mt-3 overflow-x-auto">
           <table className="min-w-full text-left text-sm">
             <thead className="text-neutral-600">
@@ -312,63 +312,49 @@ export default function AdminStatsDashboard({
       </section>
 
       <section className="rounded-xl border border-neutral-300 bg-white p-4">
-        <h2 className="text-lg font-semibold">Chat Logs</h2>
+        <h2 className="text-lg font-semibold">Feedback Inbox</h2>
         <div className="mt-3 grid gap-3 md:grid-cols-4">
           <div className="rounded border border-neutral-200 p-3">
-            <p className="text-xs text-neutral-600">Total Logs</p>
-            <p className="text-xl font-semibold">{metricValue(overview.chatSummary.totalLogs)}</p>
+            <p className="text-xs text-neutral-600">Total Feedback</p>
+            <p className="text-xl font-semibold">{metricValue(overview.feedbackSummary.totalEntries)}</p>
           </div>
           <div className="rounded border border-neutral-200 p-3">
             <p className="text-xs text-neutral-600">Last 24h</p>
-            <p className="text-xl font-semibold">{metricValue(overview.chatSummary.last24hLogs)}</p>
+            <p className="text-xl font-semibold">{metricValue(overview.feedbackSummary.last24hEntries)}</p>
           </div>
           <div className="rounded border border-neutral-200 p-3">
-            <p className="text-xs text-neutral-600">Error Rate</p>
-            <p className="text-xl font-semibold">{percentValue(overview.chatSummary.errorRate)}</p>
+            <p className="text-xs text-neutral-600">With Email</p>
+            <p className="text-xl font-semibold">{metricValue(overview.feedbackSummary.withEmailEntries)}</p>
           </div>
           <div className="rounded border border-neutral-200 p-3">
-            <p className="text-xs text-neutral-600">Public Total Visits</p>
-            <p className="text-xl font-semibold">{metricValue(overview.publicStats.totalVisits)}</p>
+            <p className="text-xs text-neutral-600">Email Share Rate</p>
+            <p className="text-xl font-semibold">{percentValue(overview.feedbackSummary.withEmailRate)}</p>
           </div>
         </div>
 
-        <div className="mt-5">
-          <h3 className="text-sm font-semibold">Model Distribution</h3>
-          <ul className="mt-2 space-y-1 text-sm text-neutral-700">
-            {overview.chatSummary.models.map((item) => (
-              <li key={item.model} className="flex justify-between rounded border border-neutral-200 px-2 py-1">
-                <span className="font-mono text-xs">{item.model}</span>
-                <span>{metricValue(item.count)}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mt-5">
-          <h3 className="text-sm font-semibold">Recent Chat Logs (Masked)</h3>
-          <div className="mt-2 space-y-2">
-            {overview.recentChatLogs.map((row) => (
+        <div className="mt-5 space-y-2">
+          {overview.recentFeedback.length === 0 ? (
+            <p className="text-sm text-neutral-500">No feedback has been submitted yet.</p>
+          ) : (
+            overview.recentFeedback.map((row) => (
               <details key={row.id} className="rounded border border-neutral-200 p-3">
                 <summary className="cursor-pointer text-sm font-medium">
-                  #{row.id} [{row.model}] {row.createdAt} | IP: {row.ip}
+                  #{row.id} {row.createdAt} | IP: {row.ip}
                 </summary>
-                <div className="mt-2 space-y-2 text-xs">
+                <div className="mt-3 space-y-2 text-sm">
                   <p>
-                    <span className="font-semibold">Q:</span> {row.question}
+                    <span className="font-semibold">Feedback:</span> {row.message}
                   </p>
                   <p>
-                    <span className="font-semibold">A:</span> {row.answer ?? "-"}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Error:</span> {row.error ?? "-"}
+                    <span className="font-semibold">Email:</span> {row.email ?? "-"}
                   </p>
                   <p>
                     <span className="font-semibold">Referer:</span> {row.referer}
                   </p>
                 </div>
               </details>
-            ))}
-          </div>
+            ))
+          )}
         </div>
       </section>
     </div>
