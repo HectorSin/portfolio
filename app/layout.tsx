@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/theme-context";
-import ChatWidget from "@/components/chat/chat-widget";
 import PageViewTracker from "@/components/analytics/page-view-tracker";
 
 export const metadata: Metadata = {
@@ -32,7 +31,6 @@ export default function RootLayout({
         <ThemeProvider>
           <PageViewTracker />
           {children}
-          <ChatWidget />
         </ThemeProvider>
       </body>
     </html>

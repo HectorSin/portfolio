@@ -1,6 +1,6 @@
 import { CLICK_CHECK_API_CATALOG } from "@/lib/admin/catalog";
 import { getAdminStats, getTotalVisits } from "@/lib/analytics/db";
-import { getChatLogSummary, getRecentChatLogs } from "@/lib/chat/admin";
+import { getFeedbackSummary, getRecentFeedback } from "@/lib/feedback/db";
 
 export type AdminOverviewResponse = {
   analytics: Awaited<ReturnType<typeof getAdminStats>>;
@@ -8,8 +8,8 @@ export type AdminOverviewResponse = {
     totalVisits: number;
     updatedAt: string;
   };
-  chatSummary: Awaited<ReturnType<typeof getChatLogSummary>>;
-  recentChatLogs: Awaited<ReturnType<typeof getRecentChatLogs>>;
+  feedbackSummary: Awaited<ReturnType<typeof getFeedbackSummary>>;
+  recentFeedback: Awaited<ReturnType<typeof getRecentFeedback>>;
   apiCatalog: typeof CLICK_CHECK_API_CATALOG;
   generatedAt: string;
 };
@@ -50,11 +50,11 @@ function maskText(text: string | null, visibleLength = 120): string | null {
 }
 
 export async function getAdminOverview(): Promise<AdminOverviewResponse> {
-  const [analytics, totalVisits, chatSummary, recentChatLogsRaw] = await Promise.all([
+  const [analytics, totalVisits, feedbackSummary, recentFeedbackRaw] = await Promise.all([
     getAdminStats(),
     getTotalVisits(),
-    getChatLogSummary(),
-    getRecentChatLogs(50),
+    getFeedbackSummary(),
+    getRecentFeedback(50),
   ]);
 
   return {
@@ -63,13 +63,11 @@ export async function getAdminOverview(): Promise<AdminOverviewResponse> {
       totalVisits,
       updatedAt: new Date().toISOString(),
     },
-    chatSummary,
-    recentChatLogs: recentChatLogsRaw.map((row) => ({
+    feedbackSummary,
+    recentFeedback: recentFeedbackRaw.map((row) => ({
       ...row,
       ip: maskIp(row.ip),
-      question: maskText(row.question) ?? "",
-      answer: maskText(row.answer, 200),
-      error: maskText(row.error, 200),
+      message: maskText(row.message, 240) ?? "",
     })),
     apiCatalog: CLICK_CHECK_API_CATALOG,
     generatedAt: new Date().toISOString(),
