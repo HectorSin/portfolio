@@ -30,34 +30,46 @@ export default function FeedbackDashboard() {
   const copy = useMemo(
     () => ({
       sectionId: "feedback",
-      eyebrow: isKorean ? "PORTFOLIO SIGNALS" : "PORTFOLIO SIGNALS",
-      title: isKorean ? "포트폴리오에 대한 생각을 남겨주세요." : "Leave your thoughts on this portfolio.",
-      description: isKorean
-        ? "인상 깊었던 점, 아쉬웠던 점, 더 보고 싶은 작업을 남겨주시면 실제 업데이트에 반영하고 있습니다."
-        : "Share what stood out, what felt weak, or what you want to see next. I use real feedback to keep improving this portfolio.",
-      messageLabel: isKorean ? "감상평" : "Feedback",
+      eyebrow: "PORTFOLIO SIGNALS",
+      title: isKorean
+        ? "포트폴리오에 대한　피드백을 남겨주세요."
+        : "Leave feedback on this portfolio.",
+      descriptionLine1: isKorean
+        ? "인상 깊었던 점이나 아쉬웠던 점, 더 보고 싶은 작업을 남겨주시면 실제 업데이트에 반영하고 있습니다."
+        : "Share what stood out, what felt weak, or what you want to see next. Real feedback shapes real updates here.",
+      descriptionLine2: isKorean
+        ? "아래 입력창에 편하게 남겨주세요."
+        : "Use the form below and leave your thoughts freely.",
+      messageLabel: isKorean ? "피드백" : "Feedback",
       messagePlaceholder: isKorean
-        ? "어떤 점이 좋았는지, 아쉬웠는지 자유롭게 남겨주세요."
-        : "Share freely what worked well and what felt missing.",
+        ? "좋았던 점이나 아쉬웠던 점을 편하게 남겨주세요. (짧아도 괜찮습니다)"
+        : "Feel free to share what worked well or what felt missing.",
       emailLabel: isKorean ? "이메일 (선택)" : "Email (optional)",
-      emailPlaceholder: isKorean ? "reply@example.com" : "reply@example.com",
+      emailPlaceholder: "reply@example.com",
       submit: isKorean ? "피드백 보내기" : "Send feedback",
       submitting: isKorean ? "저장 중..." : "Saving...",
-      statsTitle: isKorean ? "피드백 남기기" : "Send Feedback",
-      total: isKorean ? "누적 감상평" : "Total feedback",
+      formTitle: isKorean ? "피드백 남기기" : "Send Feedback",
+      total: isKorean ? "누적 피드백" : "Total feedback",
       recent: isKorean ? "최근 7일" : "Last 7 days",
       contactRate: isKorean ? "연락처 남긴 비율" : "Contact share rate",
       note: isKorean
-        ? "남겨주신 피드백과 이메일은 공개되지 않으며, 포트폴리오 개선을 위한 내부 참고 용도로만 사용됩니다."
-        : "Your feedback and email stay private and are only used internally to improve the portfolio.",
-      success: isKorean ? "감상평이 저장되었습니다." : "Feedback saved.",
-      error: isKorean ? "감상평 저장에 실패했습니다. 잠시 후 다시 시도해주세요." : "Failed to save feedback. Please try again shortly.",
-      validation: isKorean ? "감상평 내용을 먼저 입력해주세요." : "Please enter your feedback first.",
+        ? "남겨주신 피드백과 이메일은 외부에 공개되지 않으며, 포트폴리오 개선을 위한 참고 용도로만 사용됩니다."
+        : "Your feedback and email are never shown publicly and are only used to improve the portfolio.",
+      success: isKorean ? "피드백이 저장되었습니다." : "Feedback saved.",
+      error: isKorean
+        ? "피드백 저장에 실패했습니다. 잠시 후 다시 시도해주세요."
+        : "Failed to save feedback. Please try again shortly.",
+      validation: isKorean
+        ? "피드백 내용을 먼저 입력해주세요."
+        : "Please enter your feedback first.",
       updatedAt: isKorean ? "업데이트" : "Updated",
-      waitingTitle: isKorean ? "첫 피드백을 기다리고 있습니다." : "Waiting for the first feedback.",
+      waitingTitle: isKorean
+        ? "첫 피드백이 이 섹션을 만듭니다."
+        : "The first feedback shapes this section.",
       waitingBody: isKorean
-        ? "이 섹션은 실제 방문자 의견을 바탕으로 계속 업데이트됩니다."
-        : "This section will start filling as real visitors leave feedback.",
+        ? "이 공간은 실제 방문자의 피드백으로 채워집니다."
+        : "This space will be filled with real visitor feedback.",
+      comingSoon: "Coming Soon",
     }),
     [isKorean]
   );
@@ -136,25 +148,43 @@ export default function FeedbackDashboard() {
     { label: copy.recent, value: stats.last7dEntries.toLocaleString() },
     { label: copy.contactRate, value: `${stats.withEmailRate.toFixed(1)}%` },
   ];
+
   const hasFeedback = stats.totalEntries > 0;
 
   return (
-    <section
-      id={copy.sectionId}
-      className="min-h-screen px-6 py-20"
-      style={surfaceStyle}
-    >
+    <section id={copy.sectionId} className="min-h-screen px-6 py-20" style={surfaceStyle}>
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className={`${cardClassName} overflow-hidden p-8 md:p-10`}>
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500">
               {copy.eyebrow}
             </p>
-            <h2 className="mt-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl" style={{ color: "#C3E41D" }}>
+            <h2
+              className="mt-5 max-w-3xl text-4xl font-bold leading-tight md:text-6xl"
+              style={{ color: "#C3E41D" }}
+            >
               {copy.title}
             </h2>
-            <p className={`mt-6 max-w-2xl text-lg leading-relaxed ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
-              {copy.description}
+            <p
+              className={`mt-6 max-w-2xl text-lg leading-relaxed ${
+                isDark ? "text-neutral-300" : "text-neutral-700"
+              }`}
+            >
+              {isKorean ? (
+                <>
+                  인상 깊었던 점이나 아쉬웠던 점, 더 보고 싶은 작업을 남겨주시면 실제{" "}
+                  <strong>업데이트에 반영</strong>하고 있습니다.
+                </>
+              ) : (
+                copy.descriptionLine1
+              )}
+            </p>
+            <p
+              className={`mt-4 max-w-2xl text-base leading-relaxed ${
+                isDark ? "text-neutral-100" : "text-neutral-900"
+              }`}
+            >
+              <strong>{copy.descriptionLine2}</strong>
             </p>
 
             {hasFeedback ? (
@@ -162,36 +192,65 @@ export default function FeedbackDashboard() {
                 {statCards.map((card) => (
                   <div
                     key={card.label}
-                    className={`rounded-3xl border p-5 ${isDark ? "border-white/10 bg-black/40" : "border-black/10 bg-black/[0.03]"}`}
+                    className={`rounded-3xl border p-5 ${
+                      isDark ? "border-white/10 bg-black/40" : "border-black/10 bg-black/[0.03]"
+                    }`}
                   >
-                    <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">{card.label}</p>
+                    <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">
+                      {card.label}
+                    </p>
                     <p className="mt-3 text-3xl font-bold">{card.value}</p>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className={`mt-10 rounded-[28px] border p-6 ${isDark ? "border-white/10 bg-black/40" : "border-black/10 bg-black/[0.03]"}`}>
+              <div
+                className={`mt-12 rounded-[28px] border p-6 ${
+                  isDark ? "border-white/10 bg-black/30" : "border-black/10 bg-black/[0.02]"
+                }`}
+              >
                 <p className="text-sm font-semibold uppercase tracking-[0.25em] text-neutral-500">
-                  Coming Soon
+                  {copy.comingSoon}
                 </p>
-                <p className="mt-3 text-2xl font-bold">{copy.waitingTitle}</p>
-                <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
+                <p className="mt-3 text-2xl font-bold">
+                  {isKorean ? (
+                    <>
+                      첫 피드백이 <strong>이 섹션을 만듭니다.</strong>
+                    </>
+                  ) : (
+                    copy.waitingTitle
+                  )}
+                </p>
+                <p
+                  className={`mt-3 text-sm leading-relaxed ${
+                    isDark ? "text-neutral-300" : "text-neutral-700"
+                  }`}
+                >
                   {copy.waitingBody}
                 </p>
               </div>
             )}
 
-            <div className={`mt-8 rounded-3xl border p-5 ${isDark ? "border-lime-400/20 bg-lime-400/5 text-neutral-300" : "border-lime-600/20 bg-lime-100/60 text-neutral-700"}`}>
+            <div
+              className={`mt-8 rounded-3xl border p-5 ${
+                isDark
+                  ? "border-lime-400/20 bg-lime-400/5 text-neutral-300"
+                  : "border-lime-600/20 bg-lime-100/60 text-neutral-700"
+              }`}
+            >
               <p className="text-sm leading-relaxed">{copy.note}</p>
               <p className="mt-3 text-xs text-neutral-500">
-                {copy.updatedAt}: {stats.updatedAt ? new Date(stats.updatedAt).toLocaleString(isKorean ? "ko-KR" : "en-US") : "-"}
+                {copy.updatedAt}:{" "}
+                {stats.updatedAt
+                  ? new Date(stats.updatedAt).toLocaleString(isKorean ? "ko-KR" : "en-US")
+                  : "-"}
               </p>
             </div>
           </div>
 
           <div className={`${cardClassName} p-8 md:p-10`}>
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-semibold">{copy.statsTitle}</h3>
+              <h3 className="text-2xl font-semibold">{copy.formTitle}</h3>
               <div className="h-3 w-3 rounded-full bg-[#C3E41D]" aria-hidden="true" />
             </div>
 
@@ -203,7 +262,9 @@ export default function FeedbackDashboard() {
                   onChange={(event) => setMessage(event.target.value)}
                   placeholder={copy.messagePlaceholder}
                   className={`min-h-48 w-full rounded-3xl border px-5 py-4 text-sm leading-relaxed outline-none transition focus:border-[#C3E41D] ${
-                    isDark ? "border-white/10 bg-black/40 text-white placeholder:text-neutral-500" : "border-black/10 bg-black/[0.03] text-black placeholder:text-neutral-500"
+                    isDark
+                      ? "border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                      : "border-black/10 bg-black/[0.03] text-black placeholder:text-neutral-500"
                   }`}
                   maxLength={2000}
                 />
@@ -217,7 +278,9 @@ export default function FeedbackDashboard() {
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder={copy.emailPlaceholder}
                   className={`w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-[#C3E41D] ${
-                    isDark ? "border-white/10 bg-black/40 text-white placeholder:text-neutral-500" : "border-black/10 bg-black/[0.03] text-black placeholder:text-neutral-500"
+                    isDark
+                      ? "border-white/10 bg-black/40 text-white placeholder:text-neutral-500"
+                      : "border-black/10 bg-black/[0.03] text-black placeholder:text-neutral-500"
                   }`}
                   maxLength={320}
                 />
@@ -234,7 +297,15 @@ export default function FeedbackDashboard() {
             </form>
 
             {statusMessage ? (
-              <p className={`mt-4 text-sm ${statusType === "error" ? "text-red-500" : isDark ? "text-lime-300" : "text-lime-700"}`}>
+              <p
+                className={`mt-4 text-sm ${
+                  statusType === "error"
+                    ? "text-red-500"
+                    : isDark
+                    ? "text-lime-300"
+                    : "text-lime-700"
+                }`}
+              >
                 {statusMessage}
               </p>
             ) : null}
