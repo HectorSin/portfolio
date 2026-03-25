@@ -2,13 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Award, BriefcaseBusiness, FolderHeart, ShieldCheck, Sparkles, Users } from "lucide-react";
+import { ArrowRight, Award, BriefcaseBusiness, FolderHeart, MicVocal, ShieldCheck, Sparkles, Users, Waves, Mountain } from "lucide-react";
 import {
   archiveSections,
   aboutCategoryCards,
   aboutPageIntro,
   activityItems,
-  personalHighlights,
+  personalNoteCards,
+  personalNotesClosing,
+  personalNotesIntro,
   pickLocalizedText,
   recommendationItems,
 } from "@/data/about-detail";
@@ -30,6 +32,24 @@ function getCategoryIcon(slug: string) {
     default:
       return FolderHeart;
   }
+}
+
+function getPersonalNoteMeta(index: number) {
+  if (index === 0) {
+    return {
+      icon: Mountain,
+      badge: "Climbing",
+      gradient: "linear-gradient(135deg, rgba(15,118,110,0.92), rgba(17,24,39,0.82))",
+      glow: "rgba(15,118,110,0.28)",
+    };
+  }
+
+  return {
+    icon: MicVocal,
+    badge: "Voice",
+    gradient: "linear-gradient(135deg, rgba(13,148,136,0.88), rgba(30,41,59,0.84))",
+    glow: "rgba(13,148,136,0.24)",
+  };
 }
 
 function PlaceholderTile({ label, featured = false }: { label: string; featured?: boolean }) {
@@ -210,42 +230,69 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
         <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
           Personal Notes
         </p>
-        <div className="mt-3 flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-xl">
-            <h2 className="text-2xl font-bold md:text-3xl">{isKorean ? "조금 더 개인적인 면" : "A little more personal"}</h2>
-            <p className={`mt-3 text-[15px] leading-8 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
-              {isKorean
-                ? "프로젝트 중심의 소개에서 다 담기 어려운 개인적 관심사와 생활 리듬을 따로 모아 둔 영역입니다. 앞으로 실제 사진이나 외부 링크를 덧붙여 더 입체적으로 확장할 수 있도록 여유를 남겨두었습니다."
-                : "This section holds short personal highlights that complement the professional story, with room for future images and links."}
-            </p>
-          </div>
-          <div className="grid flex-1 gap-4 md:grid-cols-2">
-            {personalHighlights.map((item, index) => (
+        <div className="mt-3 max-w-2xl">
+          <h2 className="text-2xl font-bold md:text-3xl">{pickLocalizedText(personalNotesIntro.title, isKorean)}</h2>
+          <p className={`mt-3 text-[15px] leading-8 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
+            {pickLocalizedText(personalNotesIntro.description, isKorean)}
+          </p>
+        </div>
+        <div className="mt-8 grid gap-5 lg:grid-cols-2">
+          {personalNoteCards.map((item, index) => {
+            const meta = getPersonalNoteMeta(index);
+            const Icon = meta.icon;
+
+            return (
               <article
                 key={`${item.title.en}-${index}`}
-                className={`rounded-[1.5rem] border p-5 transition-all duration-300 hover:-translate-y-0.5 ${
+                className={`overflow-hidden rounded-[1.75rem] border transition-all duration-300 hover:-translate-y-1 ${
                   isDark
-                    ? "border-neutral-800 bg-black/40 hover:border-[rgba(15,118,110,0.4)]"
-                    : "border-neutral-200 bg-neutral-50 hover:border-[rgba(15,118,110,0.35)]"
+                    ? "border-neutral-800 bg-black/40 hover:border-[rgba(15,118,110,0.45)]"
+                    : "border-neutral-200 bg-white hover:border-[rgba(15,118,110,0.35)]"
                 }`}
+                style={{
+                  boxShadow: isDark ? `0 18px 40px ${meta.glow}` : `0 20px 48px ${meta.glow}`,
+                }}
               >
                 <div
-                  className="mb-4 aspect-[4/3] rounded-[1.25rem]"
-                  style={{
-                    background:
-                      index === 0
-                        ? "linear-gradient(135deg, rgba(15,118,110,0.42), rgba(255,255,255,0.04))"
-                        : "linear-gradient(135deg, rgba(15,118,110,0.26), rgba(255,255,255,0.04))",
-                  }}
-                />
-                <h3 className="text-[1.3rem] font-extrabold">{pickLocalizedText(item.title, isKorean)}</h3>
-                <p className={`mt-3 text-[15px] leading-7 ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
-                  {pickLocalizedText(item.description, isKorean)}
-                </p>
+                  className="relative overflow-hidden px-6 py-6"
+                  style={{ background: meta.gradient }}
+                >
+                  <div className="absolute right-5 top-5 opacity-10">
+                    <Waves className="h-18 w-18 text-white" />
+                  </div>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">{meta.badge}</p>
+                      <h3 className="mt-3 text-[1.45rem] font-extrabold tracking-tight text-white">
+                        {pickLocalizedText(item.title, isKorean)}
+                      </h3>
+                    </div>
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/12 backdrop-blur">
+                      <Icon className="h-7 w-7 text-white" />
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-3 px-6 py-6">
+                  {item.paragraphs.map((paragraph, paragraphIndex) => (
+                    <p
+                      key={`${item.title.en}-paragraph-${paragraphIndex}`}
+                      className={`text-[15px] leading-7 ${isDark ? "text-neutral-300" : "text-neutral-700"}`}
+                    >
+                      {pickLocalizedText(paragraph, isKorean)}
+                    </p>
+                  ))}
+                </div>
               </article>
-            ))}
-          </div>
+            );
+          })}
         </div>
+        <p
+          className={`mt-8 border-t pt-6 text-[17px] font-semibold leading-8 ${
+            isDark ? "border-neutral-800 text-neutral-100" : "border-neutral-200 text-neutral-900"
+          }`}
+        >
+          {pickLocalizedText(personalNotesClosing, isKorean)}
+        </p>
       </section>
     </AboutPageShell>
   );

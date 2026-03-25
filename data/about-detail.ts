@@ -602,6 +602,65 @@ export const activityItems: AboutActivityItem[] = [
   },
 ] as const;
 
+export const personalNotesIntro = {
+  title: {
+    ko: "조금 더 개인적인 면",
+    en: "A little more personal",
+  },
+  description: {
+    ko: "프로젝트에서는 드러나지 않는, 제가 어떤 방식으로 생각하고 움직이는지를 보여주는 영역입니다.",
+    en: "A small section that shows how I think and move beyond project descriptions.",
+  },
+} as const;
+
+export const personalNoteCards = [
+  {
+    title: {
+      ko: "클라이밍",
+      en: "Climbing",
+    },
+    paragraphs: [
+      {
+        ko: "클라이밍은 정답이 없는 문제를 몸으로 푸는 과정입니다.",
+        en: "Climbing feels like solving a problem with no single correct answer.",
+      },
+      {
+        ko: "같은 루트라도 사람마다 접근이 다르고, 저 역시 제 몸에 맞는 움직임을 찾기 위해 여러 시도를 반복합니다.",
+        en: "Even on the same route, people move differently, and I repeat different attempts to find the motion that fits my body.",
+      },
+      {
+        ko: "이 과정이 문제를 쪼개고 해결하는 제 방식과 닮아 있어 자연스럽게 몰입하게 됩니다.",
+        en: "That process mirrors how I break down and solve problems, which is why I get absorbed in it so naturally.",
+      },
+    ],
+  },
+  {
+    title: {
+      ko: "더빙 작업",
+      en: "Dubbing Work",
+    },
+    paragraphs: [
+      {
+        ko: "더빙은 목소리를 통해 의미를 전달하는 작업입니다.",
+        en: "Dubbing is about delivering meaning through voice.",
+      },
+      {
+        ko: "같은 문장이라도 어떻게 말하느냐에 따라 결과가 달라지기 때문에, 발성과 전달력을 꾸준히 다듬고 있습니다.",
+        en: "The same line can land very differently depending on how it is spoken, so I keep sharpening vocal control and delivery.",
+      },
+      {
+        ko: "무엇을 말할지뿐 아니라, 어떻게 전달할지를 고민하는 데 도움이 되는 활동입니다.",
+        en: "It helps me think not only about what to say, but how to deliver it.",
+      },
+    ],
+  },
+] as const;
+
+export const personalNotesClosing = {
+  ko: "결국 저는 문제를 풀고, 그 결과를 전달하는 방식까지 고민하는 사람입니다.",
+  en: "In the end, I care about solving the problem and how the result is conveyed.",
+} as const;
+
 export const personalHighlights: PersonalHighlightItem[] = [
   {
     title: {
