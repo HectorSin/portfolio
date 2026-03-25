@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 import { useTheme } from "@/contexts/theme-context";
 import { profileData, t } from "@/data/profile";
 
 const HIGHLIGHT_TOKENS = {
-  ko: ["6주에서 2주", "약 200만 원"],
+  ko: [] as const,
   en: ["6 weeks to 2 weeks", "about KRW 2 million"],
 } as const;
 
@@ -120,7 +121,6 @@ export default function About() {
                 ))}
               </div>
             </div>
-
           </div>
 
           <div className="max-w-[760px]">
@@ -147,7 +147,7 @@ export default function About() {
             </div>
 
             <div className="mt-10">
-              <h3 className={sectionTitleClass}>{isKorean ? "About Me" : "About Me"}</h3>
+              <h3 className={sectionTitleClass}>About Me</h3>
               <div className={`space-y-[18px] text-lg leading-relaxed ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
                 {profileData.bio.map((paragraph, index) => (
                   <p
@@ -167,6 +167,24 @@ export default function About() {
               >
                 &ldquo;{t(profileData.quote, isKorean)}&rdquo;
               </blockquote>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/about"
+                  className={`inline-flex items-center rounded-full border px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-all hover:-translate-y-0.5 ${
+                    isDark
+                      ? "border-neutral-700 bg-neutral-950 text-neutral-100 hover:border-[#C3E41D]"
+                      : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900"
+                  }`}
+                >
+                  {isKorean ? "상세 프로필 열기" : "Open detailed profile"}
+                </Link>
+                <p className={`text-sm ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
+                  {isKorean
+                    ? "추천서, 수상, 교내외 활동, 동아리 및 봉사 기록까지 한 번에 이어서 볼 수 있습니다."
+                    : "Continue to recommendations, awards, activities, clubs, and volunteer highlights."}
+                </p>
+              </div>
             </div>
           </div>
         </div>
