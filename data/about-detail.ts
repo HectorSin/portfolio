@@ -47,6 +47,13 @@ export interface AboutActivityItem {
   imageSrc?: string;
 }
 
+export interface AboutArchiveSection {
+  eyebrow: LocalizedText;
+  title: LocalizedText;
+  description: LocalizedText;
+  items: AboutActivityItem[];
+}
+
 export interface AboutGalleryItem {
   src: string;
   alt: LocalizedText;
@@ -617,6 +624,222 @@ export const personalHighlights: PersonalHighlightItem[] = [
     },
   },
 ] as const;
+
+export const clubItems: AboutActivityItem[] = [
+  {
+    title: {
+      ko: "아주대학교 A.va 활동",
+      en: "Ajou University A.va",
+    },
+    organizer: {
+      ko: "아주대학교 A.va",
+      en: "Ajou University A.va",
+    },
+    dateRange: "2024.03 ~ 현재",
+    summary: {
+      ko: "더빙 및 성우 연기 동아리에서 더빙 콘텐츠를 기획·제작하며, 공연 연출과 외부 협업, 특강 섭외까지 주도적으로 맡고 있습니다.",
+      en: "An on-campus dubbing and voice-acting club where I help plan and produce dubbing content, lead stage direction, and coordinate external collaborations and guest lectures.",
+    },
+    imageSrc: "/about/clubs/에이바_동아리.png",
+    highlights: [
+      {
+        ko: "정기 공연 '울림제' 연출 담당으로 무대 기획과 팀 리허설을 총괄",
+        en: "Directed the annual performance 'Ullimje,' overseeing stage planning and full-team rehearsals.",
+      },
+      {
+        ko: "인하대학교 더빙 동아리와의 연합 활동을 기획하고 진행",
+        en: "Planned and ran a joint collaboration program with Inha University's dubbing club.",
+      },
+      {
+        ko: "현직 성우 이광수 성우 특강 섭외를 주도",
+        en: "Led outreach and coordination for a guest lecture by voice actor Lee Kwang-soo.",
+      },
+    ],
+  },
+  {
+    title: {
+      ko: "아주대학교 Friends 회장",
+      en: "President of Ajou University Friends",
+    },
+    organizer: {
+      ko: "아주대학교 Friends",
+      en: "Ajou University Friends",
+    },
+    dateRange: "2018.06 ~ 2024.02",
+    summary: {
+      ko: "한국인과 외국인 유학생의 언어·문화 교류를 위한 글로벌 커뮤니티를 운영하며, 조직 확대와 대형 교류 행사 기획을 이끌었습니다.",
+      en: "Led a global language and cultural exchange community for Korean and international students, scaling operations and organizing large cross-cultural events.",
+    },
+    imageSrc: "/about/clubs/프렌즈_동아리.webp",
+    highlights: [
+      {
+        ko: "8명 규모에서 130명 규모로 성장하도록 홍보 시스템을 개편하고 운영 기반을 정비",
+        en: "Rebuilt the club's promotion system and operating model, helping it grow from 8 members to about 130.",
+      },
+      {
+        ko: "교내 교환학생 공식 단체 AGA(Ajou Global Ambassador)와 연합 활동 기획",
+        en: "Planned joint programs with AGA (Ajou Global Ambassador), the official exchange-student organization on campus.",
+      },
+      {
+        ko: "경복궁 투어, International Day, Halloween Party 등 대형 연합 행사를 진행",
+        en: "Ran large-scale community events including a Gyeongbokgung tour, International Day, and a Halloween Party.",
+      },
+    ],
+  },
+  {
+    title: {
+      ko: "Cryming Crew 동호회활동",
+      en: "Cryming Crew",
+    },
+    organizer: {
+      ko: "Cryming Crew",
+      en: "Cryming Crew",
+    },
+    dateRange: "2025.04 ~ 현재",
+    summary: {
+      ko: "클라이밍 중심 운동 커뮤니티에서 정기적인 모임과 교류 행사를 통해 도전 정신과 체력을 함께 키우고 있습니다.",
+      en: "An exercise community centered on climbing, where I build consistency, challenge mindset, and peer connection through regular sessions and trips.",
+    },
+    imageSrc: "/about/clubs/클라이밍_동호회.jpg",
+    highlights: [
+      {
+        ko: "주 1회 정기 모임에 참여하며 볼더링 문제 해결을 통해 도전 정신을 함양",
+        en: "Join weekly sessions and build resilience through repeated bouldering problem solving.",
+      },
+      {
+        ko: "타 지역 암장 원정과 볼더링 파티 등 교류 행사를 기획",
+        en: "Plan exchange events such as visits to climbing gyms in other regions and bouldering parties.",
+      },
+      {
+        ko: "꾸준한 운동으로 체력을 유지하고 스트레스를 관리",
+        en: "Use consistent training to maintain fitness and manage stress over time.",
+      },
+    ],
+  },
+] as const;
+
+export const volunteerItems: AboutActivityItem[] = [
+  {
+    title: {
+      ko: "아주대학교 미유미유 길고양이 급식 및 환경정화",
+      en: "Ajou University Miyumiyu Cat Feeding and Campus Cleanup",
+    },
+    organizer: {
+      ko: "아주대학교 미유미유",
+      en: "Ajou University Miyumiyu",
+    },
+    dateRange: "2022.03 ~ 2022.08",
+    summary: {
+      ko: "교내 길고양이 급식 활동과 주변 환경 정화를 병행하며, 건강 상태 확인과 TNR 연계 정보 공유까지 수행했습니다.",
+      en: "Supported campus stray-cat feeding and environmental cleanup work, while also tracking cat health conditions and sharing information linked to TNR efforts.",
+    },
+    imageSrc: "/about/volunteer/miyumiyu-volunteer.jpg",
+    highlights: [
+      {
+        ko: "정기 급식 활동으로 교내 길고양이 건강 관리를 지원",
+        en: "Supported the health of campus stray cats through regular feeding activities.",
+      },
+      {
+        ko: "고양이 개체 수와 건강 상태를 파악하고 지속적으로 모니터링",
+        en: "Tracked cat populations and monitored health conditions over time.",
+      },
+      {
+        ko: "TNR(중성화) 활동 연계를 위한 정보 수집과 공유를 수행",
+        en: "Collected and shared information to support TNR (trap-neuter-return) coordination.",
+      },
+    ],
+  },
+  {
+    title: {
+      ko: "수원연극축제 해외 공연단 통역 활동",
+      en: "Interpreter for Overseas Performance Teams at the Suwon Theater Festival",
+    },
+    organizer: {
+      ko: "수원연극축제",
+      en: "Suwon Theater Festival",
+    },
+    dateRange: "2019.05",
+    summary: {
+      ko: "해외 공연단과 축제 운영진 사이에서 공연 준비와 체류 전반을 지원하는 현장 통역 역할을 맡았습니다.",
+      en: "Provided on-site interpretation between overseas performance teams and festival staff, supporting both stage operations and day-to-day logistics.",
+    },
+    imageSrc: "/about/volunteer/suwon-theater-festival.jpg",
+    highlights: [
+      {
+        ko: "해외 공연단과 축제 운영진 간 실시간 통역 지원",
+        en: "Provided live interpretation between overseas performers and the festival operations team.",
+      },
+      {
+        ko: "공연 리허설과 무대 세팅 과정에서 현장 통역 수행",
+        en: "Handled on-site interpretation during rehearsals and stage setup.",
+      },
+      {
+        ko: "숙소, 식사, 이동 등 체류 기간 생활 지원까지 담당",
+        en: "Supported lodging, meals, and transportation throughout the troupe's stay.",
+      },
+    ],
+  },
+  {
+    title: {
+      ko: "나눔공동체 시설청소 및 장애우 놀이 활동",
+      en: "Nanum Community Facility Cleanup and Recreation Support",
+    },
+    organizer: {
+      ko: "나눔공동체",
+      en: "Nanum Community",
+    },
+    dateRange: "2016.04 ~ 2016.10",
+    summary: {
+      ko: "정기 시설 정리와 놀이 활동 보조를 통해 생활 환경 개선과 정서적 교류를 함께 지원했습니다.",
+      en: "Contributed to both facility upkeep and participant support through recurring cleanup work, assisted recreation programs, and everyday interaction.",
+    },
+    imageSrc: "/about/volunteer/nanum-community.jpg",
+    highlights: [
+      {
+        ko: "정기적인 시설 청소와 환경 정리 봉사를 수행",
+        en: "Handled recurring facility cleanup and environment maintenance tasks.",
+      },
+      {
+        ko: "장애우 대상 놀이 활동 프로그램을 보조 진행",
+        en: "Assisted with recreation programs for participants with disabilities.",
+      },
+      {
+        ko: "일상 생활 지원과 정서적 교류 활동에 참여",
+        en: "Participated in daily support tasks and relational, emotional care activities.",
+      },
+    ],
+  },
+] as const;
+
+export const archiveSections = {
+  activities: {
+    eyebrow: { ko: "활동 아카이브", en: "Activity archive" },
+    title: { ko: "교내외 활동", en: "Campus & External Activities" },
+    description: {
+      ko: "프로젝트 외부에서 쌓아 온 프로그램, 대회, 학습 경험을 한곳에 정리한 기록입니다.",
+      en: "This page collects programs, hackathons, and study experiences outside formal project work in a compact timeline.",
+    },
+    items: activityItems,
+  },
+  clubs: {
+    eyebrow: { ko: "커뮤니티 아카이브", en: "Community archive" },
+    title: { ko: "동아리 및 동호회 활동", en: "Clubs & Communities" },
+    description: {
+      ko: "공동체 운영, 연합 행사 기획, 정기 참여 경험을 중심으로 리더십과 협업의 흐름을 정리했습니다.",
+      en: "A timeline of club leadership, community building, and recurring participation across campus and personal communities.",
+    },
+    items: clubItems,
+  },
+  volunteer: {
+    eyebrow: { ko: "봉사 아카이브", en: "Volunteer archive" },
+    title: { ko: "봉사활동", en: "Volunteer Work" },
+    description: {
+      ko: "돌봄, 통역, 환경 정화처럼 꾸준함과 현장 대응이 필요한 봉사 경험을 모아두었습니다.",
+      en: "A record of volunteer work centered on consistency, care, interpretation, and practical on-site support.",
+    },
+    items: volunteerItems,
+  },
+} as const satisfies Record<"activities" | "clubs" | "volunteer", AboutArchiveSection>;
 
 export function pickLocalizedText(text: LocalizedText, isKorean: boolean): string {
   return isKorean ? text.ko : text.en;

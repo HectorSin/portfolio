@@ -1,12 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import type { AboutActivityItem } from "@/data/about-detail";
+import { clubItems, volunteerItems, pickLocalizedText } from "@/data/about-detail";
 import { useTheme } from "@/contexts/theme-context";
 import { profileData, t } from "@/data/profile";
 
 const HIGHLIGHT_TOKENS = {
-  ko: ["6주에서 2주", "약 200만 원"],
+  ko: ["6주에서 2주", "연간 약 200만 원"],
   en: ["6 weeks to 2 weeks", "about KRW 2 million"],
 } as const;
 
@@ -62,6 +65,86 @@ function renderHighlightedText(text: string, tokens: readonly string[], highligh
   }
 
   return parts;
+}
+
+function ArchiveSummarySection({
+  title,
+  href,
+  items,
+  isDark,
+  isKorean,
+}: {
+  title: string;
+  href: string;
+  items: readonly AboutActivityItem[];
+  isDark: boolean;
+  isKorean: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-[2rem] border p-5 md:p-6 ${
+        isDark ? "border-neutral-800 bg-neutral-950/65" : "border-neutral-200 bg-white"
+      }`}
+    >
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
+            Summary Archive
+          </p>
+          <h4 className="mt-2 text-xl font-bold">{title}</h4>
+        </div>
+        <Link
+          href={href}
+          className={`inline-flex rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-all hover:-translate-y-0.5 ${
+            isDark
+              ? "border-neutral-700 bg-black/40 text-neutral-100 hover:border-[#C3E41D]"
+              : "border-neutral-300 bg-neutral-50 text-neutral-900 hover:border-neutral-900"
+          }`}
+        >
+          {isKorean ? "상세 보기" : "Open"}
+        </Link>
+      </div>
+
+      <div className="mt-5 space-y-4">
+        {items.map((item) => (
+          <article
+            key={`${item.dateRange}-${item.title.en}`}
+            className={`grid gap-4 rounded-[1.5rem] border p-4 md:grid-cols-[128px_minmax(0,1fr)] ${
+              isDark ? "border-neutral-800 bg-black/25" : "border-neutral-200 bg-neutral-50"
+            }`}
+          >
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1rem] border border-black/5">
+              <Image
+                src={item.imageSrc ?? "/about/activities/placeholder.svg"}
+                alt={pickLocalizedText(item.title, isKorean)}
+                fill
+                sizes="128px"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="min-w-0">
+              <p className={`text-xs font-semibold uppercase tracking-[0.16em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
+                {item.dateRange}
+              </p>
+              <h5 className="mt-2 text-lg font-semibold">{pickLocalizedText(item.title, isKorean)}</h5>
+              <p className={`mt-2 text-sm leading-6 ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
+                {pickLocalizedText(item.summary, isKorean)}
+              </p>
+              <ul className={`mt-3 space-y-2 text-sm leading-6 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
+                {item.highlights.slice(0, 2).map((highlight) => (
+                  <li key={highlight.en} className="flex gap-3">
+                    <span className="mt-[0.62rem] h-1.5 w-1.5 shrink-0 rounded-full bg-[#C3E41D]" aria-hidden="true" />
+                    <span>{pickLocalizedText(highlight, isKorean)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function About() {
@@ -121,7 +204,6 @@ export default function About() {
                 ))}
               </div>
             </div>
-
           </div>
 
           <div className="max-w-[760px]">
@@ -148,7 +230,7 @@ export default function About() {
             </div>
 
             <div className="mt-10">
-              <h3 className={sectionTitleClass}>{isKorean ? "About Me" : "About Me"}</h3>
+              <h3 className={sectionTitleClass}>About Me</h3>
               <div className={`space-y-[18px] text-lg leading-relaxed ${isDark ? "text-neutral-300" : "text-neutral-700"}`}>
                 {profileData.bio.map((paragraph, index) => (
                   <p
@@ -169,6 +251,23 @@ export default function About() {
                 &ldquo;{t(profileData.quote, isKorean)}&rdquo;
               </blockquote>
 
+              <div className="mt-10 grid gap-5 xl:grid-cols-2">
+                <ArchiveSummarySection
+                  title={isKorean ? "동아리 및 동호회 활동" : "Clubs & Communities"}
+                  href="/about/clubs"
+                  items={clubItems}
+                  isDark={isDark}
+                  isKorean={isKorean}
+                />
+                <ArchiveSummarySection
+                  title={isKorean ? "봉사활동" : "Volunteer Work"}
+                  href="/about/volunteer"
+                  items={volunteerItems}
+                  isDark={isDark}
+                  isKorean={isKorean}
+                />
+              </div>
+
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   href="/about"
@@ -178,12 +277,12 @@ export default function About() {
                       : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900"
                   }`}
                 >
-                  {isKorean ? "상세 소개 페이지 보기" : "Open detailed profile"}
+                  {isKorean ? "상세 프로필 열기" : "Open detailed profile"}
                 </Link>
                 <p className={`text-sm ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
                   {isKorean
-                    ? "추천서, 수상, 활동, 취미 아카이브로 이어집니다."
-                    : "Continue to recommendations, awards, activities, and personal highlights."}
+                    ? "추천서, 수상, 교내외 활동, 동아리 및 봉사 기록까지 한 번에 이어서 볼 수 있습니다."
+                    : "Continue to recommendations, awards, activities, clubs, and volunteer highlights."}
                 </p>
               </div>
             </div>

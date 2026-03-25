@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Award, BriefcaseBusiness, FolderHeart, ShieldCheck, Sparkles, Users } from "lucide-react";
 import {
+  archiveSections,
   aboutCategoryCards,
   aboutPageIntro,
   activityItems,
@@ -87,7 +88,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
             <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
               Resume Map
             </p>
-            <h2 className="mt-2 text-2xl font-bold md:text-3xl">{isKorean ? "상세 이력 카테고리" : "Detailed Sections"}</h2>
+            <h2 className="mt-2 text-2xl font-bold md:text-3xl">{isKorean ? "상세 섹션 둘러보기" : "Detailed Sections"}</h2>
           </div>
         </div>
 
@@ -95,6 +96,37 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
           {aboutCategoryCards.map((category, index) => {
             const Icon = getCategoryIcon(category.slug);
             const featured = index === 0;
+            const archiveSection =
+              category.slug === "activities" || category.slug === "clubs" || category.slug === "volunteer"
+                ? archiveSections[category.slug]
+                : undefined;
+            const categoryHref = archiveSection ? `/about/${category.slug}` : category.href;
+            const categoryTitle = archiveSection?.title ?? category.title;
+            const categorySubtitle = archiveSection?.description ?? category.subtitle;
+            const categorySummary =
+              category.slug === "clubs"
+                ? {
+                    ko: "더빙 동아리, 국제교류 커뮤니티, 클라이밍 동호회까지 이어지는 활동을 이미지와 함께 정리합니다.",
+                    en: "A visual archive of dubbing, global exchange, and climbing communities, including leadership and event planning.",
+                  }
+                : category.slug === "volunteer"
+                  ? {
+                      ko: "교내 급식 봉사, 축제 통역, 공동체 지원 활동을 통해 쌓아 온 꾸준한 기여를 모았습니다.",
+                      en: "A dedicated record of volunteer work ranging from campus cat-care support to festival interpretation and community assistance.",
+                    }
+                  : category.summary;
+            const categoryEyebrow =
+              category.slug === "clubs"
+                ? { ko: "커뮤니티 리더십", en: "Community leadership" }
+                : category.slug === "volunteer"
+                  ? { ko: "지속적인 기여", en: "Consistent contribution" }
+                  : category.eyebrow;
+            const categoryStat =
+              category.slug === "clubs"
+                ? { ko: "3개 활동 기록", en: "3 community entries" }
+                : category.slug === "volunteer"
+                  ? { ko: "3개 봉사 기록", en: "3 volunteer entries" }
+                  : category.stat;
             const previewImageSrc =
               category.slug === "recommendations"
                 ? recommendationItems[0]?.imageSrc
@@ -102,7 +134,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                   ? awardPreviewImageSrc
                   : category.slug === "activities"
                     ? activityItems[1]?.imageSrc
-                    : undefined;
+                    : archiveSection?.items[0]?.imageSrc;
 
             const content = (
               <article
@@ -125,7 +157,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                     }}
                   >
                     {featured && <Sparkles className="h-3.5 w-3.5" />}
-                    <span>{featured ? (isKorean ? "추천 시작점" : "Start here") : pickLocalizedText(category.eyebrow, isKorean)}</span>
+                    <span>{featured ? (isKorean ? "시작 추천" : "Start here") : pickLocalizedText(categoryEyebrow, isKorean)}</span>
                   </div>
                   <div
                     className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
@@ -137,30 +169,30 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                   </div>
                 </div>
 
-                <CategoryPreview label={pickLocalizedText(category.stat, isKorean)} featured={featured} imageSrc={previewImageSrc} />
+                <CategoryPreview label={pickLocalizedText(categoryStat, isKorean)} featured={featured} imageSrc={previewImageSrc} />
 
                 <p className={`mt-5 text-[12px] font-semibold uppercase tracking-[0.2em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
-                  {pickLocalizedText(category.subtitle, isKorean)}
+                  {pickLocalizedText(categorySubtitle, isKorean)}
                 </p>
-                <h3 className="mt-2 text-[1.75rem] font-extrabold tracking-tight">{pickLocalizedText(category.title, isKorean)}</h3>
+                <h3 className="mt-2 text-[1.75rem] font-extrabold tracking-tight">{pickLocalizedText(categoryTitle, isKorean)}</h3>
                 <p className={`mt-3 text-[15px] leading-7 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
-                  {pickLocalizedText(category.summary, isKorean)}
+                  {pickLocalizedText(categorySummary, isKorean)}
                 </p>
 
                 <div className="mt-6 flex items-center justify-between gap-3">
                   <span className={`text-sm ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
-                    {pickLocalizedText(category.stat, isKorean)}
+                    {pickLocalizedText(categoryStat, isKorean)}
                   </span>
                   <span className="inline-flex items-center gap-2 text-sm font-semibold" style={{ color: ACCENT }}>
-                    {category.href ? (isKorean ? "자세히 보기" : "Open section") : isKorean ? "준비 중" : "Planned"}
-                    {category.href && <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
+                    {categoryHref ? (isKorean ? "자세히 보기" : "Open section") : isKorean ? "준비 중" : "Planned"}
+                    {categoryHref && <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
                   </span>
                 </div>
               </article>
             );
 
-            return category.href ? (
-              <Link key={category.slug} href={category.href} className="block">
+            return categoryHref ? (
+              <Link key={category.slug} href={categoryHref} className="block">
                 {content}
               </Link>
             ) : (
@@ -180,10 +212,10 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
         </p>
         <div className="mt-3 flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-xl">
-            <h2 className="text-2xl font-bold md:text-3xl">{isKorean ? "일 바깥의 저" : "A little more personal"}</h2>
+            <h2 className="text-2xl font-bold md:text-3xl">{isKorean ? "조금 더 개인적인 면" : "A little more personal"}</h2>
             <p className={`mt-3 text-[15px] leading-8 ${isDark ? "text-neutral-200" : "text-neutral-800"}`}>
               {isKorean
-                ? "일을 하지 않을 때의 저는, 하나를 붙잡고 조금씩 더 나아지는 과정을 즐기는 편입니다. 클라이밍에서는 한 번에 풀리지 않는 문제를 여러 번 시도하면서 방법을 바꿔보고, 더빙 할때는 같은 문장도 더 자연스럽게 들리도록 계속 다듬습니다. \n 이런 시간을 보내다 보니, 저는 결과를 빠르게 내기보다 과정을 이해하고 개선해 나가는 데 더 익숙한 사람이라는 걸 느끼게 됐습니다. \n 일 속에서도 자연스럽게 이어져, 문제를 쪼개서 접근하고 하나씩 해결해 나가는 방식으로 나타납니다."
+                ? "프로젝트 중심의 소개에서 다 담기 어려운 개인적 관심사와 생활 리듬을 따로 모아 둔 영역입니다. 앞으로 실제 사진이나 외부 링크를 덧붙여 더 입체적으로 확장할 수 있도록 여유를 남겨두었습니다."
                 : "This section holds short personal highlights that complement the professional story, with room for future images and links."}
             </p>
           </div>
@@ -192,7 +224,9 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
               <article
                 key={`${item.title.en}-${index}`}
                 className={`rounded-[1.5rem] border p-5 transition-all duration-300 hover:-translate-y-0.5 ${
-                  isDark ? "border-neutral-800 bg-black/40 hover:border-[rgba(15,118,110,0.4)]" : "border-neutral-200 bg-neutral-50 hover:border-[rgba(15,118,110,0.35)]"
+                  isDark
+                    ? "border-neutral-800 bg-black/40 hover:border-[rgba(15,118,110,0.4)]"
+                    : "border-neutral-200 bg-neutral-50 hover:border-[rgba(15,118,110,0.35)]"
                 }`}
               >
                 <div
