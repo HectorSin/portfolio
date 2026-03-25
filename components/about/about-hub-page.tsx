@@ -8,6 +8,7 @@ import {
   aboutCategoryCards,
   aboutPageIntro,
   activityItems,
+  type LocalizedRichText,
   personalNoteCards,
   personalNotesClosing,
   personalNotesIntro,
@@ -50,6 +51,41 @@ function getPersonalNoteMeta(index: number) {
     gradient: "linear-gradient(135deg, rgba(13,148,136,0.88), rgba(30,41,59,0.84))",
     glow: "rgba(13,148,136,0.24)",
   };
+}
+
+function renderHighlightedText(content: LocalizedRichText, isKorean: boolean) {
+  const text = pickLocalizedText(content.text, isKorean);
+  const emphasisList = content.emphasis?.map((item) => pickLocalizedText(item, isKorean)) ?? [];
+
+  if (emphasisList.length === 0) {
+    return text;
+  }
+
+  const segments: Array<{ text: string; emphasized: boolean }> = [];
+  let cursor = 0;
+
+  emphasisList.forEach((emphasis) => {
+    const start = text.indexOf(emphasis, cursor);
+
+    if (start === -1) {
+      return;
+    }
+
+    if (start > cursor) {
+      segments.push({ text: text.slice(cursor, start), emphasized: false });
+    }
+
+    segments.push({ text: emphasis, emphasized: true });
+    cursor = start + emphasis.length;
+  });
+
+  if (cursor < text.length) {
+    segments.push({ text: text.slice(cursor), emphasized: false });
+  }
+
+  return segments.map((segment, index) =>
+    segment.emphasized ? <strong key={`${segment.text}-${index}`}>{segment.text}</strong> : segment.text,
+  );
 }
 
 function PlaceholderTile({ label, featured = false }: { label: string; featured?: boolean }) {
@@ -244,7 +280,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
             return (
               <article
                 key={`${item.title.en}-${index}`}
-                className={`overflow-hidden rounded-[1.75rem] border transition-all duration-300 hover:-translate-y-1 ${
+                className={`group overflow-hidden rounded-[1.75rem] border transition-all duration-300 hover:-translate-y-1 ${
                   isDark
                     ? "border-neutral-800 bg-black/40 hover:border-[rgba(15,118,110,0.45)]"
                     : "border-neutral-200 bg-white hover:border-[rgba(15,118,110,0.35)]"
@@ -257,7 +293,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                   className="relative overflow-hidden px-6 py-6"
                   style={{ background: meta.gradient }}
                 >
-                  <div className="absolute right-5 top-5 opacity-10">
+                  <div className="absolute right-5 top-5 opacity-[0.08]">
                     <Waves className="h-18 w-18 text-white" />
                   </div>
                   <div className="flex items-start justify-between gap-4">
@@ -267,18 +303,18 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                         {pickLocalizedText(item.title, isKorean)}
                       </h3>
                     </div>
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/12 backdrop-blur">
-                      <Icon className="h-7 w-7 text-white" />
+                    <div className="flex h-15 w-15 items-center justify-center rounded-2xl bg-white/16 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur">
+                      <Icon className="h-8 w-8 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                     </div>
                   </div>
                 </div>
-                <div className="space-y-3 px-6 py-6">
+                <div className="space-y-4 px-6 py-6 pb-7">
                   {item.paragraphs.map((paragraph, paragraphIndex) => (
                     <p
                       key={`${item.title.en}-paragraph-${paragraphIndex}`}
-                      className={`text-[15px] leading-7 ${isDark ? "text-neutral-300" : "text-neutral-700"}`}
+                      className={`text-[15px] leading-[1.95] ${isDark ? "text-neutral-300" : "text-neutral-700"}`}
                     >
-                      {pickLocalizedText(paragraph, isKorean)}
+                      {renderHighlightedText(paragraph, isKorean)}
                     </p>
                   ))}
                 </div>
