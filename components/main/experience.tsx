@@ -19,7 +19,7 @@ type ExperienceEntry = {
   description: LocalizedText;
   highlights: LocalizedText[];
   tech: string[];
-  logoSrc: string;
+  logoSrc?: string;
   logoFallback: string;
   link?: string;
 };
@@ -34,6 +34,38 @@ type ActivityEntry = {
 const ACCENT_COLOR = "#C3E41D";
 
 const experiences: ExperienceEntry[] = [
+  {
+    company: "제논",
+    role: {
+      en: "AI Engineer",
+      ko: "AI Engineer",
+    },
+    period: "2025.09 - Present",
+    type: {
+      en: "Samsung Card AI Platform Project",
+      ko: "삼성카드 AI 플랫폼 구축 사업",
+    },
+    description: {
+      en: "Building an internal document RAG chatbot for Samsung Card employees as part of its AI platform project.",
+      ko: "삼성카드 AI 플랫폼 구축 사업에서 임직원용 사내 문서 RAG 챗봇 개발 진행 중",
+    },
+    highlights: [
+      {
+        en: "Designed and improved a retrieval flow that turns user questions into effective search queries and connects them to relevant internal documents in a restricted environment",
+        ko: "제한된 환경에서 사용자 질문을 효과적인 검색어로 변환하고 관련 사내 문서로 연결하는 검색 흐름 설계 및 개선",
+      },
+      {
+        en: "Proactively built an evaluation dataset and a consistent scoring environment, then improved quality through iterative testing",
+        ko: "평가셋과 일관된 점수 측정 환경을 선제적으로 구축하고 반복 테스트를 통해 품질 보완",
+      },
+      {
+        en: "Learned the importance of establishing an evaluation framework before iterating on RAG quality",
+        ko: "RAG 품질을 개선하기 전에 평가 체계를 먼저 마련하는 작업의 중요성 체득",
+      },
+    ],
+    tech: ["RAG", "LLM Evaluation", "Query Generation"],
+    logoFallback: "제논",
+  },
   {
     company: "FilledU",
     role: {
@@ -211,12 +243,12 @@ function CompanyLogo({
   fallback,
 }: {
   company: string;
-  logoSrc: string;
+  logoSrc?: string;
   fallback: string;
 }) {
   const [hasError, setHasError] = useState(false);
 
-  if (hasError) {
+  if (!logoSrc || hasError) {
     return (
       <div
         className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border text-sm font-semibold tracking-[0.2em]"
