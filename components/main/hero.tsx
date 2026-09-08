@@ -360,7 +360,7 @@ export default function Hero() {
       </header>
 
       {/* Hero Section */}
-      <main className="relative min-h-screen flex flex-col">
+      <section className="relative min-h-screen flex flex-col" aria-label={isKorean ? "소개" : "Introduction"}>
         {/* Centered Main Name - Always Perfectly Centered */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4">
           <div className="relative text-center">
@@ -416,11 +416,13 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="absolute bottom-14 md:bottom-16 left-1/2 -translate-x-1/2 px-4">
-          <p className="text-xs md:text-sm text-neutral-500 tracking-wide text-center">
-            {totalVisitorsLabel}: {totalVisits?.toLocaleString() ?? "-"}
-          </p>
-        </div>
+        {totalVisits !== null && (
+          <div className="absolute bottom-14 md:bottom-16 left-1/2 -translate-x-1/2 px-4">
+            <p className="text-xs md:text-sm text-neutral-500 tracking-wide text-center">
+              {totalVisitorsLabel}: {totalVisits.toLocaleString()}
+            </p>
+          </div>
+        )}
 
         {/* Scroll Indicator */}
         <button
@@ -431,7 +433,7 @@ export default function Hero() {
         >
           <ChevronDownIcon className="w-5 h-5 md:w-8 md:h-8 text-neutral-500 hover:text-black dark:hover:text-white transition-colors duration-300" />
         </button>
-      </main>
+      </section>
     </div>
   );
 }

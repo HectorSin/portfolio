@@ -1,0 +1,61 @@
+@startuml
+left to right direction
+hide stereotype
+
+<style>
+componentDiagram {
+  component {
+    BackgroundColor #F7F7F5
+    BorderColor #737373
+    FontColor #171717
+    FontSize 13
+    RoundCorner 14
+    Padding 14
+  }
+  .input {
+    BackgroundColor #EEF2F6
+    BorderColor #64748B
+    FontColor #1E293B
+  }
+  .retrieval {
+    BackgroundColor #F4FAD7
+    BorderColor #9CB51A
+    FontColor #344005
+    BorderThickness 2
+  }
+  .answer {
+    BackgroundColor #E8F5E9
+    BorderColor #4F8A52
+    FontColor #1B4332
+  }
+  .quality {
+    BackgroundColor #FFF7E6
+    BorderColor #C98210
+    FontColor #633806
+  }
+  arrow {
+    LineColor #737373
+    LineThickness 2
+    FontColor #525252
+    FontSize 11
+  }
+}
+</style>
+
+component "1. Employee\nQuestion" as question <<input>>
+component "2. Analyze & Generate\nMultiple Queries" as query <<retrieval>>
+component "3. Search Internal Knowledge\nin Parallel" as search <<retrieval>>
+component "4. Fuse with RRF &\nControl Context Size" as fusion <<retrieval>>
+component "5. Generate a\nGrounded Answer" as answer <<answer>>
+
+question -right-> query
+query -right-> search
+search -down-> fusion
+fusion -left-> answer
+
+component "6. Continuous Improvement\nLLM-as-a-Judge · TTFT\nMonitoring · Employee Feedback" as improvement <<quality>>
+
+answer -left-> improvement
+improvement .up.> query : feed insights into the next iteration
+
+@enduml

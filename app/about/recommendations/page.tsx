@@ -13,8 +13,8 @@ export default function RecommendationsPage() {
       eyebrow={{ ko: "Recommendations", en: "Recommendations" }}
       title={{ ko: "추천서", en: "Recommendations" }}
       description={{
-        ko: "추천서 전문을 바로 열람할 수 있도록 공개했고, 각 추천서의 발급 주체와 맥락도 함께 확인할 수 있게 구성했습니다.",
-        en: "The full recommendation letters are now available directly, with issuer context and supporting summaries presented alongside them.",
+        ko: "함께 연구하고 협업한 교수님들이 평가한 업무 태도와 성장 가능성을 담았습니다.",
+        en: "Letters from professors I researched and collaborated with, covering my work ethic and growth potential.",
       }}
       backHref="/about"
       backLabel={{ ko: "About 허브로 돌아가기", en: "Back to about hub" }}

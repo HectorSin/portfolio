@@ -19,7 +19,7 @@ type ExperienceEntry = {
   description: LocalizedText;
   highlights: LocalizedText[];
   tech: string[];
-  logoSrc: string;
+  logoSrc?: string;
   logoFallback: string;
   link?: string;
 };
@@ -34,6 +34,40 @@ type ActivityEntry = {
 const ACCENT_COLOR = "#C3E41D";
 
 const experiences: ExperienceEntry[] = [
+  {
+    company: "제논",
+    role: {
+      en: "AI Engineer",
+      ko: "AI Engineer",
+    },
+    period: "2025.04 - Present",
+    type: {
+      en: "Samsung Card AI Platform Project",
+      ko: "삼성카드 AI 플랫폼 구축 사업",
+    },
+    description: {
+      en: "Developing an enterprise RAG assistant that helps employees find reliable answers from internal knowledge as part of Samsung Card's AI platform project.",
+      ko: "삼성카드 AI 플랫폼 구축 사업에서 사내 지식을 바탕으로 신뢰도 높은 답변을 제공하는 임직원용 RAG 어시스턴트 개발",
+    },
+    highlights: [
+      {
+        en: "Designed an agentic RAG flow covering query generation, document retrieval, evidence selection, and grounded answer generation",
+        ko: "질문 분석부터 검색어 생성, 문서 검색, 근거 선별, 답변 생성까지 이어지는 에이전틱 RAG 흐름 설계 및 개선",
+      },
+      {
+        en: "Built evaluation datasets and an automated scoring workflow to compare retrieval and answer quality across experiments",
+        ko: "검색 및 답변 품질을 실험별로 비교할 수 있도록 평가셋과 자동화된 점수 측정 환경 구축",
+      },
+      {
+        en: "Strengthened production reliability with automated tests, CI quality gates, and fail-safe handling for incomplete or oversized evidence",
+        ko: "자동화 테스트와 CI 품질 검증, 불완전하거나 과도하게 긴 근거에 대한 안전한 예외 처리로 운영 안정성 강화",
+      },
+    ],
+    tech: ["RAG", "LLM Evaluation", "Query Generation"],
+    logoSrc: "/company-logos/xenon.png",
+    logoFallback: "GenON",
+    link: companyLinks["GenON"],
+  },
   {
     company: "FilledU",
     role: {
@@ -211,12 +245,12 @@ function CompanyLogo({
   fallback,
 }: {
   company: string;
-  logoSrc: string;
+  logoSrc?: string;
   fallback: string;
 }) {
   const [hasError, setHasError] = useState(false);
 
-  if (hasError) {
+  if (!logoSrc || hasError) {
     return (
       <div
         className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border text-sm font-semibold tracking-[0.2em]"
@@ -275,7 +309,7 @@ export default function Experience() {
             {experiences.map((exp) => (
               <article
                 key={`${exp.company}-${exp.period}`}
-                className={`group rounded-[1.5rem] border p-6 md:p-8 transition-all duration-300 motion-reduce:transform-none ${
+                className={`group rounded-[1.5rem] border p-6 md:p-8 transition duration-300 motion-reduce:transform-none ${
                   isDark
                     ? "border-neutral-800 hover:border-neutral-600 hover:shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
                     : "border-neutral-300 hover:border-neutral-400 hover:shadow-[0_24px_60px_rgba(15,23,42,0.08)]"
@@ -395,7 +429,7 @@ export default function Experience() {
                 </>
               );
 
-              const className = `group border rounded-[1.25rem] p-6 min-h-[208px] transition-all duration-300 ${
+              const className = `group border rounded-[1.25rem] p-6 min-h-[208px] transition duration-300 ${
                 isDark
                   ? "border-neutral-800 hover:border-neutral-600 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]"
                   : "border-neutral-300 hover:border-neutral-500 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)]"

@@ -6,7 +6,7 @@ import { contactLinks } from "@/data/links";
 
 export default function Contact() {
   const { isDark, isKorean } = useTheme();
-  const cardClassName = `group rounded-lg border px-5 py-6 transition-all duration-200 motion-reduce:transition-none motion-reduce:hover:transform-none hover:-translate-y-0.5 hover:shadow-lg ${
+  const cardClassName = `group rounded-lg border px-5 py-6 transition duration-200 motion-reduce:transition-none motion-reduce:hover:transform-none hover:-translate-y-0.5 hover:shadow-lg ${
     isDark
       ? "border-neutral-800 hover:border-neutral-600 hover:shadow-lime-950/20"
       : "border-neutral-300 hover:border-neutral-500 hover:shadow-neutral-300/80"
@@ -63,7 +63,7 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">Email</h3>
-              <p className="text-base font-medium">Let&apos;s work together</p>
+              <p className="text-base font-medium">{isKorean ? "협업 및 채용 문의" : "Work with me"}</p>
               <p className={metaClassName}>{isKorean ? "이메일로 편하게 연락 주세요" : "Send me an email"}</p>
               <p className={`mt-4 break-all ${bodyClassName}`}>{contactLinks.email.replace("mailto:", "")}</p>
             </a>
@@ -87,7 +87,7 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">LinkedIn</h3>
-              <p className={bodyClassName}>Let&apos;s connect</p>
+              <p className={bodyClassName}>{isKorean ? "경력과 기술 콘텐츠" : "Experience & technical writing"}</p>
             </a>
 
             {/* GitHub */}
@@ -109,7 +109,7 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">GitHub</h3>
-              <p className={bodyClassName}>View my repositories</p>
+              <p className={bodyClassName}>{isKorean ? "코드와 오픈소스 활동" : "Code & open-source work"}</p>
             </a>
 
             {/* Location */}
@@ -143,17 +143,14 @@ export default function Contact() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold mb-2">Location</h3>
-              <p className={bodyClassName}>South Korea</p>
-              <p className={metaClassName}>Open to remote opportunities</p>
+              <p className={bodyClassName}>{isKorean ? "대한민국" : "South Korea"}</p>
+              <p className={metaClassName}>{isKorean ? "원격 근무 협의 가능" : "Open to remote opportunities"}</p>
             </a>
           </div>
 
           {/* Footer Note */}
           <div className={`mt-16 text-center border-t pt-8 ${isDark ? "border-neutral-800" : "border-neutral-300"}`}>
-            <p className={isDark ? "text-neutral-500" : "text-neutral-600"}>
-              Built with Next.js, TypeScript, and Tailwind CSS
-            </p>
-            <p className={`mt-2 ${isDark ? "text-neutral-600" : "text-neutral-500"}`}>
+            <p className={isDark ? "text-neutral-600" : "text-neutral-500"}>
               © 2026 Sin Jaehyun. All rights reserved.
             </p>
           </div>

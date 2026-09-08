@@ -66,13 +66,14 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
   return (
     <main
-      id="top"
+      id="main-content"
       className="min-h-screen px-6 py-28"
       style={{
         backgroundColor: isDark ? "hsl(0 0% 0%)" : "hsl(0 0% 98%)",
         color: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 10%)",
       }}
     >
+      <div id="top" aria-hidden="true" />
       <header
         className="fixed inset-x-0 top-0 z-40 px-6 py-6 transition-transform duration-300"
         style={{
@@ -207,7 +208,7 @@ export default function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             </p>
             <h2 className="mb-2 text-xl font-semibold">{isKorean ? "시스템 아키텍처" : "System Architecture"}</h2>
             <p className={`${contentWidthClass} mb-6 text-sm ${isDark ? "text-neutral-400" : "text-neutral-600"}`}>
-              {isKorean ? "파이프라인 전체 흐름과 검증 구조를 한눈에 보여주는 다이어그램" : "Architecture view of the end-to-end generation and validation pipeline"}
+              {isKorean ? "핵심 처리 단계와 개선 흐름을 정리한 다이어그램" : "A diagram of the core processing stages and improvement loop"}
             </p>
             <div className="space-y-8">
               {umlImages.map((diagram, index) => (

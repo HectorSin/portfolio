@@ -142,9 +142,9 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
         <div className="mb-8 flex items-end justify-between gap-6">
           <div>
             <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
-              Resume Map
+              {isKorean ? "경험 아카이브" : "Experience Archive"}
             </p>
-            <h2 className="mt-2 text-2xl font-bold md:text-3xl">{isKorean ? "상세 섹션 둘러보기" : "Detailed Sections"}</h2>
+            <h2 className="mt-2 text-2xl font-bold md:text-3xl">{isKorean ? "경험과 활동" : "Experience & Activities"}</h2>
           </div>
         </div>
 
@@ -194,7 +194,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
 
             const content = (
               <article
-                className={`group h-full rounded-[2rem] border p-5 transition-all duration-300 hover:-translate-y-1 ${
+                className={`group h-full rounded-[2rem] border p-5 transition duration-300 hover:-translate-y-1 motion-reduce:transform-none ${
                   featured
                     ? isDark
                       ? "border-[rgba(15,118,110,0.45)] bg-[linear-gradient(180deg,rgba(15,118,110,0.16),rgba(10,10,10,0.88))] shadow-[0_24px_60px_rgba(0,0,0,0.35)]"
@@ -213,7 +213,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
                     }}
                   >
                     {featured && <Sparkles className="h-3.5 w-3.5" />}
-                    <span>{featured ? (isKorean ? "시작 추천" : "Start here") : pickLocalizedText(categoryEyebrow, isKorean)}</span>
+                    <span>{pickLocalizedText(categoryEyebrow, isKorean)}</span>
                   </div>
                   <div
                     className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
@@ -280,7 +280,7 @@ export default function AboutHubPage({ awardPreviewImageSrc }: AboutHubPageProps
             return (
               <article
                 key={`${item.title.en}-${index}`}
-                className={`group overflow-hidden rounded-[1.75rem] border transition-all duration-300 hover:-translate-y-1 ${
+                className={`group overflow-hidden rounded-[1.75rem] border transition duration-300 hover:-translate-y-1 motion-reduce:transform-none ${
                   isDark
                     ? "border-neutral-800 bg-black/40 hover:border-[rgba(15,118,110,0.45)]"
                     : "border-neutral-200 bg-white hover:border-[rgba(15,118,110,0.35)]"

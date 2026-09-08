@@ -114,7 +114,7 @@ const awardItems: AboutAwardItem[] = [
     organizer: { ko: "대구대진초등학교", en: "Daegu Daejin Elementary School" },
     date: "2006.04.24",
   },
-];
+].slice(0, 4);
 
 async function getAwardGalleryItems(): Promise<AboutGalleryItem[]> {
   const directory = join(process.cwd(), "public", "about", "awards");
@@ -131,6 +131,7 @@ async function getAwardGalleryItems(): Promise<AboutGalleryItem[]> {
 
       return IMAGE_EXTENSIONS.has(fileName.slice(extensionIndex).toLowerCase());
     })
+    .filter((fileName) => ["포트폴리오경진대회.jpg", "우수사원.jpg", "경영대학학술제_금상.jpg"].includes(fileName))
     .sort((left, right) => left.localeCompare(right, "ko"))
     .map((fileName) => ({
       src: `/about/awards/${encodeURIComponent(fileName)}`,

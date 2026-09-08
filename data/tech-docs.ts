@@ -36,7 +36,6 @@ export const techDocs: Record<string, string> = {
 
   // Databases
   "Chroma": "https://docs.trychroma.com/",
-  "FAISS": "https://faiss.ai/",
   "PostgreSQL": "https://www.postgresql.org/docs/",
   "MongoDB": "https://www.mongodb.com/docs/",
   "MySQL": "https://dev.mysql.com/doc/",
