@@ -171,7 +171,7 @@ export default function About() {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   href="/about"
-                  className={`inline-flex items-center rounded-full border px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-all hover:-translate-y-0.5 ${
+                  className={`inline-flex items-center rounded-full border px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition hover:-translate-y-0.5 motion-reduce:transform-none ${
                     isDark
                       ? "border-neutral-700 bg-neutral-950 text-neutral-100 hover:border-[#C3E41D]"
                       : "border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900"
@@ -181,8 +181,8 @@ export default function About() {
                 </Link>
                 <p className={`text-sm ${isDark ? "text-neutral-500" : "text-neutral-600"}`}>
                   {isKorean
-                    ? "추천서, 수상, 교내외 활동, 동아리 및 봉사 기록까지 한 번에 이어서 볼 수 있습니다."
-                    : "Continue to recommendations, awards, activities, clubs, and volunteer highlights."}
+                    ? "추천서, 수상, 교내외 활동과 커뮤니티 경험을 확인할 수 있습니다."
+                    : "View recommendations, awards, activities, and community experience."}
                 </p>
               </div>
             </div>

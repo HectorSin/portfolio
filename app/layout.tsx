@@ -23,10 +23,10 @@ export default function RootLayout({
     <html lang="ko">
       <body className="antialiased">
         <a
-          href="#about"
+          href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-[#C3E41D] focus:text-black focus:rounded focus:font-bold"
         >
-          Skip to content
+          본문으로 건너뛰기
         </a>
         <ThemeProvider>
           <PageViewTracker />

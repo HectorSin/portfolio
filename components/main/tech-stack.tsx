@@ -68,7 +68,7 @@ const techStack: TechCategory[] = [
   {
     title: "Databases",
     icon: Database,
-    items: ["Chroma", "FAISS", "PostgreSQL", "MongoDB", "MySQL"],
+    items: ["Chroma", "PostgreSQL", "MongoDB", "MySQL"],
   },
   {
     title: "Tools & Collaboration",

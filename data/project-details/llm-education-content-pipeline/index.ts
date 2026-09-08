@@ -6,7 +6,7 @@ export const llmEducationContentPipelineDetail: ProjectDetail = {
     en: "Replaced an outsourcing-heavy educational content workflow with an LLM-based generation pipeline, improving both production speed and cost structure.",
   },
   summary: {
-    ko: "LLM 기반 콘텐츠 생성 파이프라인 구축으로\n제작 기간 4개월 -> 1개월 단축\n연간 외주 비용 약 1,000만 원 절감",
+    ko: "LLM 기반 콘텐츠 생성 파이프라인 구축으로\n제작 기간 4개월 → 1개월 단축\n연간 외주 비용 약 1,000만 원 절감",
     en: "Built an LLM-driven content generation pipeline\nReduced production lead time from 4 months to 1 month\nSaved about KRW 10 million in annual outsourcing costs",
   },
   highlightMetrics: [
@@ -22,8 +22,8 @@ export const llmEducationContentPipelineDetail: ProjectDetail = {
     },
     {
       value: {
-        ko: "4개월 -> 1개월",
-        en: "4 months -> 1 month",
+        ko: "4개월 → 1개월",
+        en: "4 months → 1 month",
       },
       label: {
         ko: "제작 기간",

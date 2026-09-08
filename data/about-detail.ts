@@ -767,8 +767,8 @@ export const clubItems: AboutActivityItem[] = [
     imageSrc: "/about/clubs/프렌즈_동아리.webp",
     highlights: [
       {
-        ko: "8명 규모에서 130명 규모로 성장하도록 홍보 시스템을 개편하고 운영 기반을 정비",
-        en: "Rebuilt the club's promotion system and operating model, helping it grow from 8 members to about 130.",
+        ko: "4명 규모에서 130명 규모로 성장하도록 홍보 시스템을 개편하고 운영 기반을 정비",
+        en: "Rebuilt the club's promotion system and operating model, helping it grow from 4 members to about 130.",
       },
       {
         ko: "교내 교환학생 공식 단체 AGA(Ajou Global Ambassador)와 연합 활동 기획",
@@ -782,7 +782,7 @@ export const clubItems: AboutActivityItem[] = [
   },
   {
     title: {
-      ko: "Cryming Crew 동호회활동",
+      ko: "Cryming Crew 동호회 활동",
       en: "Cryming Crew",
     },
     organizer: {

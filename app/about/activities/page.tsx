@@ -13,8 +13,8 @@ export default function ActivitiesPage() {
       eyebrow={{ ko: "활동 기록", en: "Activity archive" }}
       title={{ ko: "교내·외 활동", en: "Campus & External Activities" }}
       description={{
-        ko: "프로젝트 외적으로 참여했던 프로그램, 해커톤, 그룹 스터디를 간단한 타임라인으로 정리했습니다.",
-        en: "This page collects programs, hackathons, and study experiences outside formal project work in a compact timeline.",
+        ko: "프로그램, 해커톤, 그룹 스터디에서 쌓은 학습과 실행 경험입니다.",
+        en: "Learning and execution experience from programs, hackathons, and group studies.",
       }}
       backHref="/about"
       backLabel={{ ko: "About 허브로 돌아가기", en: "Back to about hub" }}

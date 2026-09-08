@@ -175,8 +175,8 @@ export const automatedMp3SplittingListeningAssessmentsDetail: ProjectDetail = {
           en: "Outsourcing cost for editing was reduced by 100%, and audio editing stopped being a recurring bottleneck and cost center. Once applied to the live content-production pipeline, it improved both throughput and operational consistency.",
         },
         {
-          ko: "면접에서는 다음 한 문장으로 설명할 수 있습니다. 콘텐츠팀이 원본 듣기평가 MP3를 업로드하면 Audio Processing Service가 실행되고, 파형 분석을 통해 3초 이상 무음 구간과 반복되는 경계 패턴을 탐지합니다. 이를 기반으로 문항 시작 타임스탬프를 계산한 뒤 FFmpeg로 자동 분할하며, 전체 과정은 약 10~15초 내에 완료됩니다.",
-          en: "For interviews, the system can be summarized in one sentence: when the content team uploads a source listening-assessment MP3, the Audio Processing Service runs, detects 3+ second silence windows and repeated boundary patterns from waveform analysis, calculates question start timestamps, and automatically splits the file with FFmpeg in about 10 to 15 seconds.",
+          ko: "콘텐츠팀이 원본 MP3를 업로드하면 파형 분석으로 3초 이상 무음 구간과 반복 경계 패턴을 탐지하고, 문항 시작 타임스탬프를 계산해 FFmpeg로 자동 분할합니다. 전체 처리는 약 10~15초 내에 완료됩니다.",
+          en: "When the content team uploads a source MP3, waveform analysis detects silence windows longer than 3 seconds and repeated boundary patterns, calculates question start timestamps, and splits the file with FFmpeg in about 10 to 15 seconds.",
         },
       ],
     },

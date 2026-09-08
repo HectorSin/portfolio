@@ -28,6 +28,7 @@ export default function AboutPageShell({
 
   return (
     <main
+      id="main-content"
       className="min-h-screen px-6 py-24"
       style={{
         background:
@@ -42,7 +43,7 @@ export default function AboutPageShell({
           <div className="flex flex-wrap items-start justify-between gap-3">
             <Link
               href={backHref}
-              className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition-all hover:-translate-y-0.5 ${
+              className={`inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0F766E] motion-reduce:transform-none ${
                 isDark
                   ? "border-transparent bg-[rgba(15,118,110,0.18)] text-white hover:bg-[rgba(15,118,110,0.3)]"
                   : "border-transparent bg-[rgba(15,118,110,0.12)] text-neutral-950 hover:bg-[rgba(15,118,110,0.2)]"
@@ -57,7 +58,7 @@ export default function AboutPageShell({
               <button
                 type="button"
                 onClick={toggleLanguage}
-                className={`flex min-w-[128px] items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-all hover:-translate-y-0.5 ${
+                className={`flex min-w-[128px] items-center gap-3 rounded-2xl border px-4 py-3 text-left transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0F766E] motion-reduce:transform-none ${
                   isDark ? "border-neutral-800 bg-neutral-950/80 hover:border-neutral-700" : "border-neutral-300 bg-white hover:border-neutral-400"
                 }`}
                 aria-label="Toggle language"
@@ -79,7 +80,7 @@ export default function AboutPageShell({
               <button
                 type="button"
                 onClick={toggleTheme}
-                className={`flex min-w-[128px] items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-all hover:-translate-y-0.5 ${
+                className={`flex min-w-[128px] items-center gap-3 rounded-2xl border px-4 py-3 text-left transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0F766E] motion-reduce:transform-none ${
                   isDark ? "border-neutral-800 bg-neutral-950/80 hover:border-neutral-700" : "border-neutral-300 bg-white hover:border-neutral-400"
                 }`}
                 aria-label="Toggle theme"

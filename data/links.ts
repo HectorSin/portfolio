@@ -8,6 +8,7 @@ export const contactLinks = {
 
 // Experience - company links
 export const companyLinks: Record<string, string> = {
+  "GenON": "https://www.genon.ai/",
   "FilledU": "https://filledyou.com/pages/intro-pulda",
   "TurbineCrew": "https://turbinecrew.co.kr/",
 };

@@ -71,8 +71,8 @@ export const profileData = {
       en: "I shipped end-to-end AI solutions\ninto production for education and energy startups, improving cost efficiency and operations.",
     },
     {
-      ko: "LLM 기반 콘텐츠 생성 파이프라인을 구축해\n콘텐츠 제작 기간을 6주에서 2주로 단축하고 연간 약 200만 원의 외주 비용을 절감했습니다.",
-      en: "I built an LLM-based content generation pipeline,\ncut content production time from 6 weeks to 2 weeks and reduced outsourced production costs by about KRW 2 million annually.",
+      ko: "LLM 기반 콘텐츠 생성 파이프라인을 구축해\n콘텐츠 제작 기간을 4개월에서 1개월로 단축하고 연간 약 1,000만 원의 외주 비용을 절감했습니다.",
+      en: "I built an LLM-based content generation pipeline,\ncut content production time from 4 months to 1 month and reduced outsourced production costs by about KRW 10 million annually.",
     },
   ] as LocalizedText[],
   quote: {

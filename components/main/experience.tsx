@@ -40,31 +40,33 @@ const experiences: ExperienceEntry[] = [
       en: "AI Engineer",
       ko: "AI Engineer",
     },
-    period: "2025.09 - Present",
+    period: "2025.04 - Present",
     type: {
       en: "Samsung Card AI Platform Project",
       ko: "삼성카드 AI 플랫폼 구축 사업",
     },
     description: {
-      en: "Building an internal document RAG chatbot for Samsung Card employees as part of its AI platform project.",
-      ko: "삼성카드 AI 플랫폼 구축 사업에서 임직원용 사내 문서 RAG 챗봇 개발 진행 중",
+      en: "Developing an enterprise RAG assistant that helps employees find reliable answers from internal knowledge as part of Samsung Card's AI platform project.",
+      ko: "삼성카드 AI 플랫폼 구축 사업에서 사내 지식을 바탕으로 신뢰도 높은 답변을 제공하는 임직원용 RAG 어시스턴트 개발",
     },
     highlights: [
       {
-        en: "Designed and improved a retrieval flow that turns user questions into effective search queries and connects them to relevant internal documents in a restricted environment",
-        ko: "제한된 환경에서 사용자 질문을 효과적인 검색어로 변환하고 관련 사내 문서로 연결하는 검색 흐름 설계 및 개선",
+        en: "Designed an agentic RAG flow covering query generation, document retrieval, evidence selection, and grounded answer generation",
+        ko: "질문 분석부터 검색어 생성, 문서 검색, 근거 선별, 답변 생성까지 이어지는 에이전틱 RAG 흐름 설계 및 개선",
       },
       {
-        en: "Proactively built an evaluation dataset and a consistent scoring environment, then improved quality through iterative testing",
-        ko: "평가셋과 일관된 점수 측정 환경을 선제적으로 구축하고 반복 테스트를 통해 품질 보완",
+        en: "Built evaluation datasets and an automated scoring workflow to compare retrieval and answer quality across experiments",
+        ko: "검색 및 답변 품질을 실험별로 비교할 수 있도록 평가셋과 자동화된 점수 측정 환경 구축",
       },
       {
-        en: "Learned the importance of establishing an evaluation framework before iterating on RAG quality",
-        ko: "RAG 품질을 개선하기 전에 평가 체계를 먼저 마련하는 작업의 중요성 체득",
+        en: "Strengthened production reliability with automated tests, CI quality gates, and fail-safe handling for incomplete or oversized evidence",
+        ko: "자동화 테스트와 CI 품질 검증, 불완전하거나 과도하게 긴 근거에 대한 안전한 예외 처리로 운영 안정성 강화",
       },
     ],
     tech: ["RAG", "LLM Evaluation", "Query Generation"],
-    logoFallback: "제논",
+    logoSrc: "/company-logos/xenon.png",
+    logoFallback: "GenON",
+    link: companyLinks["GenON"],
   },
   {
     company: "FilledU",
@@ -307,7 +309,7 @@ export default function Experience() {
             {experiences.map((exp) => (
               <article
                 key={`${exp.company}-${exp.period}`}
-                className={`group rounded-[1.5rem] border p-6 md:p-8 transition-all duration-300 motion-reduce:transform-none ${
+                className={`group rounded-[1.5rem] border p-6 md:p-8 transition duration-300 motion-reduce:transform-none ${
                   isDark
                     ? "border-neutral-800 hover:border-neutral-600 hover:shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
                     : "border-neutral-300 hover:border-neutral-400 hover:shadow-[0_24px_60px_rgba(15,23,42,0.08)]"
@@ -427,7 +429,7 @@ export default function Experience() {
                 </>
               );
 
-              const className = `group border rounded-[1.25rem] p-6 min-h-[208px] transition-all duration-300 ${
+              const className = `group border rounded-[1.25rem] p-6 min-h-[208px] transition duration-300 ${
                 isDark
                   ? "border-neutral-800 hover:border-neutral-600 hover:shadow-[0_20px_50px_rgba(0,0,0,0.28)]"
                   : "border-neutral-300 hover:border-neutral-500 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)]"

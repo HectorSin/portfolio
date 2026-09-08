@@ -36,9 +36,9 @@ function formatProjectPeriod(period: string): string {
 
 function getDetailStatusLabel(project: Project, isKorean: boolean): string {
   if (hasProjectDetail(project)) {
-    return isKorean ? "상세 페이지 공개" : "Detail page available";
+    return isKorean ? "상세 사례" : "Case Study";
   }
-  return isKorean ? "상세 페이지 준비 중" : "Detail page coming soon";
+  return isKorean ? "프로젝트 요약" : "Project Summary";
 }
 
 function getResultLabel(project: Project, isKorean: boolean): string {
@@ -123,8 +123,8 @@ function SecondaryProjects({
         style={{ color: isDark ? "rgba(226, 232, 224, 0.9)" : "#465043" }}
       >
         {isKorean
-          ? "간단히 훑어볼 수 있도록 압축해 둔 프로젝트 목록입니다."
-          : "A compressed project list designed for quick scanning."}
+          ? "각 프로젝트의 핵심 역할과 성과를 간결하게 정리했습니다."
+          : "A concise view of the role and outcome of each project."}
       </p>
 
       <div
@@ -163,7 +163,7 @@ function SecondaryProjects({
               <button
                 type="button"
                 onClick={() => setOpenSecondaryId((prev) => (prev === project.id ? null : project.id))}
-                className="group w-full px-5 py-5 text-left transition-all duration-200 hover:[&_.secondary-project-toggle]:opacity-100"
+                className="group w-full px-5 py-5 text-left transition duration-200 hover:[&_.secondary-project-toggle]:opacity-100"
                 style={{ backgroundColor: rowBackground }}
                 aria-expanded={isOpen}
                 aria-controls={accordionContentId}
@@ -175,7 +175,7 @@ function SecondaryProjects({
                         {toLocalized(project.title, isKorean)}
                       </h3>
                       <span
-                        className="secondary-project-toggle inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] opacity-100 transition-all duration-200 md:opacity-70"
+                        className="secondary-project-toggle inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] opacity-100 transition duration-200 md:opacity-70"
                         style={{
                           color: isOpen ? palette.accentStrong : palette.textMuted,
                           borderColor: isOpen ? openBorderColor : rowBorderColor,
@@ -340,7 +340,7 @@ export default function Projects() {
             <article
               key={`${anchorId}-${index}`}
               id={anchorId}
-              className="rounded-[1.75rem] border p-7 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]"
+              className="rounded-[1.75rem] border p-7 md:p-8 transition duration-300 hover:-translate-y-1 hover:scale-[1.01] motion-reduce:transform-none"
               style={{
                 backgroundColor: isDark ? "rgba(10, 10, 10, 0.72)" : "rgba(255, 255, 255, 0.92)",
                 borderColor: palette.border,
@@ -418,7 +418,7 @@ export default function Projects() {
                     <div className="mt-4 flex flex-wrap gap-2.5">
                       {project.tech.map((tech) => {
                         const docUrl = techDocs[tech];
-                        const className = "px-3.5 py-2 rounded-full border text-xs transition-all duration-200 hover:-translate-y-0.5";
+                        const className = "px-3.5 py-2 rounded-full border text-xs transition duration-200 hover:-translate-y-0.5 motion-reduce:transform-none";
                         const style = {
                           borderColor: palette.border,
                           backgroundColor: isDark ? "rgba(255,255,255,0.04)" : "#f7faf4",

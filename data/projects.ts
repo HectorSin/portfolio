@@ -29,6 +29,70 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
   {
     isFeatured: true,
     title: {
+      en: "Enterprise Agentic RAG Assistant for Samsung Card",
+      ko: "삼성카드 임직원용 Agentic RAG 어시스턴트 구축",
+    },
+    featuredSubtitle: {
+      en: "An employee-facing knowledge assistant designed around constrained enterprise search",
+      ko: "제약이 있는 엔터프라이즈 검색 환경에서 설계한 임직원용 지식 검색 어시스턴트",
+    },
+    featuredResultLabel: {
+      en: "Owned Scope",
+      ko: "담당 영역",
+    },
+    featuredResult: {
+      en: "Led the core development scope for the internal employee chatbot",
+      ko: "내부 임직원용 챗봇의 핵심 개발 영역 주도",
+    },
+    keyContributions: {
+      en: [
+        "Designed the prompt, conversation flow, and multi-query generation strategy",
+        "Implemented parallel retrieval and RRF fusion to improve search coverage",
+        "Automated LLM-as-a-Judge evaluation and supported deployment, monitoring, and field feedback",
+      ],
+      ko: [
+        "프롬프트·대화 흐름과 다중 검색어 생성 전략 설계",
+        "검색 범위 향상을 위한 병렬 검색 및 RRF 융합 구현",
+        "LLM-as-a-Judge 평가 자동화와 배포·모니터링·현업 피드백 반영",
+      ],
+    },
+    previewImageSrc: "/projects/samsung-card-agentic-rag-assistant/uml-system-architecture.svg",
+    previewImageAlt: {
+      en: "Generalized architecture of the employee RAG assistant",
+      ko: "임직원용 RAG 어시스턴트의 일반화된 아키텍처",
+    },
+    period: "2026.04 ~ 2026.11",
+    company: {
+      en: "GenON | Samsung Card AI Platform Project",
+      ko: "제논 | 삼성카드 AI 플랫폼 구축 프로젝트",
+    },
+    team: {
+      en: "7 members (primary ownership of the internal employee chatbot, with senior review)",
+      ko: "7명 (선임 검토 아래 내부 임직원용 챗봇 개발 주도)",
+    },
+    description: {
+      en: "Built an Agentic RAG assistant that helps Samsung Card employees retrieve reliable answers from internal consultation knowledge.",
+      ko: "삼성카드 임직원이 사내 상담 지식에서 신뢰도 높은 답변을 찾도록 지원하는 Agentic RAG 어시스턴트를 구축했습니다.",
+    },
+    achievements: {
+      en: [
+        "Expanded retrieval coverage through multi-query generation, parallel retrieval, and RRF fusion",
+        "Built an automated LLM-as-a-Judge workflow for repeatable answer-quality evaluation",
+        "Resolved oversized HTML evidence by normalizing it to LLM-readable Markdown",
+        "Supported production deployment, monitoring, and iterative improvements based on employee feedback",
+      ],
+      ko: [
+        "다중 검색어 생성·병렬 검색·RRF 융합으로 검색 범위 확대",
+        "반복 가능한 답변 품질 측정을 위한 LLM-as-a-Judge 평가 자동화",
+        "과도하게 큰 HTML 근거 문서를 LLM 친화적인 Markdown으로 정규화",
+        "운영 배포·모니터링과 임직원 피드백 기반 반복 개선 수행",
+      ],
+    },
+    tech: ["Agentic RAG", "Prompt Engineering", "RRF", "LLM-as-a-Judge", "CI/CD", "Monitoring"],
+  },
+  {
+    isFeatured: true,
+    title: {
       en: "LLM-based Educational Content Auto-Generation Pipeline",
       ko: "LLM 기반 교육 콘텐츠 자동 생성 파이프라인",
     },
@@ -221,7 +285,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
       en: "Cognee Open Source Project Contribution",
       ko: "Cognee 오픈소스 프로젝트 기여",
     },
-    period: "2025.12 ~ Present",
+    period: "2025.12 ~ 2026.02",
     company: "Cognee",
     team: {
       en: "Open Source Contributor",
@@ -351,6 +415,7 @@ const baseProjects: Omit<Project, "id" | "slug" | "detail">[] = [
 ];
 
 const projectSlugs = [
+  "samsung-card-agentic-rag-assistant",
   "llm-education-content-pipeline",
   "automated-mp3-splitting-listening-assessments",
   "vietnam-elecs-2024-tech-sales-mou",
